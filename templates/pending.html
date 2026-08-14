@@ -1,0 +1,944 @@
+{% extends "base.html" %}
+
+{% block title %}
+Pending Requests | JUians of Gaibandha
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/admin.css') }}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="admin-dashboard admin-inner-page">
+
+
+    <!-- =========================================================
+         ADMIN SIDEBAR
+    ========================================================== -->
+
+    <aside
+        class="admin-sidebar"
+        id="adminSidebar"
+    >
+
+        <!-- BRAND -->
+
+        <div class="admin-brand">
+
+            <div class="admin-brand-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+
+            <div class="admin-brand-text">
+
+                <h2>
+                    JUians
+                </h2>
+
+                <span>
+                    of Gaibandha
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIDEBAR PROFILE -->
+
+        <div class="admin-sidebar-profile">
+
+            <div class="admin-sidebar-avatar">
+
+                <i class="fa-solid fa-user-shield"></i>
+
+            </div>
+
+            <div class="admin-sidebar-profile-info">
+
+                <strong>
+                    {{ session.get('admin_name', 'Administrator') }}
+                </strong>
+
+                <span>
+                    {{ session.get('admin_role', 'Administrator') }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="admin-nav">
+
+            <!-- MAIN MENU -->
+
+            <p class="admin-nav-title">
+                MAIN MENU
+            </p>
+
+            <a
+                href="{{ url_for('admin.dashboard') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-chart-pie"></i>
+
+                <span>
+                    Dashboard
+                </span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.members') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-users"></i>
+
+                <span>
+                    All Members
+                </span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.pending_members') }}"
+                class="admin-nav-link active"
+            >
+                <i class="fa-solid fa-clock"></i>
+
+                <span>
+                    Pending Requests
+                </span>
+
+                {% if pending|int > 0 %}
+                    <span class="admin-nav-badge">
+                        {{ pending }}
+                    </span>
+                {% endif %}
+            </a>
+
+
+            <!-- DIRECTORY -->
+
+            <p class="admin-nav-title">
+                DIRECTORY
+            </p>
+
+            <a
+                href="{{ url_for('member.alumni') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-graduate"></i>
+
+                <span>
+                    Alumni
+                </span>
+            </a>
+
+
+            <a
+                href="{{ url_for('member.students') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-group"></i>
+
+                <span>
+                    Running Students
+                </span>
+            </a>
+
+
+            <a
+                href="{{ url_for('member.teachers') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-chalkboard-user"></i>
+
+                <span>
+                    Teachers
+                </span>
+            </a>
+
+
+            <a
+                href="{{ url_for('member.employees') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-tie"></i>
+
+                <span>
+                    Employees
+                </span>
+            </a>
+
+
+            <!-- SYSTEM -->
+
+            <p class="admin-nav-title">
+                SYSTEM
+            </p>
+
+            <a
+                href="{{ url_for('admin.profile') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-shield"></i>
+
+                <span>
+                    Administrator
+                </span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.administrators') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-users-gear"></i>
+
+                <span>
+                    Manage Administrators
+                </span>
+            </a>
+
+
+            <a
+                href="{{ url_for('home.home') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-house"></i>
+
+                <span>
+                    Visit Website
+                </span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.logout') }}"
+                class="admin-nav-link admin-logout"
+            >
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>
+                    Logout
+                </span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =========================================================
+         ADMIN MAIN
+    ========================================================== -->
+
+    <main class="admin-main">
+
+
+        <!-- =====================================================
+             TOPBAR
+        ====================================================== -->
+
+        <header class="admin-topbar">
+
+            <div class="admin-topbar-left">
+
+                <button
+                    class="admin-mobile-toggle"
+                    id="adminMobileToggle"
+                    type="button"
+                    aria-label="Open administrator menu"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+
+                <div class="admin-breadcrumb">
+
+                    <span>
+                        Administration
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                    <strong>
+                        Pending Requests
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-topbar-right">
+
+                <div class="admin-status">
+
+                    <span class="admin-status-dot"></span>
+
+                    <span>
+                        System Online
+                    </span>
+
+                </div>
+
+
+                <div class="admin-user">
+
+                    <div class="admin-user-avatar">
+
+                        <i class="fa-solid fa-user-shield"></i>
+
+                    </div>
+
+
+                    <div class="admin-user-info">
+
+                        <strong>
+                            {{ session.get('admin_name', 'Administrator') }}
+                        </strong>
+
+                        <span>
+                            {{ session.get('admin_role', 'Admin') }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             PAGE CONTENT
+        ====================================================== -->
+
+        <div class="admin-content">
+
+
+            <!-- =================================================
+                 PAGE HERO
+            ================================================== -->
+
+            <section class="admin-page-hero">
+
+                <div class="admin-page-hero-content">
+
+                    <span class="admin-eyebrow">
+
+                        <i class="fa-solid fa-hourglass-half"></i>
+
+                        MEMBER REVIEW
+
+                    </span>
+
+                    <h1>
+                        Pending Applications
+                    </h1>
+
+                    <p>
+                        Review, approve or reject new membership
+                        submissions from one secure administration panel.
+                    </p>
+
+                </div>
+
+
+                <div class="admin-page-hero-actions">
+
+                    <a
+                        href="{{ url_for('admin.members') }}"
+                        class="admin-btn admin-btn-secondary"
+                    >
+                        <i class="fa-solid fa-users"></i>
+
+                        <span>
+                            All Members
+                        </span>
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================== -->
+
+            <section class="admin-stat-grid admin-stat-grid-compact">
+
+
+                <!-- PENDING -->
+
+                <div class="admin-stat-card pending">
+
+                    <div class="admin-stat-icon pending">
+
+                        <i class="fa-solid fa-hourglass-half"></i>
+
+                    </div>
+
+                    <div class="admin-stat-content">
+
+                        <span>
+                            Awaiting Review
+                        </span>
+
+                        <strong>
+                            {{ members|length }}
+                        </strong>
+
+                        <small>
+                            Pending applications
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- APPROVED -->
+
+                <div class="admin-stat-card approved">
+
+                    <div class="admin-stat-icon approved">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div class="admin-stat-content">
+
+                        <span>
+                            Approved Members
+                        </span>
+
+                        <strong>
+                            {{ approved }}
+                        </strong>
+
+                        <small>
+                            Successfully approved records
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REVIEW MODE -->
+
+                <div class="admin-stat-card total">
+
+                    <div class="admin-stat-icon total">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+                    <div class="admin-stat-content">
+
+                        <span>
+                            Review Mode
+                        </span>
+
+                        <strong>
+                            LIVE
+                        </strong>
+
+                        <small>
+                            Administrator controls active
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 REVIEW QUEUE
+            ================================================== -->
+
+            <section class="admin-panel">
+
+
+                <div class="admin-panel-header">
+
+                    <div>
+
+                        <span class="admin-panel-label">
+                            REVIEW QUEUE
+                        </span>
+
+                        <h2>
+                            Membership Requests
+                        </h2>
+
+                        <p>
+                            Review submitted information before
+                            approving or rejecting each membership request.
+                        </p>
+
+                    </div>
+
+
+                    <span class="admin-count-pill">
+
+                        <i class="fa-solid fa-list-check"></i>
+
+                        {{ members|length }} Requests
+
+                    </span>
+
+                </div>
+
+
+                <div class="admin-table-wrapper">
+
+
+                    {% if members %}
+
+
+                        <table class="admin-table admin-modern-table">
+
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Member
+                                    </th>
+
+                                    <th>
+                                        Category
+                                    </th>
+
+                                    <th>
+                                        Department
+                                    </th>
+
+                                    <th>
+                                        Contact
+                                    </th>
+
+                                    <th>
+                                        Submitted
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Actions
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+
+                                {% for member in members %}
+
+
+                                    <tr>
+
+
+                                        <!-- MEMBER -->
+
+                                        <td>
+
+                                            <div class="admin-member-cell">
+
+
+                                                <div class="admin-member-avatar">
+
+                                                    {% if member.photo and member.photo != 'default.png' %}
+
+                                                        <img
+                                                            src="{{ url_for('static', filename='uploads/' + member.photo) }}"
+                                                            alt="{{ member.full_name }}"
+                                                        >
+
+                                                    {% else %}
+
+                                                        <i class="fa-solid fa-user"></i>
+
+                                                    {% endif %}
+
+                                                </div>
+
+
+                                                <div class="admin-member-info">
+
+                                                    <strong>
+                                                        {{ member.full_name }}
+                                                    </strong>
+
+                                                    <span>
+                                                        #{{ member.id }}
+                                                    </span>
+
+                                                </div>
+
+
+                                            </div>
+
+                                        </td>
+
+
+                                        <!-- CATEGORY -->
+
+                                        <td>
+
+                                            <span class="admin-category">
+                                                {{ member.category }}
+                                            </span>
+
+                                        </td>
+
+
+                                        <!-- DEPARTMENT -->
+
+                                        <td>
+
+                                            <span class="admin-table-text">
+                                                {{ member.department or '—' }}
+                                            </span>
+
+                                        </td>
+
+
+                                        <!-- CONTACT -->
+
+                                        <td>
+
+                                            <span class="admin-contact">
+                                                {{ member.phone or '—' }}
+                                            </span>
+
+                                        </td>
+
+
+                                        <!-- SUBMITTED -->
+
+                                        <td>
+
+                                            {% if member.created_at %}
+
+                                                {{ member.created_at.strftime('%d %b %Y') }}
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <!-- STATUS -->
+
+                                        <td>
+
+                                            <span class="admin-badge pending">
+
+                                                <span></span>
+
+                                                Pending
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <!-- ACTIONS -->
+
+                                        <td>
+
+                                            <div class="admin-actions">
+
+
+                                                <!-- VIEW -->
+
+                                                <a
+                                                    href="{{ url_for('admin.member_details', id=member.id) }}"
+                                                    class="admin-action view"
+                                                    title="View details"
+                                                    aria-label="View member details"
+                                                >
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+
+
+                                                <!-- APPROVE -->
+
+                                                <a
+                                                    href="{{ url_for('admin.approve', id=member.id) }}"
+                                                    class="admin-action approve"
+                                                    title="Approve"
+                                                    aria-label="Approve member"
+                                                    onclick="return confirm('Approve this member?');"
+                                                >
+                                                    <i class="fa-solid fa-check"></i>
+                                                </a>
+
+
+                                                <!-- REJECT -->
+
+                                                <a
+                                                    href="{{ url_for('admin.reject', id=member.id) }}"
+                                                    class="admin-action reject"
+                                                    title="Reject"
+                                                    aria-label="Reject member"
+                                                    onclick="return confirm('Reject this member?');"
+                                                >
+                                                    <i class="fa-solid fa-xmark"></i>
+                                                </a>
+
+
+                                                <!-- DELETE -->
+
+                                                <a
+                                                    href="{{ url_for('admin.delete', id=member.id) }}"
+                                                    class="admin-action delete"
+                                                    title="Delete"
+                                                    aria-label="Delete member"
+                                                    onclick="return confirm('Delete this member permanently?');"
+                                                >
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+
+
+                                            </div>
+
+                                        </td>
+
+
+                                    </tr>
+
+
+                                {% endfor %}
+
+
+                            </tbody>
+
+
+                        </table>
+
+
+                    {% else %}
+
+
+                        <!-- =========================================
+                             EMPTY STATE
+                        ========================================== -->
+
+                        <div class="admin-empty admin-empty-large">
+
+
+                            <div class="admin-empty-icon success">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                            </div>
+
+
+                            <strong>
+                                All caught up
+                            </strong>
+
+
+                            <span>
+                                There are no pending membership
+                                applications right now.
+                            </span>
+
+
+                            <a
+                                href="{{ url_for('admin.members') }}"
+                                class="admin-btn admin-btn-secondary"
+                            >
+                                <i class="fa-solid fa-users"></i>
+
+                                <span>
+                                    View All Members
+                                </span>
+                            </a>
+
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 ADMIN FOOTER
+            ================================================== -->
+
+            <footer class="admin-footer">
+
+
+                <div class="admin-footer-brand">
+
+                    <strong>
+                        JUians of Gaibandha
+                    </strong>
+
+                    <span>
+                        Administration Portal
+                    </span>
+
+                </div>
+
+
+                <span class="admin-footer-copyright">
+                    © 2026 JUians of Gaibandha
+                </span>
+
+
+            </footer>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const toggle =
+            document.getElementById(
+                "adminMobileToggle"
+            );
+
+        const sidebar =
+            document.getElementById(
+                "adminSidebar"
+            );
+
+
+        /* =====================================================
+           SIDEBAR TOGGLE
+        ====================================================== */
+
+        if (
+            toggle &&
+            sidebar
+        ) {
+
+            toggle.addEventListener(
+                "click",
+                function () {
+
+                    sidebar.classList.toggle(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           CLOSE SIDEBAR WHEN CLICKING OUTSIDE
+        ====================================================== */
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    window.innerWidth <= 900 &&
+                    sidebar &&
+                    sidebar.classList.contains(
+                        "active"
+                    ) &&
+                    !sidebar.contains(
+                        event.target
+                    ) &&
+                    toggle &&
+                    !toggle.contains(
+                        event.target
+                    )
+                ) {
+
+                    sidebar.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           RESET SIDEBAR ON LARGE SCREEN
+        ====================================================== */
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (
+                    window.innerWidth > 900 &&
+                    sidebar
+                ) {
+
+                    sidebar.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+{% endblock %}

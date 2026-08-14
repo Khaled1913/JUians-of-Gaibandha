@@ -1,0 +1,1905 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+
+Edit Member | JUians of Gaibandha
+
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   ADMIN EDIT MEMBER PAGE
+   JUians of Gaibandha
+========================================================= */
+
+.admin-edit-page {
+
+    width: 100%;
+    min-height: 100vh;
+
+    padding: 50px 20px 80px;
+
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            circle at 8% 8%,
+            rgba(0, 106, 78, 0.08),
+            transparent 27%
+        ),
+        radial-gradient(
+            circle at 92% 82%,
+            rgba(246, 195, 58, 0.09),
+            transparent 28%
+        ),
+        #f4f8f6;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.admin-edit-container {
+
+    width: 100%;
+
+    max-width: 1050px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.edit-page-header {
+
+    margin-bottom: 25px;
+}
+
+
+.edit-page-eyebrow {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 8px;
+
+    color: #006a4e;
+
+    font-size: 0.74rem;
+
+    font-weight: 850;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+
+.edit-page-header h1 {
+
+    margin: 0 0 6px;
+
+    color: #17251f;
+
+    font-size: 1.75rem;
+
+    font-weight: 850;
+
+    letter-spacing: -0.5px;
+}
+
+
+.edit-page-header p {
+
+    margin: 0;
+
+    color: #77837e;
+
+    font-size: 0.86rem;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM CARD
+========================================================= */
+
+.edit-form-card {
+
+    width: 100%;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e1eae6;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 15px 45px rgba(20, 65, 52, 0.07);
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.form-section {
+
+    margin-bottom: 30px;
+
+    padding-bottom: 28px;
+
+    border-bottom: 1px solid #edf2ef;
+}
+
+
+.form-section:last-of-type {
+
+    margin-bottom: 0;
+
+    padding-bottom: 0;
+
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.form-section-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    margin-bottom: 22px;
+}
+
+
+.form-section-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #006a4e,
+            #008b67
+        );
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 7px 16px rgba(0, 106, 78, 0.14);
+
+    font-size: 0.9rem;
+}
+
+
+.form-section-header h2 {
+
+    margin: 0 0 3px;
+
+    color: #17251f;
+
+    font-size: 1rem;
+
+    font-weight: 850;
+}
+
+
+.form-section-header p {
+
+    margin: 0;
+
+    color: #89958f;
+
+    font-size: 0.73rem;
+}
+
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 18px;
+}
+
+
+.form-group {
+
+    min-width: 0;
+}
+
+
+.form-group.full-width {
+
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #35433d;
+
+    font-size: 0.76rem;
+
+    font-weight: 800;
+}
+
+
+.required {
+
+    color: #d23d4b;
+
+    margin-left: 2px;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.form-control {
+
+    width: 100%;
+
+    min-height: 45px;
+
+    padding: 10px 13px;
+
+    box-sizing: border-box;
+
+    color: #26352f;
+
+    background: #fbfdfc;
+
+    border: 1px solid #dfe9e4;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: 0.83rem;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.form-control:hover {
+
+    border-color:
+        rgba(0, 106, 78, 0.28);
+}
+
+
+.form-control:focus {
+
+    background: #ffffff;
+
+    border-color: #006a4e;
+
+    box-shadow:
+        0 0 0 3px rgba(0, 106, 78, 0.09);
+}
+
+
+textarea.form-control {
+
+    min-height: 100px;
+
+    resize: vertical;
+
+    line-height: 1.55;
+}
+
+
+select.form-control {
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   HELP TEXT
+========================================================= */
+
+.form-help {
+
+    display: block;
+
+    margin-top: 6px;
+
+    color: #8a9691;
+
+    font-size: 0.68rem;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   PHOTO AREA
+========================================================= */
+
+.photo-upload-area {
+
+    display: grid;
+
+    grid-template-columns:
+        110px
+        minmax(0, 1fr);
+
+    gap: 20px;
+
+    align-items: center;
+
+    padding: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fbfdfc,
+            #f7faf8
+        );
+
+    border: 1px solid #e5ede9;
+
+    border-radius: 14px;
+}
+
+
+.current-photo {
+
+    width: 100px;
+
+    height: 100px;
+
+    padding: 4px;
+
+    box-sizing: border-box;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #006a4e,
+            #008b67,
+            #f4c542
+        );
+}
+
+
+.current-photo img {
+
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    border: 3px solid #ffffff;
+
+    border-radius: 50%;
+
+    background: #eef4f1;
+}
+
+
+.photo-upload-content {
+
+    min-width: 0;
+}
+
+
+.photo-upload-content strong {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #35433d;
+
+    font-size: 0.82rem;
+}
+
+
+.photo-upload-content p {
+
+    margin: 0 0 12px;
+
+    color: #818d88;
+
+    font-size: 0.72rem;
+
+    line-height: 1.55;
+}
+
+
+.file-input {
+
+    width: 100%;
+
+    font-family: inherit;
+
+    font-size: 0.75rem;
+
+    color: #5d6a64;
+}
+
+
+/* =========================================================
+   STATUS AREA
+========================================================= */
+
+.status-box {
+
+    padding: 18px;
+
+    background: #f8fbf9;
+
+    border: 1px solid #e2ebe7;
+
+    border-radius: 13px;
+}
+
+
+.status-box label {
+
+    margin-bottom: 8px;
+}
+
+
+.status-help {
+
+    margin-top: 7px;
+
+    color: #87938e;
+
+    font-size: 0.7rem;
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+========================================================= */
+
+.form-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 30px;
+
+    padding-top: 24px;
+
+    border-top: 1px solid #edf2ef;
+}
+
+
+.action-left {
+
+    color: #87938e;
+
+    font-size: 0.72rem;
+
+    line-height: 1.5;
+}
+
+
+.action-buttons {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 44px;
+
+    padding: 0 17px;
+
+    box-sizing: border-box;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-size: 0.8rem;
+
+    font-weight: 800;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.btn-primary {
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #006a4e,
+            #008762
+        );
+
+    border: none;
+
+    box-shadow:
+        0 8px 19px rgba(0, 106, 78, 0.18);
+}
+
+
+.btn-primary:hover {
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #005b43,
+            #007657
+        );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 11px 24px rgba(0, 106, 78, 0.25);
+}
+
+
+.btn-secondary {
+
+    color: #50605a;
+
+    background: #ffffff;
+
+    border: 1px solid #dce7e2;
+}
+
+
+.btn-secondary:hover {
+
+    color: #006a4e;
+
+    background: #f5faf7;
+
+    border-color:
+        rgba(0, 106, 78, 0.25);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   ADMIN NOTICE
+========================================================= */
+
+.admin-notice {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-bottom: 22px;
+
+    padding: 15px 17px;
+
+    color: #456159;
+
+    background: #eef9f4;
+
+    border: 1px solid #d4eee2;
+
+    border-radius: 13px;
+
+    font-size: 0.76rem;
+
+    line-height: 1.6;
+}
+
+
+.admin-notice i {
+
+    margin-top: 2px;
+
+    color: #006a4e;
+
+    font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .admin-edit-page {
+
+        padding:
+            35px 12px 60px;
+    }
+
+
+    .edit-form-card {
+
+        padding:
+            22px 17px;
+
+        border-radius: 18px;
+    }
+
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+
+    .form-group.full-width {
+
+        grid-column: auto;
+    }
+
+
+    .photo-upload-area {
+
+        grid-template-columns: 1fr;
+
+        text-align: center;
+    }
+
+
+    .current-photo {
+
+        margin: 0 auto;
+    }
+
+
+    .form-actions {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        text-align: center;
+    }
+
+
+    .action-buttons {
+
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+
+    .btn {
+
+        width: 100%;
+    }
+
+}
+
+
+@media (max-width: 400px) {
+
+    .edit-page-header h1 {
+
+        font-size: 1.45rem;
+    }
+
+
+    .edit-form-card {
+
+        padding:
+            19px 14px;
+    }
+
+
+    .form-section-header {
+
+        gap: 10px;
+    }
+
+
+    .form-section-icon {
+
+        width: 38px;
+        height: 38px;
+
+        flex-basis: 38px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="admin-edit-page">
+
+    <div class="admin-edit-container">
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <div class="edit-page-header">
+
+            <span class="edit-page-eyebrow">
+
+                <i class="fa-solid fa-user-pen"></i>
+
+                ADMINISTRATOR
+
+            </span>
+
+
+            <h1>
+                Edit Member Information
+            </h1>
+
+
+            <p>
+                Update the submitted information of
+                <strong>{{ member.full_name }}</strong>.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             ADMIN NOTICE
+        ================================================== -->
+
+        <div class="admin-notice">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <div>
+
+                <strong>
+                    Administrator Access
+                </strong>
+
+                You are editing an approved member record.
+                Please make sure all information is accurate
+                before saving the changes.
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             EDIT FORM
+        ================================================== -->
+
+        <form
+            method="POST"
+            action="{{ url_for('admin.edit_member', id=member.id) }}"
+            enctype="multipart/form-data"
+            class="edit-form-card"
+        >
+
+
+            <!-- =================================================
+                 PERSONAL INFORMATION
+            ================================================== -->
+
+            <section class="form-section">
+
+                <div class="form-section-header">
+
+                    <div class="form-section-icon">
+
+                        <i class="fa-solid fa-user"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Personal Information
+                        </h2>
+
+                        <p>
+                            Basic identity information of the member.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- FULL NAME -->
+
+                    <div class="form-group">
+
+                        <label for="full_name">
+
+                            Full Name
+
+                            <span class="required">*</span>
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="full_name"
+                            name="full_name"
+                            class="form-control"
+                            value="{{ member.full_name or '' }}"
+                            placeholder="Enter full name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="form-group">
+
+                        <label for="category">
+
+                            Category
+
+                            <span class="required">*</span>
+
+                        </label>
+
+
+                        <select
+                            id="category"
+                            name="category"
+                            class="form-control"
+                            required
+                        >
+
+                            <option value="">
+                                Select your category
+                            </option>
+
+
+                            <option
+                                value="Alumni"
+                                {% if member.category == "Alumni" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Alumni
+                            </option>
+
+
+                            <option
+                                value="Running Student"
+                                {% if member.category == "Running Student" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Running Student
+                            </option>
+
+
+                            <option
+                                value="Teacher"
+                                {% if member.category == "Teacher" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Teacher
+                            </option>
+
+
+                            <option
+                                value="Employee"
+                                {% if member.category == "Employee" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Employee
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- GENDER -->
+
+                    <div class="form-group">
+
+                        <label for="gender">
+                            Gender
+                        </label>
+
+
+                        <select
+                            id="gender"
+                            name="gender"
+                            class="form-control"
+                        >
+
+                            <option value="">
+                                Select gender
+                            </option>
+
+
+                            <option
+                                value="Male"
+                                {% if member.gender == "Male" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Male
+                            </option>
+
+
+                            <option
+                                value="Female"
+                                {% if member.gender == "Female" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Female
+                            </option>
+
+
+                            <option
+                                value="Other"
+                                {% if member.gender == "Other" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- DATE OF BIRTH -->
+
+                    <div class="form-group">
+
+                        <label for="date_of_birth">
+                            Date of Birth
+                        </label>
+
+
+                        <input
+                            type="date"
+                            id="date_of_birth"
+                            name="date_of_birth"
+                            class="form-control"
+                            value="{{ member.date_of_birth or '' }}"
+                        >
+
+                    </div>
+
+
+                    <!-- BLOOD GROUP -->
+
+                    <div class="form-group">
+
+                        <label for="blood_group">
+                            Blood Group
+                        </label>
+
+
+                        <select
+                            id="blood_group"
+                            name="blood_group"
+                            class="form-control"
+                        >
+
+                            <option value="">
+                                Select blood group
+                            </option>
+
+
+                            <option
+                                value="A+"
+                                {% if member.blood_group == "A+" %}
+                                    selected
+                                {% endif %}
+                            >
+                                A+
+                            </option>
+
+
+                            <option
+                                value="A-"
+                                {% if member.blood_group == "A-" %}
+                                    selected
+                                {% endif %}
+                            >
+                                A-
+                            </option>
+
+
+                            <option
+                                value="B+"
+                                {% if member.blood_group == "B+" %}
+                                    selected
+                                {% endif %}
+                            >
+                                B+
+                            </option>
+
+
+                            <option
+                                value="B-"
+                                {% if member.blood_group == "B-" %}
+                                    selected
+                                {% endif %}
+                            >
+                                B-
+                            </option>
+
+
+                            <option
+                                value="AB+"
+                                {% if member.blood_group == "AB+" %}
+                                    selected
+                                {% endif %}
+                            >
+                                AB+
+                            </option>
+
+
+                            <option
+                                value="AB-"
+                                {% if member.blood_group == "AB-" %}
+                                    selected
+                                {% endif %}
+                            >
+                                AB-
+                            </option>
+
+
+                            <option
+                                value="O+"
+                                {% if member.blood_group == "O+" %}
+                                    selected
+                                {% endif %}
+                            >
+                                O+
+                            </option>
+
+
+                            <option
+                                value="O-"
+                                {% if member.blood_group == "O-" %}
+                                    selected
+                                {% endif %}
+                            >
+                                O-
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label for="phone">
+
+                            Mobile Number
+
+                            <span class="required">*</span>
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="phone"
+                            name="phone"
+                            class="form-control"
+                            value="{{ member.phone or '' }}"
+                            placeholder="01XXXXXXXXX"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ACADEMIC INFORMATION
+            ================================================== -->
+
+            <section class="form-section">
+
+                <div class="form-section-header">
+
+                    <div class="form-section-icon">
+
+                        <i class="fa-solid fa-user-graduate"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Academic Information
+                        </h2>
+
+                        <p>
+                            Academic background at Jahangirnagar University.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- DEPARTMENT -->
+
+                    <div class="form-group">
+
+                        <label for="department">
+
+                            Department
+
+                            <span class="required">*</span>
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="department"
+                            name="department"
+                            class="form-control"
+                            value="{{ member.department or '' }}"
+                            placeholder="Select or enter department"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- BATCH -->
+
+                    <div class="form-group">
+
+                        <label for="batch">
+                            Batch
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="batch"
+                            name="batch"
+                            class="form-control"
+                            value="{{ member.batch or '' }}"
+                            placeholder="Example: 46th Batch"
+                        >
+
+                    </div>
+
+
+                    <!-- SESSION -->
+
+                    <div class="form-group">
+
+                        <label for="session">
+                            Session
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="session"
+                            name="session"
+                            class="form-control"
+                            value="{{ member.session or '' }}"
+                            placeholder="Example: 2020-2021"
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CONTACT INFORMATION
+            ================================================== -->
+
+            <section class="form-section">
+
+                <div class="form-section-header">
+
+                    <div class="form-section-icon">
+
+                        <i class="fa-solid fa-address-book"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Contact Information
+                        </h2>
+
+                        <p>
+                            Email and current location information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            value="{{ member.email or '' }}"
+                            placeholder="example@gmail.com"
+                        >
+
+                    </div>
+
+
+                    <!-- DISTRICT -->
+
+                    <div class="form-group">
+
+                        <label for="district">
+                            District
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="district"
+                            name="district"
+                            class="form-control"
+                            value="{{ member.district or 'Gaibandha' }}"
+                        >
+
+                    </div>
+
+
+                    <!-- UPAZILA -->
+
+                    <div class="form-group">
+
+                        <label for="upazila">
+                            Upazila
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="upazila"
+                            name="upazila"
+                            class="form-control"
+                            value="{{ member.upazila or '' }}"
+                            placeholder="Enter your upazila"
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ADDRESS INFORMATION
+            ================================================== -->
+
+            <section class="form-section">
+
+                <div class="form-section-header">
+
+                    <div class="form-section-icon">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Address Information
+                        </h2>
+
+                        <p>
+                            Present and permanent address details.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- PRESENT ADDRESS -->
+
+                    <div class="form-group">
+
+                        <label for="present_address">
+                            Present Address
+                        </label>
+
+
+                        <textarea
+                            id="present_address"
+                            name="present_address"
+                            class="form-control"
+                            placeholder="Enter present address"
+                        >{{ member.present_address or '' }}</textarea>
+
+                    </div>
+
+
+                    <!-- PERMANENT ADDRESS -->
+
+                    <div class="form-group">
+
+                        <label for="permanent_address">
+                            Permanent Address
+                        </label>
+
+
+                        <textarea
+                            id="permanent_address"
+                            name="permanent_address"
+                            class="form-control"
+                            placeholder="Enter permanent address"
+                        >{{ member.permanent_address or '' }}</textarea>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 PROFESSIONAL INFORMATION
+            ================================================== -->
+
+            <section class="form-section">
+
+                <div class="form-section-header">
+
+                    <div class="form-section-icon">
+
+                        <i class="fa-solid fa-briefcase"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Professional Information
+                        </h2>
+
+                        <p>
+                            Current professional details.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- OCCUPATION -->
+
+                    <div class="form-group">
+
+                        <label for="occupation">
+                            Occupation
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="occupation"
+                            name="occupation"
+                            class="form-control"
+                            value="{{ member.occupation or '' }}"
+                            placeholder="Example: Lecturer, Engineer"
+                        >
+
+                    </div>
+
+
+                    <!-- CURRENT WORKPLACE -->
+
+                    <div class="form-group">
+
+                        <label for="company">
+                            Current Workplace
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="company"
+                            name="company"
+                            class="form-control"
+                            value="{{ member.company or '' }}"
+                            placeholder="Organization / Institution"
+                        >
+
+                    </div>
+
+
+                    <!-- DESIGNATION -->
+
+                    <div class="form-group">
+
+                        <label for="designation">
+                            Designation
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="designation"
+                            name="designation"
+                            class="form-control"
+                            value="{{ member.designation or '' }}"
+                            placeholder="Example: Lecturer"
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SOCIAL MEDIA
+            ================================================== -->
+
+            <section class="form-section">
+
+                <div class="form-section-header">
+
+                    <div class="form-section-icon">
+
+                        <i class="fa-brands fa-facebook-f"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Social Media
+                        </h2>
+
+                        <p>
+                            Facebook profile connected with the community.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- FACEBOOK -->
+
+                    <div class="form-group full-width">
+
+                        <label for="facebook">
+                            Facebook Profile
+                        </label>
+
+
+                        <input
+                            type="url"
+                            id="facebook"
+                            name="facebook"
+                            class="form-control"
+                            value="{{ member.facebook or '' }}"
+                            placeholder="https://facebook.com/username"
+                        >
+
+
+                        <span class="form-help">
+
+                            Optional — helps other verified members
+                            connect with this member.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 PROFILE PHOTO
+            ================================================== -->
+
+            <section class="form-section">
+
+                <div class="form-section-header">
+
+                    <div class="form-section-icon">
+
+                        <i class="fa-solid fa-camera"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Profile Photo
+                        </h2>
+
+                        <p>
+                            Replace the member's current profile photo.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="photo-upload-area">
+
+
+                    <!-- CURRENT PHOTO -->
+
+                    <div class="current-photo">
+
+                        {% if member.photo and member.photo != "default.png" %}
+
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename='uploads/' + member.photo
+                                ) }}"
+                                alt="{{ member.full_name }}"
+                            >
+
+                        {% else %}
+
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename='images/default_user.png'
+                                ) }}"
+                                alt="Default User"
+                            >
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- UPLOAD -->
+
+                    <div class="photo-upload-content">
+
+                        <strong>
+                            Current Profile Photo
+                        </strong>
+
+
+                        <p>
+                            Choose a new photo only if you want
+                            to replace the existing one.
+                        </p>
+
+
+                        <input
+                            type="file"
+                            id="photo"
+                            name="photo"
+                            class="file-input"
+                            accept=".jpg,.jpeg,.png,.gif,.webp"
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 MEMBER STATUS
+            ================================================== -->
+
+            <section class="form-section">
+
+                <div class="form-section-header">
+
+                    <div class="form-section-icon">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Membership Status
+                        </h2>
+
+                        <p>
+                            Control the verification status of this member.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="status-box">
+
+
+                    <div class="form-group">
+
+                        <label for="status">
+
+                            Member Status
+
+                            <span class="required">*</span>
+
+                        </label>
+
+
+                        <select
+                            id="status"
+                            name="status"
+                            class="form-control"
+                            required
+                        >
+
+                            <option
+                                value="Pending"
+                                {% if member.status == "Pending" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Pending
+                            </option>
+
+
+                            <option
+                                value="Approved"
+                                {% if member.status == "Approved" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Approved
+                            </option>
+
+
+                            <option
+                                value="Rejected"
+                                {% if member.status == "Rejected" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Rejected
+                            </option>
+
+                        </select>
+
+
+                        <div class="status-help">
+
+                            Approved members can appear in the
+                            verified member directory.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ACTIONS
+            ================================================== -->
+
+            <div class="form-actions">
+
+
+                <div class="action-left">
+
+                    <strong>
+                        Member ID: {{ member.id }}
+                    </strong>
+
+                    <br>
+
+                    Changes will be saved to the member record.
+
+                </div>
+
+
+                <div class="action-buttons">
+
+
+                    <a
+                        href="{{ url_for(
+                            'admin.member_details',
+                            id=member.id
+                        ) }}"
+                        class="btn btn-secondary"
+                    >
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Cancel
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Save Changes
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

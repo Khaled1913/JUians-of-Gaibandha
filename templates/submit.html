@@ -1,0 +1,1843 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Member Registration | JUians of Gaibandha
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/submit.css') }}">
+
+<style>
+
+    /* =====================================================
+       EXTRA PREMIUM SUBMIT PAGE ENHANCEMENTS
+       ===================================================== */
+
+    .registration-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 18px;
+        padding: 14px 18px;
+        background: rgba(255,255,255,.88);
+        border: 1px solid rgba(0,106,78,.10);
+        border-radius: 16px;
+        box-shadow: 0 8px 28px rgba(20,65,52,.05);
+    }
+
+    .registration-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        color: #52645d;
+        font-size: .82rem;
+        font-weight: 600;
+    }
+
+    .registration-topbar-left i {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(0,106,78,.09);
+        color: #006a4e;
+    }
+
+    .required-note {
+        color: #7b8883;
+        font-size: .78rem;
+    }
+
+    .required-note span {
+        color: #dc3545;
+        font-weight: 800;
+    }
+
+    .registration-progress {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 7px;
+        margin: 0 auto 26px;
+        max-width: 900px;
+    }
+
+    .progress-step {
+        position: relative;
+        height: 4px;
+        overflow: hidden;
+        border-radius: 20px;
+        background: #dfe9e4;
+    }
+
+    .progress-step.active {
+        background: linear-gradient(
+            90deg,
+            #006a4e,
+            #0b8c68
+        );
+    }
+
+    .progress-step.active::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.55),
+            transparent
+        );
+        animation: progressShine 2s infinite;
+    }
+
+    @keyframes progressShine {
+        from {
+            transform: translateX(-100%);
+        }
+
+        to {
+            transform: translateX(100%);
+        }
+    }
+
+    .registration-hero {
+        margin-bottom: 18px;
+    }
+
+    .registration-hero .hero-mini-note {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        margin-top: 18px;
+        color: #7a8782;
+        font-size: .78rem;
+    }
+
+    .registration-hero .hero-mini-note i {
+        color: #006a4e;
+    }
+
+    .section-number {
+        width: 26px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        border-radius: 50%;
+        background: rgba(0,106,78,.07);
+        color: #006a4e;
+        font-size: .72rem;
+        font-weight: 800;
+    }
+
+    .section-heading {
+        position: relative;
+    }
+
+    .form-card {
+        scroll-margin-top: 100px;
+    }
+
+    .form-field label {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .field-hint {
+        display: block;
+        margin-top: 6px;
+        color: #8a9691;
+        font-size: .72rem;
+        line-height: 1.5;
+    }
+
+    .photo-preview {
+        display: none;
+        width: 82px;
+        height: 82px;
+        margin-top: 16px;
+        overflow: hidden;
+        border-radius: 18px;
+        border: 3px solid rgba(0,106,78,.12);
+        background: #fff;
+        box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    }
+
+    .photo-preview.show {
+        display: block;
+    }
+
+    .photo-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .security-strip {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 16px;
+        color: #6f7c77;
+        font-size: .75rem;
+        text-align: center;
+    }
+
+    .security-strip i {
+        color: #006a4e;
+    }
+
+    @media (max-width: 650px) {
+
+        .registration-topbar {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .registration-progress {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .section-number {
+            display: none;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="submit-page">
+
+    <div class="submit-container">
+
+
+        <!-- =====================================================
+             TOP INFORMATION BAR
+             ===================================================== -->
+
+        <div class="registration-topbar">
+
+            <div class="registration-topbar-left">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <span>
+                    Secure Member Registration
+                </span>
+
+            </div>
+
+            <div class="required-note">
+
+                <span>*</span>
+                Required fields
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             PROGRESS INDICATOR
+             ===================================================== -->
+
+        <div class="registration-progress"
+             aria-label="Registration progress">
+
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+            <div class="progress-step active"></div>
+
+        </div>
+
+
+        <!-- =====================================================
+             PREMIUM HEADER
+             ===================================================== -->
+
+        <div class="registration-hero">
+
+            <div class="registration-badge">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                <span>
+                    Member Registration
+                </span>
+
+            </div>
+
+
+            <h1>
+
+                Join
+                <span>JUians of Gaibandha</span>
+
+            </h1>
+
+
+            <p>
+
+                Become a verified member of the
+                JUians of Gaibandha community and
+                connect with students, alumni,
+                teachers and professionals of
+                Jahangirnagar University.
+
+            </p>
+
+
+            <div class="hero-mini-note">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                <span>
+                    Please provide accurate information
+                    for verification.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             REGISTRATION FORM
+             ===================================================== -->
+
+        <form
+            action="{{ url_for('member.submit') }}"
+            method="POST"
+            enctype="multipart/form-data"
+            class="registration-form"
+            id="registrationForm"
+        >
+
+
+            <!-- =================================================
+                 01 PERSONAL INFORMATION
+                 ================================================= -->
+
+            <section class="form-card">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div class="section-title">
+
+                        <h2>
+                            Personal Information
+                        </h2>
+
+                        <p>
+                            Tell us a little about yourself.
+                        </p>
+
+                    </div>
+
+                    <div class="section-number">
+                        01
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- FULL NAME -->
+
+                    <div class="form-field">
+
+                        <label for="full_name">
+
+                            Full Name
+
+                            <span>*</span>
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-regular fa-user"></i>
+
+                            <input
+                                type="text"
+                                id="full_name"
+                                name="full_name"
+                                placeholder="Enter your full name"
+                                autocomplete="name"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="form-field">
+
+                        <label for="category">
+
+                            Category
+
+                            <span>*</span>
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-users"></i>
+
+                            <select
+                                id="category"
+                                name="category"
+                                required
+                            >
+
+                                <option value="">
+                                    Select your category
+                                </option>
+
+                                <option value="Running Student">
+                                    Running Student
+                                </option>
+
+                                <option value="Alumni">
+                                    Alumni
+                                </option>
+
+                                <option value="Teacher">
+                                    Teacher
+                                </option>
+
+                                <option value="Employee">
+                                    Employee
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- GENDER -->
+
+                    <div class="form-field">
+
+                        <label for="gender">
+                            Gender
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-venus-mars"></i>
+
+                            <select
+                                id="gender"
+                                name="gender"
+                            >
+
+                                <option value="">
+                                    Select gender
+                                </option>
+
+                                <option value="Male">
+                                    Male
+                                </option>
+
+                                <option value="Female">
+                                    Female
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DATE OF BIRTH -->
+
+                    <div class="form-field">
+
+                        <label for="date_of_birth">
+                            Date of Birth
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-regular fa-calendar"></i>
+
+                            <input
+                                type="date"
+                                id="date_of_birth"
+                                name="date_of_birth"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BLOOD GROUP -->
+
+                    <div class="form-field">
+
+                        <label for="blood_group">
+                            Blood Group
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-droplet"></i>
+
+                            <select
+                                id="blood_group"
+                                name="blood_group"
+                            >
+
+                                <option value="">
+                                    Select blood group
+                                </option>
+
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-field">
+
+                        <label for="phone">
+
+                            Mobile Number
+
+                            <span>*</span>
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="01XXXXXXXXX"
+                                autocomplete="tel"
+                                inputmode="numeric"
+                                required
+                            >
+
+                        </div>
+
+                        <small class="field-hint">
+                            Use a valid Bangladesh mobile number.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 02 ACADEMIC INFORMATION
+                 ================================================= -->
+
+            <section class="form-card">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+
+                        <i class="fa-solid fa-graduation-cap"></i>
+
+                    </div>
+
+                    <div class="section-title">
+
+                        <h2>
+                            Academic Information
+                        </h2>
+
+                        <p>
+                            Add your academic background at Jahangirnagar University.
+                        </p>
+
+                    </div>
+
+                    <div class="section-number">
+                        02
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- DEPARTMENT -->
+
+                    <div class="form-field">
+
+                        <label for="department">
+
+                            Department
+
+                            <span>*</span>
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-building-columns"></i>
+
+                            <input
+                                list="departmentList"
+                                type="text"
+                                id="department"
+                                name="department"
+                                placeholder="Select or enter department"
+                                required
+                            >
+
+                        </div>
+
+
+                        <datalist id="departmentList">
+
+                            <option value="Computer Science and Engineering (CSE)">
+                            <option value="Mathematics">
+                            <option value="Physics">
+                            <option value="Chemistry">
+                            <option value="Statistics">
+                            <option value="Economics">
+                            <option value="English">
+                            <option value="Bangla">
+                            <option value="Law and Justice">
+                            <option value="Pharmacy">
+                            <option value="Botany">
+                            <option value="Zoology">
+                            <option value="IBA">
+                            <option value="Microbiology">
+                            <option value="Biotechnology">
+
+                        </datalist>
+
+                    </div>
+
+
+                    <!-- BATCH -->
+
+                    <div class="form-field">
+
+                        <label for="batch">
+                            Batch
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-layer-group"></i>
+
+                            <input
+                                type="text"
+                                id="batch"
+                                name="batch"
+                                placeholder="Example: 46th Batch"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SESSION -->
+
+                    <div class="form-field">
+
+                        <label for="session">
+
+                            Session
+
+                            <span
+                                id="session-required-mark"
+                                style="display:none;"
+                            >*</span>
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-regular fa-calendar-days"></i>
+
+                            <input
+                                type="text"
+                                id="session"
+                                name="session"
+                                placeholder="Example: 2020-2021"
+                                pattern="[0-9]{4}-[0-9]{4}"
+                                title="Please enter session in this format: 2020-2021"
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                        <small
+                            class="field-hint"
+                            id="session-hint"
+                        >
+                            Example: 2020-2021
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 03 CONTACT INFORMATION
+                 ================================================= -->
+
+            <section class="form-card">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+
+                        <i class="fa-solid fa-address-book"></i>
+
+                    </div>
+
+                    <div class="section-title">
+
+                        <h2>
+                            Contact Information
+                        </h2>
+
+                        <p>
+                            Add your email and current location.
+                        </p>
+
+                    </div>
+
+                    <div class="section-number">
+                        03
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-field">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-regular fa-envelope"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="example@gmail.com"
+                                autocomplete="email"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DISTRICT -->
+
+                    <div class="form-field">
+
+                        <label for="district">
+                            District
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-map"></i>
+
+                            <input
+                                type="text"
+                                id="district"
+                                name="district"
+                                value="Gaibandha"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- UPAZILA -->
+
+                    <div class="form-field">
+
+                        <label for="upazila">
+                            Upazila
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <input
+                                type="text"
+                                id="upazila"
+                                name="upazila"
+                                placeholder="Enter your upazila"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 04 ADDRESS
+                 ================================================= -->
+
+            <section class="form-card">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                    </div>
+
+                    <div class="section-title">
+
+                        <h2>
+                            Address Information
+                        </h2>
+
+                        <p>
+                            Provide your present and permanent address.
+                        </p>
+
+                    </div>
+
+                    <div class="section-number">
+                        04
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid address-grid">
+
+
+                    <!-- PRESENT ADDRESS -->
+
+                    <div class="form-field">
+
+                        <label for="present_address">
+                            Present Address
+                        </label>
+
+                        <div class="textarea-wrapper">
+
+                            <i class="fa-solid fa-house"></i>
+
+                            <textarea
+                                id="present_address"
+                                name="present_address"
+                                rows="4"
+                                placeholder="Enter your present address"
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PERMANENT ADDRESS -->
+
+                    <div class="form-field">
+
+                        <label for="permanent_address">
+                            Permanent Address
+                        </label>
+
+                        <div class="textarea-wrapper">
+
+                            <i class="fa-solid fa-map-location-dot"></i>
+
+                            <textarea
+                                id="permanent_address"
+                                name="permanent_address"
+                                rows="4"
+                                placeholder="Enter your permanent address"
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 05 PROFESSIONAL INFORMATION
+                 ================================================= -->
+
+            <section
+                class="form-card professional-card"
+                id="professional-section"
+            >
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+
+                        <i class="fa-solid fa-briefcase"></i>
+
+                    </div>
+
+                    <div class="section-title">
+
+                        <h2>
+                            Professional Information
+                        </h2>
+
+                        <p>
+                            Add your current professional details.
+                        </p>
+
+                    </div>
+
+                    <div class="section-number">
+                        05
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- OCCUPATION -->
+
+                    <div class="form-field">
+
+                        <label for="occupation">
+                            Occupation
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-user-tie"></i>
+
+                            <input
+                                type="text"
+                                id="occupation"
+                                name="occupation"
+                                placeholder="Example: Lecturer, Engineer"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- COMPANY -->
+
+                    <div class="form-field">
+
+                        <label for="company">
+                            Current Workplace
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-building"></i>
+
+                            <input
+                                type="text"
+                                id="company"
+                                name="company"
+                                placeholder="Organization / Institution"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DESIGNATION -->
+
+                    <div class="form-field">
+
+                        <label for="designation">
+                            Designation
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-id-badge"></i>
+
+                            <input
+                                type="text"
+                                id="designation"
+                                name="designation"
+                                placeholder="Example: Lecturer"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 06 SOCIAL MEDIA
+                 ================================================= -->
+
+            <section class="form-card">
+
+                <div class="section-heading">
+
+                    <div class="section-icon facebook-icon">
+
+                        <i class="fa-brands fa-facebook-f"></i>
+
+                    </div>
+
+                    <div class="section-title">
+
+                        <h2>
+                            Social Media
+                        </h2>
+
+                        <p>
+                            Connect your Facebook profile with the community.
+                        </p>
+
+                    </div>
+
+                    <div class="section-number">
+                        06
+                    </div>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="facebook">
+                        Facebook Profile
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="fa-brands fa-facebook"></i>
+
+                        <input
+                            type="url"
+                            id="facebook"
+                            name="facebook"
+                            placeholder="https://facebook.com/username"
+                        >
+
+                    </div>
+
+                    <small class="field-hint">
+                        Optional — this helps other verified members connect with you.
+                    </small>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 PROFILE PHOTO
+                 ================================================= -->
+
+            <section class="form-card">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+
+                        <i class="fa-solid fa-camera"></i>
+
+                    </div>
+
+                    <div class="section-title">
+
+                        <h2>
+                            Profile Photo
+                        </h2>
+
+                        <p>
+                            Upload a clear photo for your member profile.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="photo-upload">
+
+
+                    <div class="photo-icon">
+
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                    </div>
+
+
+                    <div class="photo-content">
+
+                        <h3>
+                            Upload Your Photo
+                        </h3>
+
+                        <p>
+                            Use a clear and recent profile photo.
+                        </p>
+
+
+                        <label
+                            for="photo"
+                            class="choose-photo"
+                        >
+
+                            <i class="fa-solid fa-image"></i>
+
+                            Choose Photo
+
+                        </label>
+
+
+                        <input
+                            type="file"
+                            id="photo"
+                            name="photo"
+                            accept=".jpg,.jpeg,.png"
+                        >
+
+
+                        <span
+                            id="file-name"
+                            class="file-name"
+                        >
+                            No file chosen
+                        </span>
+
+
+                        <div
+                            id="photo-preview"
+                            class="photo-preview"
+                        >
+
+                            <img
+                                id="preview-image"
+                                src=""
+                                alt="Selected profile photo preview"
+                            >
+
+                        </div>
+
+
+                        <small>
+                            JPG, JPEG or PNG · Recommended square profile photo
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 FINAL SUBMISSION
+                 ================================================= -->
+
+            <section class="submission-card">
+
+
+                <!-- AGREEMENT -->
+
+                <label class="agreement">
+
+                    <input
+                        type="checkbox"
+                        name="agree"
+                        required
+                    >
+
+                    <span class="custom-checkbox"></span>
+
+                    <span class="agreement-text">
+
+                        I hereby declare that all the information
+                        provided in this form is true and correct.
+
+                    </span>
+
+                </label>
+
+
+                <!-- ACTION BUTTONS -->
+
+                <div class="action-area">
+
+                    <button
+                        type="submit"
+                        class="submit-btn"
+                        id="submitButton"
+                    >
+
+                        <span>
+                            Submit Information
+                        </span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+
+                    <button
+                        type="reset"
+                        class="reset-btn"
+                    >
+
+                        <i class="fa-solid fa-rotate-left"></i>
+
+                        Reset Form
+
+                    </button>
+
+                </div>
+
+
+                <!-- INFORMATION NOTE -->
+
+                <div class="submission-note">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <span>
+
+                        Your information may be reviewed by
+                        the association before appearing in
+                        the verified member directory.
+
+                    </span>
+
+                </div>
+
+
+                <!-- SECURITY NOTE -->
+
+                <div class="security-strip">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <span>
+                        Your submitted information is handled securely.
+                    </span>
+
+                </div>
+
+            </section>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     PAGE JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* =====================================================
+       ELEMENTS
+       ===================================================== */
+
+    const form =
+        document.getElementById("registrationForm");
+
+    const category =
+        document.getElementById("category");
+
+    const professionalSection =
+        document.getElementById("professional-section");
+
+    const occupation =
+        document.getElementById("occupation");
+
+    const company =
+        document.getElementById("company");
+
+    const designation =
+        document.getElementById("designation");
+
+    const photo =
+        document.getElementById("photo");
+
+    const fileName =
+        document.getElementById("file-name");
+
+    const photoPreview =
+        document.getElementById("photo-preview");
+
+    const previewImage =
+        document.getElementById("preview-image");
+
+    const submitButton =
+        document.getElementById("submitButton");
+
+    const sessionInput =
+        document.getElementById("session");
+
+    const sessionRequiredMark =
+        document.getElementById("session-required-mark");
+
+    const sessionHint =
+        document.getElementById("session-hint");
+
+
+    /* =====================================================
+       PROFESSIONAL SECTION
+       ===================================================== */
+
+    function updateProfessionalSection() {
+
+        if (!category || !professionalSection) {
+            return;
+        }
+
+
+        if (category.value === "Running Student") {
+
+            professionalSection.classList.add(
+                "professional-hidden"
+            );
+
+
+            if (occupation) {
+                occupation.value = "";
+            }
+
+            if (company) {
+                company.value = "";
+            }
+
+            if (designation) {
+                designation.value = "";
+            }
+
+        } else {
+
+            professionalSection.classList.remove(
+                "professional-hidden"
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SESSION REQUIREMENT
+       ===================================================== */
+
+    function updateSessionRequirement() {
+
+        if (!category || !sessionInput) {
+            return;
+        }
+
+
+        if (category.value === "Running Student") {
+
+            sessionInput.required = true;
+
+
+            if (sessionRequiredMark) {
+
+                sessionRequiredMark.style.display =
+                    "inline";
+
+            }
+
+
+            if (sessionHint) {
+
+                sessionHint.textContent =
+                    "Required for Running Students. Example: 2020-2021";
+
+            }
+
+        } else {
+
+            sessionInput.required = false;
+
+
+            if (sessionRequiredMark) {
+
+                sessionRequiredMark.style.display =
+                    "none";
+
+            }
+
+
+            if (sessionHint) {
+
+                sessionHint.textContent =
+                    "Example: 2020-2021";
+
+            }
+
+        }
+
+    }
+
+
+    if (category) {
+
+        category.addEventListener(
+            "change",
+            function () {
+
+                updateProfessionalSection();
+
+                updateSessionRequirement();
+
+            }
+        );
+
+    }
+
+
+    updateProfessionalSection();
+
+    updateSessionRequirement();
+
+
+    /* =====================================================
+       SESSION FORMAT VALIDATION
+       ===================================================== */
+
+    if (sessionInput) {
+
+        sessionInput.addEventListener(
+            "input",
+            function () {
+
+                /*
+                 * Keep only numbers and one hyphen.
+                 *
+                 * Example:
+                 * 2020-2021
+                 */
+
+                this.value =
+                    this.value.replace(
+                        /[^0-9-]/g,
+                        ""
+                    );
+
+
+                /*
+                 * Prevent more than one hyphen.
+                 */
+
+                const parts =
+                    this.value.split("-");
+
+
+                if (parts.length > 2) {
+
+                    this.value =
+                        parts[0] +
+                        "-" +
+                        parts.slice(1).join("");
+
+                }
+
+            }
+        );
+
+
+        sessionInput.addEventListener(
+            "blur",
+            function () {
+
+                const value =
+                    this.value.trim();
+
+
+                if (!value) {
+
+                    return;
+
+                }
+
+
+                const sessionPattern =
+                    /^[0-9]{4}-[0-9]{4}$/;
+
+
+                if (!sessionPattern.test(value)) {
+
+                    this.setCustomValidity(
+                        "Please enter session in this format: 2020-2021"
+                    );
+
+                } else {
+
+                    const years =
+                        value.split("-");
+
+
+                    const startYear =
+                        parseInt(
+                            years[0],
+                            10
+                        );
+
+
+                    const endYear =
+                        parseInt(
+                            years[1],
+                            10
+                        );
+
+
+                    if (
+                        endYear !==
+                        startYear + 1
+                    ) {
+
+                        this.setCustomValidity(
+                            "Session should be like 2020-2021."
+                        );
+
+                    } else {
+
+                        this.setCustomValidity("");
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        sessionInput.addEventListener(
+            "input",
+            function () {
+
+                this.setCustomValidity("");
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       PHOTO PREVIEW
+       ===================================================== */
+
+    if (photo) {
+
+        photo.addEventListener(
+            "change",
+            function () {
+
+
+                if (
+                    !photo.files ||
+                    photo.files.length === 0
+                ) {
+
+                    fileName.textContent =
+                        "No file chosen";
+
+                    fileName.classList.remove(
+                        "file-selected"
+                    );
+
+                    photoPreview.classList.remove(
+                        "show"
+                    );
+
+                    previewImage.src = "";
+
+                    return;
+
+                }
+
+
+                const selectedFile =
+                    photo.files[0];
+
+
+                fileName.textContent =
+                    selectedFile.name;
+
+                fileName.classList.add(
+                    "file-selected"
+                );
+
+
+                if (
+                    selectedFile.type ===
+                        "image/jpeg" ||
+
+                    selectedFile.type ===
+                        "image/png"
+                ) {
+
+                    const reader =
+                        new FileReader();
+
+
+                    reader.onload =
+                        function (event) {
+
+                            previewImage.src =
+                                event.target.result;
+
+                            photoPreview.classList.add(
+                                "show"
+                            );
+
+                        };
+
+
+                    reader.readAsDataURL(
+                        selectedFile
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       FORM RESET
+       ===================================================== */
+
+    if (form) {
+
+        form.addEventListener(
+            "reset",
+            function () {
+
+                setTimeout(
+                    function () {
+
+                        updateProfessionalSection();
+
+                        updateSessionRequirement();
+
+
+                        if (fileName) {
+
+                            fileName.textContent =
+                                "No file chosen";
+
+                            fileName.classList.remove(
+                                "file-selected"
+                            );
+
+                        }
+
+
+                        if (photoPreview) {
+
+                            photoPreview.classList.remove(
+                                "show"
+                            );
+
+                        }
+
+
+                        if (previewImage) {
+
+                            previewImage.src = "";
+
+                        }
+
+                    },
+                    20
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       SUBMIT LOADING STATE
+       ===================================================== */
+
+    if (form && submitButton) {
+
+        form.addEventListener(
+            "submit",
+            function () {
+
+                /*
+                 * Browser validation will run first.
+                 */
+
+                if (!form.checkValidity()) {
+
+                    return;
+
+                }
+
+
+                submitButton.disabled = true;
+
+
+                submitButton.querySelector(
+                    "span"
+                ).textContent =
+                    "Submitting...";
+
+
+                const icon =
+                    submitButton.querySelector(
+                        "i"
+                    );
+
+
+                if (icon) {
+
+                    icon.className =
+                        "fa-solid fa-spinner fa-spin";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       PHONE INPUT
+       ===================================================== */
+
+    const phone =
+        document.getElementById("phone");
+
+
+    if (phone) {
+
+        phone.addEventListener(
+            "input",
+            function () {
+
+                this.value =
+                    this.value.replace(
+                        /[^0-9+]/g,
+                        ""
+                    );
+
+            }
+        );
+
+    }
+
+
+});
+
+</script>
+
+{% endblock %}

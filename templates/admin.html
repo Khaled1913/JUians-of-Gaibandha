@@ -1,0 +1,1308 @@
+{% extends "base.html" %}
+
+{% block title %}
+Administrator Profile | JUians of Gaibandha
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/admin.css') }}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="admin-dashboard admin-inner-page">
+
+
+    <!-- =========================================================
+         ADMIN SIDEBAR
+    ========================================================== -->
+
+    <aside
+        class="admin-sidebar"
+        id="adminSidebar"
+    >
+
+
+        <!-- =====================================================
+             ADMIN BRAND
+        ====================================================== -->
+
+        <div class="admin-brand">
+
+            <div class="admin-brand-icon">
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+            </div>
+
+
+            <div class="admin-brand-text">
+
+                <h2>
+                    JUians
+                </h2>
+
+                <span>
+                    of Gaibandha
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             SIDEBAR PROFILE
+        ====================================================== -->
+
+        <div class="admin-sidebar-profile">
+
+            <div class="admin-sidebar-avatar">
+
+                <i class="fa-solid fa-user-shield"></i>
+
+            </div>
+
+
+            <div class="admin-sidebar-user-info">
+
+                <strong>
+
+                    {{
+                        session.get(
+                            'admin_name',
+                            'Administrator'
+                        )
+                    }}
+
+                </strong>
+
+
+                <span>
+
+                    {{
+                        session.get(
+                            'admin_role',
+                            'Administrator'
+                        )
+                    }}
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             ADMIN NAVIGATION
+        ====================================================== -->
+
+        <nav class="admin-nav">
+
+
+            <!-- MAIN MENU -->
+
+            <p class="admin-nav-title">
+                MAIN MENU
+            </p>
+
+
+            <a
+                href="{{ url_for('admin.dashboard') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.members') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-users"></i>
+
+                <span>
+                    All Members
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.pending_members') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-clock"></i>
+
+                <span>
+                    Pending Requests
+                </span>
+
+            </a>
+
+
+
+            <!-- DIRECTORY -->
+
+            <p class="admin-nav-title">
+                DIRECTORY
+            </p>
+
+
+            <a
+                href="{{ url_for('member.alumni') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-user-graduate"></i>
+
+                <span>
+                    Alumni
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('member.students') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-user-group"></i>
+
+                <span>
+                    Running Students
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('member.teachers') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-chalkboard-user"></i>
+
+                <span>
+                    Teachers
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('member.employees') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-user-tie"></i>
+
+                <span>
+                    Employees
+                </span>
+
+            </a>
+
+
+
+            <!-- SYSTEM -->
+
+            <p class="admin-nav-title">
+                SYSTEM
+            </p>
+
+
+            <!-- ADMINISTRATOR -->
+
+            <a
+                href="{{ url_for('admin.profile') }}"
+                class="admin-nav-link active"
+            >
+
+                <i class="fa-solid fa-user-shield"></i>
+
+                <span>
+                    Administrator
+                </span>
+
+            </a>
+
+
+            <!-- MANAGE ADMINISTRATORS -->
+
+            <a
+                href="{{ url_for('admin.administrators') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-users-gear"></i>
+
+                <span>
+                    Manage Administrators
+                </span>
+
+            </a>
+
+
+            <!-- MANAGE EVENTS -->
+
+            <a
+                href="{{ url_for('admin.events') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+                <span>
+                    Manage Events
+                </span>
+
+            </a>
+
+
+            <!-- VISIT WEBSITE -->
+
+            <a
+                href="{{ url_for('home.home') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>
+                    Visit Website
+                </span>
+
+            </a>
+
+
+            <!-- LOGOUT -->
+
+            <a
+                href="{{ url_for('admin.logout') }}"
+                class="admin-nav-link admin-logout"
+            >
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =========================================================
+         ADMIN MAIN CONTENT
+    ========================================================== -->
+
+    <main class="admin-main">
+
+
+        <!-- =====================================================
+             ADMIN TOPBAR
+        ====================================================== -->
+
+        <header class="admin-topbar">
+
+
+            <div class="admin-topbar-left">
+
+
+                <!-- MOBILE MENU BUTTON -->
+
+                <button
+                    class="admin-mobile-toggle"
+                    id="adminMobileToggle"
+                    type="button"
+                    aria-label="Open administrator menu"
+                >
+
+                    <i class="fa-solid fa-bars"></i>
+
+                </button>
+
+
+
+                <!-- BREADCRUMB -->
+
+                <div class="admin-breadcrumb">
+
+                    <span>
+                        Administration
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                    <strong>
+                        Administrator
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="admin-topbar-right">
+
+
+                <!-- SYSTEM STATUS -->
+
+                <div class="admin-status">
+
+                    <span class="admin-status-dot"></span>
+
+                    <span>
+                        System Online
+                    </span>
+
+                </div>
+
+
+
+                <!-- CURRENT ADMIN -->
+
+                <div class="admin-user">
+
+                    <div class="admin-user-avatar">
+
+                        <i class="fa-solid fa-user-shield"></i>
+
+                    </div>
+
+
+                    <div class="admin-user-info">
+
+                        <strong>
+
+                            {{
+                                admin.full_name
+                                if admin
+                                else session.get(
+                                    'admin_name',
+                                    'Administrator'
+                                )
+                            }}
+
+                        </strong>
+
+
+                        <span>
+
+                            {{
+                                admin.role
+                                if admin
+                                else session.get(
+                                    'admin_role',
+                                    'Admin'
+                                )
+                            }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             PAGE CONTENT
+        ====================================================== -->
+
+        <div class="admin-content">
+
+
+            <!-- =================================================
+                 PAGE HERO
+            ================================================== -->
+
+            <section class="admin-page-hero">
+
+
+                <div class="admin-page-hero-content">
+
+                    <span class="admin-eyebrow">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        ACCOUNT &amp; SECURITY
+
+                    </span>
+
+
+                    <h1>
+                        Administrator Profile
+                    </h1>
+
+
+                    <p>
+                        Manage your administrator identity,
+                        contact information and account security
+                        from one secure place.
+                    </p>
+
+                </div>
+
+
+
+                <div class="admin-page-hero-actions">
+
+                    <a
+                        href="{{ url_for('auth.change_password') }}"
+                        class="admin-btn admin-btn-primary"
+                    >
+
+                        <i class="fa-solid fa-key"></i>
+
+                        <span>
+                            Change Password
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PROFILE OVERVIEW GRID
+            ================================================== -->
+
+            <section class="admin-profile-grid">
+
+
+                <!-- =============================================
+                     ADMIN PROFILE CARD
+                ============================================== -->
+
+                <article
+                    class="
+                        admin-profile-card
+                        admin-profile-main
+                    "
+                >
+
+
+                    <div class="admin-profile-cover">
+
+                        <div class="admin-profile-cover-pattern"></div>
+
+                    </div>
+
+
+
+                    <div class="admin-profile-body">
+
+
+                        <div class="admin-profile-avatar">
+
+                            <i class="fa-solid fa-user-shield"></i>
+
+                        </div>
+
+
+
+                        <span class="admin-profile-role">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            {{
+                                admin.role
+                                if admin
+                                else 'Admin'
+                            }}
+
+                        </span>
+
+
+
+                        <h2>
+
+                            {{
+                                admin.full_name
+                                if admin
+                                else session.get(
+                                    'admin_name',
+                                    'Administrator'
+                                )
+                            }}
+
+                        </h2>
+
+
+
+                        <p>
+                            JUians of Gaibandha Administration
+                        </p>
+
+
+
+                        <div class="admin-profile-status">
+
+                            <span class="admin-profile-status-dot"></span>
+
+                            Active Administrator
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- =============================================
+                     ACCOUNT DETAILS
+                ============================================== -->
+
+                <article class="admin-profile-card">
+
+
+                    <div class="admin-panel-header">
+
+
+                        <div class="admin-panel-heading">
+
+                            <span class="admin-panel-label">
+                                ACCOUNT DETAILS
+                            </span>
+
+
+                            <h2>
+                                Administrator Information
+                            </h2>
+
+
+                            <p>
+                                Personal and account information
+                                associated with this administrator.
+                            </p>
+
+                        </div>
+
+
+
+                        <div class="admin-panel-icon">
+
+                            <i class="fa-solid fa-id-card"></i>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         ACCOUNT DETAIL LIST
+                    ========================================== -->
+
+                    <div class="admin-detail-list">
+
+
+                        <!-- FULL NAME -->
+
+                        <div class="admin-detail-item">
+
+                            <div class="admin-detail-label">
+
+                                <span class="admin-detail-icon">
+
+                                    <i class="fa-solid fa-user"></i>
+
+                                </span>
+
+
+                                <span>
+                                    Full Name
+                                </span>
+
+                            </div>
+
+
+                            <strong>
+
+                                {{
+                                    admin.full_name
+                                    if admin
+                                    else '—'
+                                }}
+
+                            </strong>
+
+                        </div>
+
+
+
+                        <!-- USERNAME -->
+
+                        <div class="admin-detail-item">
+
+                            <div class="admin-detail-label">
+
+                                <span class="admin-detail-icon">
+
+                                    <i class="fa-solid fa-at"></i>
+
+                                </span>
+
+
+                                <span>
+                                    Username
+                                </span>
+
+                            </div>
+
+
+                            <strong>
+
+                                {{
+                                    admin.username
+                                    if admin
+                                    else '—'
+                                }}
+
+                            </strong>
+
+                        </div>
+
+
+
+                        <!-- EMAIL -->
+
+                        <div class="admin-detail-item">
+
+                            <div class="admin-detail-label">
+
+                                <span class="admin-detail-icon">
+
+                                    <i class="fa-solid fa-envelope"></i>
+
+                                </span>
+
+
+                                <span>
+                                    Email
+                                </span>
+
+                            </div>
+
+
+                            <strong class="admin-detail-value-email">
+
+                                {{
+                                    admin.email
+                                    if admin and admin.email
+                                    else 'Not provided'
+                                }}
+
+                            </strong>
+
+                        </div>
+
+
+
+                        <!-- ROLE -->
+
+                        <div class="admin-detail-item">
+
+                            <div class="admin-detail-label">
+
+                                <span class="admin-detail-icon">
+
+                                    <i class="fa-solid fa-user-shield"></i>
+
+                                </span>
+
+
+                                <span>
+                                    Role
+                                </span>
+
+                            </div>
+
+
+                            <strong>
+
+                                {{
+                                    admin.role
+                                    if admin
+                                    else 'Admin'
+                                }}
+
+                            </strong>
+
+                        </div>
+
+
+
+                        <!-- ACCOUNT STATUS -->
+
+                        <div class="admin-detail-item">
+
+                            <div class="admin-detail-label">
+
+                                <span class="admin-detail-icon">
+
+                                    <i class="fa-solid fa-circle-check"></i>
+
+                                </span>
+
+
+                                <span>
+                                    Account Status
+                                </span>
+
+                            </div>
+
+
+                            <strong class="profile-active">
+
+                                <span></span>
+
+                                Active
+
+                            </strong>
+
+                        </div>
+
+
+
+                        <!-- LAST LOGIN -->
+
+                        <div class="admin-detail-item">
+
+                            <div class="admin-detail-label">
+
+                                <span class="admin-detail-icon">
+
+                                    <i class="fa-solid fa-clock"></i>
+
+                                </span>
+
+
+                                <span>
+                                    Last Login
+                                </span>
+
+                            </div>
+
+
+                            <strong>
+
+                                {{
+                                    admin.last_login.strftime(
+                                        '%d %b %Y, %I:%M %p'
+                                    )
+                                    if admin and admin.last_login
+                                    else 'Current session'
+                                }}
+
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 EDIT CONTACT INFORMATION
+            ================================================== -->
+
+            <section
+                class="
+                    admin-profile-card
+                    admin-contact-edit-card
+                "
+            >
+
+
+                <div class="admin-panel-header">
+
+
+                    <div class="admin-panel-heading">
+
+                        <span class="admin-panel-label">
+                            CONTACT INFORMATION
+                        </span>
+
+
+                        <h2>
+                            Edit Contact Information
+                        </h2>
+
+
+                        <p>
+                            Manage the public contact details displayed
+                            on the JUians of Gaibandha website.
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="admin-contact-edit-icon">
+
+                        <i class="fa-solid fa-address-card"></i>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="admin-contact-note">
+
+                    <div class="admin-contact-note-icon">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                    </div>
+
+
+                    <p class="admin-contact-description">
+
+                        Update the information below whenever the
+                        association's administrator or public contact
+                        information changes.
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     CONTACT EDIT FORM
+                ============================================== -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for('admin.update_profile') }}"
+                    class="admin-contact-form"
+                >
+
+
+                    <!-- =========================================
+                         FULL NAME
+                    ========================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="full_name">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <span>
+                                Full Name
+                            </span>
+
+                        </label>
+
+
+                        <div class="admin-input-wrapper">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <input
+                                type="text"
+                                id="full_name"
+                                name="full_name"
+                                value="{{ admin.full_name if admin else '' }}"
+                                placeholder="Enter administrator name"
+                                autocomplete="name"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         CONTACT EMAIL
+                    ========================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="contact_email">
+
+                            <i class="fa-solid fa-envelope"></i>
+
+                            <span>
+                                Contact Email
+                            </span>
+
+                        </label>
+
+
+                        <div class="admin-input-wrapper">
+
+                            <i class="fa-solid fa-envelope"></i>
+
+                            <input
+                                type="email"
+                                id="contact_email"
+                                name="contact_email"
+                                value="{{ admin.contact_email if admin and admin.contact_email else '' }}"
+                                placeholder="Enter contact email"
+                                autocomplete="email"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         CONTACT PHONE
+                    ========================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="contact_phone">
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            <span>
+                                Contact Phone
+                            </span>
+
+                        </label>
+
+
+                        <div class="admin-input-wrapper">
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            <input
+                                type="tel"
+                                id="contact_phone"
+                                name="contact_phone"
+                                value="{{ admin.contact_phone if admin and admin.contact_phone else '' }}"
+                                placeholder="Enter contact phone number"
+                                autocomplete="tel"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         FACEBOOK PROFILE
+                    ========================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="facebook_url">
+
+                            <i class="fa-brands fa-facebook-f"></i>
+
+                            <span>
+                                Facebook Profile
+                            </span>
+
+                        </label>
+
+
+                        <div class="admin-input-wrapper">
+
+                            <i class="fa-brands fa-facebook-f"></i>
+
+                            <input
+                                type="url"
+                                id="facebook_url"
+                                name="facebook_url"
+                                value="{{ admin.facebook_url if admin and admin.facebook_url else '' }}"
+                                placeholder="https://facebook.com/your-profile"
+                                autocomplete="url"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         FORM ACTION
+                    ========================================== -->
+
+                    <div class="admin-form-actions">
+
+
+                        <div class="admin-form-security-note">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                            <span>
+                                Your changes will be saved securely.
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="
+                                admin-btn
+                                admin-btn-primary
+                                admin-save-btn
+                            "
+                        >
+
+                            <i class="fa-solid fa-floppy-disk"></i>
+
+                            <span>
+                                Save Contact Information
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SECURITY CARD
+            ================================================== -->
+
+            <section class="admin-security-card">
+
+
+                <div class="security-icon">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                </div>
+
+
+
+                <div class="admin-security-content">
+
+                    <span class="admin-panel-label">
+                        SECURITY
+                    </span>
+
+
+                    <h2>
+                        Keep your account protected
+                    </h2>
+
+
+                    <p>
+                        Use a strong password and update it
+                        periodically to keep administrator access secure.
+                    </p>
+
+                </div>
+
+
+
+                <div class="admin-security-action">
+
+                    <a
+                        href="{{ url_for('auth.change_password') }}"
+                        class="admin-btn admin-btn-secondary"
+                    >
+
+                        <i class="fa-solid fa-key"></i>
+
+                        <span>
+                            Update Password
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ADMIN FOOTER
+            ================================================== -->
+
+            <footer class="admin-footer">
+
+
+                <div class="admin-footer-brand">
+
+                    <strong>
+                        JUians of Gaibandha
+                    </strong>
+
+                    <span>
+                        Administration Portal
+                    </span>
+
+                </div>
+
+
+                <span class="admin-footer-copyright">
+                    © 2026 JUians of Gaibandha
+                </span>
+
+            </footer>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const toggle =
+            document.getElementById(
+                "adminMobileToggle"
+            );
+
+        const sidebar =
+            document.getElementById(
+                "adminSidebar"
+            );
+
+
+        /* =====================================================
+           MOBILE SIDEBAR TOGGLE
+        ====================================================== */
+
+        if (
+            toggle &&
+            sidebar
+        ) {
+
+            toggle.addEventListener(
+                "click",
+                function () {
+
+                    sidebar.classList.toggle(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           CLOSE SIDEBAR OUTSIDE
+        ====================================================== */
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    window.innerWidth <= 992 &&
+                    sidebar &&
+                    sidebar.classList.contains(
+                        "active"
+                    ) &&
+                    !sidebar.contains(
+                        event.target
+                    ) &&
+                    toggle &&
+                    !toggle.contains(
+                        event.target
+                    )
+                ) {
+
+                    sidebar.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           WINDOW RESIZE
+        ====================================================== */
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (
+                    window.innerWidth > 992 &&
+                    sidebar
+                ) {
+
+                    sidebar.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+{% endblock %}

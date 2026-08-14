@@ -1,0 +1,184 @@
+/* =====================================================
+   WHY_JOIN.CSS
+   JUians of Gaibandha
+===================================================== */
+
+/* ==========================
+        SECTION
+========================== */
+
+.why-join{
+
+    padding:100px 0;
+
+    background:var(--background-color);
+
+}
+
+/* ==========================
+        HEADER
+========================== */
+
+.why-join .section-header{
+
+    margin-bottom:60px;
+
+}
+
+/* ==========================
+        GRID
+========================== */
+
+.why-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:30px;
+
+}
+
+/* ==========================
+        CARD
+========================== */
+
+.why-card{
+
+    background:var(--surface-color);
+
+    padding:35px 30px;
+
+    border-radius:var(--radius-lg);
+
+    box-shadow:var(--shadow-sm);
+
+    border:1px solid var(--border-color);
+
+    position:relative;
+
+    overflow:hidden;
+
+    transition:var(--transition);
+
+}
+
+.why-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:var(--shadow-lg);
+
+}
+
+/* ==========================
+    TOP BORDER
+========================== */
+
+.why-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:5px;
+
+    background:linear-gradient(
+        90deg,
+        var(--primary-color),
+        var(--secondary-color)
+    );
+
+}
+
+/* ==========================
+        ICON
+========================== */
+
+.why-icon{
+
+    width:75px;
+
+    height:75px;
+
+    border-radius:20px;
+
+    background:rgba(0,106,78,.10);
+
+    color:var(--primary-color);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:30px;
+
+    margin-bottom:25px;
+
+    transition:var(--transition);
+
+}
+
+.why-card:hover .why-icon{
+
+    background:var(--primary-color);
+
+    color:#fff;
+
+    transform:rotate(-10deg) scale(1.08);
+
+}
+
+/* ==========================
+        TITLE
+========================== */
+
+.why-card h3{
+
+    margin-bottom:15px;
+
+    color:var(--text-dark);
+
+}
+
+/* ==========================
+    DESCRIPTION
+========================== */
+
+.why-card p{
+
+    color:var(--text-light);
+
+    line-height:1.8;
+
+}
+
+/* ==========================
+    DECORATION
+========================== */
+
+.why-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    right:-40px;
+
+    bottom:-40px;
+
+    width:130px;
+
+    height:130px;
+
+    border-radius:50%;
+
+    background:rgba(0,106,78,.05);
+
+}

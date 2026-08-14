@@ -1,0 +1,1384 @@
+{% extends "base.html" %}
+
+{% block title %}
+Events | Admin | JUians of Gaibandha
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+/* ============================================================
+   ADMIN EVENTS PAGE
+   ============================================================ */
+
+.admin-events-page {
+    min-height: 100vh;
+    padding: 45px 20px 70px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f5faf8 0%,
+            #ffffff 48%,
+            #f7faf9 100%
+        );
+}
+
+
+.admin-events-container {
+    width: min(1200px, 100%);
+    margin: 0 auto;
+}
+
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+
+.admin-events-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+    padding: 25px 28px;
+
+    border: 1px solid rgba(0, 106, 78, 0.10);
+    border-radius: 22px;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    box-shadow:
+        0 12px 35px rgba(20, 65, 52, 0.07);
+}
+
+
+.admin-events-header-left {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    min-width: 0;
+}
+
+
+.admin-events-header-icon {
+    width: 54px;
+    height: 54px;
+
+    flex: 0 0 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: rgba(0, 106, 78, 0.09);
+    color: #006a4e;
+
+    font-size: 1.35rem;
+}
+
+
+.admin-events-header-text {
+    min-width: 0;
+}
+
+
+.admin-events-header-text h1 {
+    margin: 0;
+
+    color: #18352c;
+
+    font-size: 1.55rem;
+    font-weight: 800;
+}
+
+
+.admin-events-header-text p {
+    margin: 5px 0 0;
+
+    color: #74837d;
+
+    font-size: 0.84rem;
+
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   HEADER ACTIONS
+   ============================================================ */
+
+.admin-events-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    flex-wrap: wrap;
+}
+
+
+/* ============================================================
+   ADMIN DASHBOARD BUTTON
+   ============================================================ */
+
+.admin-dashboard-event-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 44px;
+
+    padding: 0 17px;
+
+    border: 1px solid #006a4e;
+    border-radius: 11px;
+
+    background: #006a4e;
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 7px 18px rgba(0, 106, 78, 0.16);
+
+    transition:
+        0.2s ease;
+}
+
+
+.admin-dashboard-event-btn:hover {
+    border-color: #00573f;
+
+    background: #00573f;
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 9px 22px rgba(0, 106, 78, 0.20);
+}
+
+
+/* ============================================================
+   ADD EVENT BUTTON
+   ============================================================ */
+
+.admin-add-event-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 44px;
+
+    padding: 0 17px;
+
+    border: 1px solid #006a4e;
+    border-radius: 11px;
+
+    background: #006a4e;
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    box-shadow:
+        0 7px 18px rgba(0, 106, 78, 0.16);
+
+    transition:
+        0.2s ease;
+}
+
+
+.admin-add-event-btn:hover {
+    border-color: #00573f;
+
+    background: #00573f;
+    color: #ffffff;
+
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   RECENT EVENTS BUTTON
+   ============================================================ */
+
+.admin-recent-event-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 44px;
+
+    padding: 0 17px;
+
+    border: 1px solid #dce7e2;
+    border-radius: 11px;
+
+    background: #ffffff;
+    color: #006a4e;
+
+    text-decoration: none;
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    transition:
+        0.2s ease;
+}
+
+
+.admin-recent-event-btn:hover {
+    border-color: #006a4e;
+
+    background: #f0f7f4;
+    color: #00573f;
+
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   EVENTS CARD
+   ============================================================ */
+
+.admin-events-card {
+    overflow: hidden;
+
+    border: 1px solid rgba(0, 106, 78, 0.09);
+    border-radius: 22px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 12px 35px rgba(20, 65, 52, 0.06);
+}
+
+
+/* ============================================================
+   CARD TOP
+   ============================================================ */
+
+.admin-events-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 22px 25px;
+
+    border-bottom: 1px solid #edf2ef;
+
+    background: #ffffff;
+}
+
+
+.admin-events-card-title {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.admin-events-card-title-icon {
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: rgba(0, 106, 78, 0.08);
+    color: #006a4e;
+
+    font-size: 0.82rem;
+}
+
+
+.admin-events-card-title h2 {
+    margin: 0;
+
+    color: #18352c;
+
+    font-size: 0.98rem;
+    font-weight: 800;
+}
+
+
+.admin-events-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 30px;
+    min-height: 25px;
+
+    padding: 0 8px;
+
+    border-radius: 8px;
+
+    background: #f0f6f3;
+    color: #006a4e;
+
+    font-size: 0.70rem;
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   TABLE WRAPPER
+   ============================================================ */
+
+.admin-events-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+
+.admin-events-table {
+    width: 100%;
+
+    min-width: 850px;
+
+    border-collapse: collapse;
+}
+
+
+/* ============================================================
+   TABLE HEADER
+   ============================================================ */
+
+.admin-events-table thead {
+    background: #f8fbfa;
+}
+
+
+.admin-events-table th {
+    padding: 14px 18px;
+
+    border-bottom: 1px solid #e5ede9;
+
+    color: #65736d;
+
+    text-align: left;
+
+    font-size: 0.69rem;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   TABLE BODY
+   ============================================================ */
+
+.admin-events-table td {
+    padding: 16px 18px;
+
+    border-bottom: 1px solid #edf2ef;
+
+    color: #53645d;
+
+    vertical-align: middle;
+
+    font-size: 0.76rem;
+}
+
+
+.admin-events-table tbody tr {
+    transition:
+        background 0.2s ease;
+}
+
+
+.admin-events-table tbody tr:hover {
+    background: #fbfdfc;
+}
+
+
+.admin-events-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ============================================================
+   EVENT INFO
+   ============================================================ */
+
+.admin-event-info {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    min-width: 260px;
+}
+
+
+.admin-event-image {
+    width: 68px;
+    height: 48px;
+
+    flex: 0 0 68px;
+
+    overflow: hidden;
+
+    border-radius: 9px;
+
+    background: #edf4f1;
+}
+
+
+.admin-event-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+
+.admin-event-image-placeholder {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #8da098;
+
+    font-size: 1rem;
+}
+
+
+.admin-event-details {
+    min-width: 0;
+}
+
+
+.admin-event-title {
+    display: block;
+
+    max-width: 320px;
+
+    overflow: hidden;
+
+    color: #30483f;
+
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.admin-event-description {
+    display: block;
+
+    max-width: 320px;
+
+    margin-top: 4px;
+
+    overflow: hidden;
+
+    color: #8a9691;
+
+    font-size: 0.66rem;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   DATE
+   ============================================================ */
+
+.admin-event-date {
+    color: #53645d;
+
+    font-size: 0.74rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   LOCATION
+   ============================================================ */
+
+.admin-event-location {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    max-width: 180px;
+
+    color: #66756e;
+
+    font-size: 0.72rem;
+}
+
+
+.admin-event-location i {
+    flex: 0 0 auto;
+
+    color: #006a4e;
+}
+
+
+.admin-event-location span {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   STATUS BADGES
+   ============================================================ */
+
+.event-status-badge {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 6px 9px;
+
+    border-radius: 8px;
+
+    font-size: 0.65rem;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+.event-status-badge::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+}
+
+
+.event-status-published {
+    background: rgba(0, 106, 78, 0.08);
+    color: #006a4e;
+}
+
+
+.event-status-published::before {
+    background: #006a4e;
+}
+
+
+.event-status-unpublished {
+    background: #f4f5f5;
+    color: #78847f;
+}
+
+
+.event-status-unpublished::before {
+    background: #9aa59f;
+}
+
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+
+.admin-event-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    white-space: nowrap;
+}
+
+
+.admin-event-action {
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e0e8e4;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #687770;
+
+    text-decoration: none;
+
+    font-size: 0.72rem;
+
+    transition:
+        0.2s ease;
+}
+
+
+.admin-event-action:hover {
+    transform: translateY(-1px);
+}
+
+
+.admin-event-action.edit:hover {
+    border-color: #006a4e;
+
+    background: #006a4e;
+    color: #ffffff;
+}
+
+
+.admin-event-action.toggle:hover {
+    border-color: #8a6d1d;
+
+    background: #8a6d1d;
+    color: #ffffff;
+}
+
+
+.admin-event-action.delete:hover {
+    border-color: #dc3545;
+
+    background: #dc3545;
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.admin-events-empty {
+    padding: 70px 25px;
+
+    text-align: center;
+}
+
+
+.admin-events-empty-icon {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 17px;
+
+    border-radius: 18px;
+
+    background: rgba(0, 106, 78, 0.08);
+    color: #006a4e;
+
+    font-size: 1.45rem;
+}
+
+
+.admin-events-empty h3 {
+    margin: 0;
+
+    color: #30483f;
+
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+
+.admin-events-empty p {
+    max-width: 420px;
+
+    margin: 7px auto 20px;
+
+    color: #8a9691;
+
+    font-size: 0.74rem;
+
+    line-height: 1.6;
+}
+
+
+.admin-events-empty-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    min-height: 40px;
+
+    padding: 0 15px;
+
+    border: 1px solid #006a4e;
+    border-radius: 10px;
+
+    background: #006a4e;
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    transition:
+        0.2s ease;
+}
+
+
+.admin-events-empty-btn:hover {
+    background: #00573f;
+
+    border-color: #00573f;
+
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   FOOTER NOTE
+   ============================================================ */
+
+.admin-events-footer {
+    padding: 15px 20px;
+
+    border-top: 1px solid #edf2ef;
+
+    background: #fbfdfc;
+
+    color: #8a9691;
+
+    text-align: right;
+
+    font-size: 0.65rem;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 750px) {
+
+    .admin-events-page {
+        padding: 30px 14px 55px;
+    }
+
+
+    .admin-events-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        padding: 21px;
+    }
+
+
+    .admin-events-header-actions {
+        width: 100%;
+
+        justify-content: stretch;
+    }
+
+
+    .admin-dashboard-event-btn,
+    .admin-add-event-btn,
+    .admin-recent-event-btn {
+        flex: 1;
+    }
+
+
+    .admin-events-card-top {
+        padding: 19px 20px;
+    }
+
+
+    .admin-events-table th,
+    .admin-events-table td {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+}
+
+
+@media (max-width: 520px) {
+
+    .admin-events-page {
+        padding: 22px 10px 45px;
+    }
+
+
+    .admin-events-header {
+        border-radius: 17px;
+    }
+
+
+    .admin-events-header-text h1 {
+        font-size: 1.3rem;
+    }
+
+
+    .admin-events-header-text p {
+        font-size: 0.76rem;
+    }
+
+
+    .admin-events-header-icon {
+        width: 48px;
+        height: 48px;
+
+        flex-basis: 48px;
+    }
+
+
+    .admin-events-header-actions {
+        flex-direction: column;
+    }
+
+
+    .admin-dashboard-event-btn,
+    .admin-add-event-btn,
+    .admin-recent-event-btn {
+        width: 100%;
+
+        flex: none;
+    }
+
+
+    .admin-events-card {
+        border-radius: 17px;
+    }
+
+
+    .admin-event-image {
+        width: 58px;
+        height: 43px;
+
+        flex-basis: 58px;
+    }
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="admin-events-page">
+
+    <div class="admin-events-container">
+
+
+        <!-- ====================================================
+             PAGE HEADER
+        ===================================================== -->
+
+        <div class="admin-events-header">
+
+
+            <div class="admin-events-header-left">
+
+                <div class="admin-events-header-icon">
+
+                    <i class="fa-solid fa-calendar-days"></i>
+
+                </div>
+
+
+                <div class="admin-events-header-text">
+
+                    <h1>
+                        Events Management
+                    </h1>
+
+                    <p>
+                        Create, manage and publish association events.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 HEADER ACTION BUTTONS
+            ================================================== -->
+
+            <div class="admin-events-header-actions">
+
+
+                <!-- ADMIN DASHBOARD -->
+
+                <a
+                    href="{{ url_for('admin.dashboard') }}"
+                    class="admin-dashboard-event-btn"
+                    title="Go to Admin Dashboard"
+                >
+
+                    <i class="fa-solid fa-gauge-high"></i>
+
+                    Admin Dashboard
+
+                </a>
+
+
+                <!-- RECENT EVENTS -->
+
+                <a
+                    href="{{ url_for('home.home') }}#recent-events"
+                    class="admin-recent-event-btn"
+                    title="View Recent Events on Homepage"
+                >
+
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    Recent Events
+
+                </a>
+
+
+                <!-- ADD NEW EVENT -->
+
+                <a
+                    href="{{ url_for('admin.create_event') }}"
+                    class="admin-add-event-btn"
+                >
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add New Event
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- ====================================================
+             EVENTS CARD
+        ===================================================== -->
+
+        <div class="admin-events-card">
+
+
+            <!-- =================================================
+                 CARD HEADER
+            ================================================== -->
+
+            <div class="admin-events-card-top">
+
+                <div class="admin-events-card-title">
+
+                    <div class="admin-events-card-title-icon">
+
+                        <i class="fa-solid fa-list"></i>
+
+                    </div>
+
+                    <h2>
+                        All Events
+                    </h2>
+
+                    <span class="admin-events-count">
+                        {{ events|length }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 EVENTS LIST
+            ================================================== -->
+
+            {% if events %}
+
+
+                <div class="admin-events-table-wrapper">
+
+                    <table class="admin-events-table">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Event
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Location
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            {% for event in events %}
+
+
+                                <tr>
+
+
+                                    <!-- EVENT -->
+
+                                    <td>
+
+                                        <div class="admin-event-info">
+
+
+                                            <div class="admin-event-image">
+
+                                                {% if event.image %}
+
+                                                    {% if event.image.startswith('images/') %}
+
+                                                        <img
+                                                            src="{{ url_for(
+                                                                'static',
+                                                                filename=event.image
+                                                            ) }}"
+                                                            alt="{{ event.title }}"
+                                                        >
+
+                                                    {% elif event.image.startswith('uploads/') %}
+
+                                                        <img
+                                                            src="{{ url_for(
+                                                                'static',
+                                                                filename=event.image
+                                                            ) }}"
+                                                            alt="{{ event.title }}"
+                                                        >
+
+                                                    {% else %}
+
+                                                        <img
+                                                            src="{{ url_for(
+                                                                'static',
+                                                                filename='uploads/' ~ event.image
+                                                            ) }}"
+                                                            alt="{{ event.title }}"
+                                                        >
+
+                                                    {% endif %}
+
+                                                {% else %}
+
+                                                    <div class="admin-event-image-placeholder">
+
+                                                        <i class="fa-solid fa-calendar-days"></i>
+
+                                                    </div>
+
+                                                {% endif %}
+
+                                            </div>
+
+
+                                            <div class="admin-event-details">
+
+                                                <span class="admin-event-title">
+
+                                                    {{ event.title }}
+
+                                                </span>
+
+
+                                                {% if event.description %}
+
+                                                    <span class="admin-event-description">
+
+                                                        {{ event.description }}
+
+                                                    </span>
+
+                                                {% endif %}
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- DATE -->
+
+                                    <td>
+
+                                        <span class="admin-event-date">
+
+                                            <i class="fa-regular fa-calendar"></i>
+
+                                            {{ event.event_date }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- LOCATION -->
+
+                                    <td>
+
+                                        {% if event.location %}
+
+                                            <span class="admin-event-location">
+
+                                                <i class="fa-solid fa-location-dot"></i>
+
+                                                <span>
+                                                    {{ event.location }}
+                                                </span>
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="admin-event-location">
+
+                                                <i class="fa-solid fa-location-dot"></i>
+
+                                                <span>
+                                                    Not specified
+                                                </span>
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        {% if event.is_published %}
+
+                                            <span class="event-status-badge event-status-published">
+
+                                                Published
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="event-status-badge event-status-unpublished">
+
+                                                Unpublished
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- ACTIONS -->
+
+                                    <td>
+
+                                        <div class="admin-event-actions">
+
+
+                                            <!-- EDIT -->
+
+                                            <a
+                                                href="{{ url_for(
+                                                    'admin.edit_event',
+                                                    id=event.id
+                                                ) }}"
+                                                class="admin-event-action edit"
+                                                title="Edit Event"
+                                            >
+
+                                                <i class="fa-solid fa-pen"></i>
+
+                                            </a>
+
+
+                                            <!-- TOGGLE -->
+
+                                            <a
+                                                href="{{ url_for(
+                                                    'admin.toggle_event',
+                                                    id=event.id
+                                                ) }}"
+                                                class="admin-event-action toggle"
+                                                title="{% if event.is_published %}Unpublish Event{% else %}Publish Event{% endif %}"
+                                            >
+
+                                                {% if event.is_published %}
+
+                                                    <i class="fa-solid fa-eye-slash"></i>
+
+                                                {% else %}
+
+                                                    <i class="fa-solid fa-eye"></i>
+
+                                                {% endif %}
+
+                                            </a>
+
+
+                                            <!-- DELETE -->
+
+                                            <a
+                                                href="{{ url_for(
+                                                    'admin.delete_event',
+                                                    id=event.id
+                                                ) }}"
+                                                class="admin-event-action delete"
+                                                title="Delete Event"
+                                                onclick="return confirm('Are you sure you want to delete this event?');"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </a>
+
+
+                                        </div>
+
+                                    </td>
+
+
+                                </tr>
+
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+
+
+                <div class="admin-events-footer">
+
+                    Showing
+                    <strong>{{ events|length }}</strong>
+                    event{% if events|length != 1 %}s{% endif %}
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- =================================================
+                     EMPTY STATE
+                ================================================== -->
+
+                <div class="admin-events-empty">
+
+
+                    <div class="admin-events-empty-icon">
+
+                        <i class="fa-regular fa-calendar-xmark"></i>
+
+                    </div>
+
+
+                    <h3>
+                        No Events Found
+                    </h3>
+
+
+                    <p>
+                        There are currently no events in the system.
+                        Create your first event to display it on the
+                        association website.
+                    </p>
+
+
+                    <a
+                        href="{{ url_for('admin.create_event') }}"
+                        class="admin-events-empty-btn"
+                    >
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Create First Event
+
+                    </a>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
+{% endblock %}

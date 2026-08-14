@@ -1,0 +1,321 @@
+/* =====================================================
+   BASE.CSS
+   Global Styles
+   JUians of Gaibandha
+===================================================== */
+
+/* ==========================
+        CSS RESET
+========================== */
+
+*,
+*::before,
+*::after{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* ==========================
+        HTML
+========================== */
+
+html{
+    scroll-behavior:smooth;
+}
+
+/* ==========================
+        BODY
+========================== */
+
+body{
+    font-family:var(--font-family);
+    font-size:var(--font-md);
+    font-weight:var(--weight-normal);
+    color:var(--text-dark);
+    background:var(--background-color);
+    line-height:1.7;
+    overflow-x:hidden;
+}
+
+/* ==========================
+        CONTAINER
+========================== */
+
+.container{
+    width:min(92%, var(--container-width));
+    margin-inline:auto;
+}
+
+/* ==========================
+        SECTION
+========================== */
+
+section{
+    padding:90px 0;
+    position:relative;
+}
+
+/* ==========================
+        IMAGE
+========================== */
+
+img{
+    display:block;
+    width:100%;
+    height:auto;
+}
+
+/* ==========================
+        LINKS
+========================== */
+
+a{
+    text-decoration:none;
+    color:inherit;
+    transition:var(--transition);
+}
+
+/* ==========================
+        LIST
+========================== */
+
+ul{
+    list-style:none;
+}
+
+/* ==========================
+        BUTTON
+========================== */
+
+button{
+    border:none;
+    outline:none;
+    background:none;
+    cursor:pointer;
+    font-family:inherit;
+}
+
+/* ==========================
+        INPUT
+========================== */
+
+input,
+select,
+textarea{
+    width:100%;
+    font:inherit;
+    outline:none;
+    border:none;
+}
+
+/* ==========================
+        HEADINGS
+========================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+    color:var(--text-dark);
+    font-weight:var(--weight-bold);
+    line-height:1.3;
+}
+
+h1{
+    font-size:var(--font-4xl);
+}
+
+h2{
+    font-size:var(--font-3xl);
+}
+
+h3{
+    font-size:var(--font-xl);
+}
+
+h4{
+    font-size:var(--font-lg);
+}
+
+/* ==========================
+        PARAGRAPH
+========================== */
+
+p{
+    color:var(--text-medium);
+    margin-top:12px;
+}
+
+/* ==========================
+        COMMON BUTTON
+========================== */
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    padding:14px 30px;
+
+    border-radius:var(--radius-full);
+
+    font-weight:var(--weight-semibold);
+
+    transition:var(--transition);
+}
+
+.btn-primary{
+    background:var(--primary-color);
+    color:var(--text-white);
+}
+
+.btn-primary:hover{
+    background:var(--primary-dark);
+    transform:translateY(-3px);
+    box-shadow:var(--shadow-md);
+}
+
+.btn-outline{
+    border:2px solid var(--primary-color);
+    color:var(--primary-color);
+}
+
+.btn-outline:hover{
+    background:var(--primary-color);
+    color:var(--text-white);
+}
+
+/* ==========================
+        SECTION HEADER
+========================== */
+
+.section-header{
+    text-align:center;
+    max-width:750px;
+    margin:0 auto 60px;
+}
+
+.section-header h2{
+    margin-top:12px;
+    margin-bottom:18px;
+}
+
+.section-tag{
+    display:inline-block;
+
+    padding:8px 18px;
+
+    background:rgba(0,106,78,.10);
+
+    color:var(--primary-color);
+
+    border-radius:var(--radius-full);
+
+    font-size:var(--font-sm);
+
+    font-weight:var(--weight-semibold);
+}
+
+/* ==========================
+        CARD
+========================== */
+
+.card{
+    background:var(--surface-color);
+
+    border-radius:var(--radius-lg);
+
+    box-shadow:var(--shadow-sm);
+
+    transition:var(--transition);
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:var(--shadow-lg);
+}
+
+/* ==========================
+        SELECTION
+========================== */
+
+::selection{
+    background:var(--primary-color);
+    color:var(--text-white);
+}
+
+/* ==========================
+        SCROLLBAR
+========================== */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:#e5e7eb;
+}
+
+::-webkit-scrollbar-thumb{
+    background:var(--primary-color);
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:var(--primary-dark);
+}
+
+/* ==========================
+        SCROLL TOP BUTTON
+========================== */
+
+#scrollTopBtn{
+    position:fixed;
+
+    right:25px;
+    bottom:25px;
+
+    width:50px;
+    height:50px;
+
+    border-radius:50%;
+
+    background:var(--primary-color);
+
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:var(--transition);
+
+    z-index:999;
+}
+
+#scrollTopBtn.show{
+    opacity:1;
+    visibility:visible;
+}
+
+#scrollTopBtn:hover{
+    background:var(--primary-dark);
+    transform:translateY(-4px);
+}
+
+/* ==========================
+        MAIN
+========================== */
+
+.main-content{
+    min-height:70vh;
+}

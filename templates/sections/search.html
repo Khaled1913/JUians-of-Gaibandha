@@ -1,0 +1,178 @@
+<!-- =================================================
+     SEARCH SECTION
+================================================== -->
+
+<section id="search" class="search-section">
+
+<div class="container">
+
+
+    <!-- =================================================
+         SECTION HEADER
+    ================================================== -->
+
+    <div class="section-header">
+
+        <span class="section-tag">
+            Member Directory
+        </span>
+
+        <h2>
+            Search JUians Directory
+        </h2>
+
+        <p>
+            Find Alumni, Running Students, Teachers and Employees
+            of Jahangirnagar University from Gaibandha District.
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         SEARCH BOX
+    ================================================== -->
+
+    <div class="search-wrapper">
+
+        <form
+            action="{{ url_for('search.search') }}"
+            method="GET"
+            class="search-form"
+        >
+
+            <div class="search-box">
+
+
+                <!-- SEARCH ICON -->
+
+                <div class="search-icon">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </div>
+
+
+                <!-- SEARCH INPUT -->
+
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Search by name, department, phone..."
+                    autocomplete="off"
+                    aria-label="Search JUians"
+                    required
+                >
+
+
+                <!-- SEARCH BUTTON -->
+
+                <button
+                    type="submit"
+                    class="search-btn"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <span>
+                        Search
+                    </span>
+
+                </button>
+
+
+            </div>
+
+        </form>
+
+
+        <!-- =================================================
+             SEARCH INFORMATION
+        ================================================== -->
+
+        <div class="search-info">
+
+            <p>
+                Search JUians by Name , Batch , Department Name , Phone , Email ,
+                Upzila.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             QUICK SEARCH
+        ================================================== -->
+
+        <div class="search-keywords">
+
+
+            <!-- ALUMNI -->
+
+            <a
+                href="{{ url_for('member.alumni') }}"
+            >
+
+                <i class="fa-solid fa-user-graduate"></i>
+
+                <span>
+                    Alumni
+                </span>
+
+            </a>
+
+
+            <!-- RUNNING STUDENTS -->
+
+            <a
+                href="{{ url_for('member.students') }}"
+            >
+
+                <i class="fa-solid fa-user-group"></i>
+
+                <span>
+                    Running Students
+                </span>
+
+            </a>
+
+
+            <!-- TEACHERS -->
+
+            <a
+                href="{{ url_for('member.teachers') }}"
+            >
+
+                <i class="fa-solid fa-chalkboard-user"></i>
+
+                <span>
+                    Teachers
+                </span>
+
+            </a>
+
+
+            <!-- EMPLOYEES -->
+
+            <a
+                href="{{ url_for('member.employees') }}"
+            >
+
+                <i class="fa-solid fa-user-tie"></i>
+
+                <span>
+                    Employees
+                </span>
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+</section>

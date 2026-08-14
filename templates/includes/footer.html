@@ -1,0 +1,618 @@
+
+<div class="footer-container">
+
+    <!-- =================================================
+         MAIN FOOTER CARD
+    ================================================== -->
+
+    <div class="footer-main">
+
+
+        <!-- =================================================
+             01. PROJECT DEVELOPER
+        ================================================== -->
+
+        <div class="footer-column footer-developer">
+
+            <div class="footer-heading">
+
+                <div class="footer-heading-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+
+                <div class="footer-heading-text">
+
+                    <span class="footer-eyebrow">
+                        PROJECT
+                    </span>
+
+                    <h3>
+                        Developer
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <!-- Developer Profile -->
+
+            <div class="developer-profile">
+
+                <div class="developer-image-wrapper">
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename='images/khaled.jpg'
+                        ) }}"
+                        alt="Khaled Mahmud Jon"
+                        class="developer-image"
+                    >
+
+                </div>
+
+
+                <div class="developer-info">
+
+                    <h4 class="developer-name">
+                        Khaled Mahmud Jon
+                    </h4>
+
+                    <p class="developer-education">
+                        BSc in CSE
+                    </p>
+
+                    <p class="developer-university">
+                        Jahangirnagar University
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Developer Skills -->
+
+            <div class="developer-skills">
+
+                <span>
+                    AI
+                </span>
+
+                <span>
+                    Machine Learning
+                </span>
+
+                <span>
+                    Flask
+                </span>
+
+            </div>
+
+
+            <!-- Social Links -->
+
+            <div class="developer-social footer-social">
+
+                <a
+                    href="https://github.com/Khaled1913"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="GitHub"
+                    title="GitHub"
+                >
+                    <i class="fab fa-github"></i>
+                </a>
+
+
+                <a
+                    href="#"
+                    aria-label="LinkedIn"
+                    title="LinkedIn"
+                >
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+
+
+                <a
+                    href="mailto:khaledmahmud190192@gmail.com"
+                    aria-label="Email"
+                    title="Email"
+                >
+                    <i class="fas fa-envelope"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             02. QUICK LINKS
+        ================================================== -->
+
+        <div class="footer-column footer-links-column">
+
+            <div class="footer-heading">
+
+                <div class="footer-heading-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+
+                <div class="footer-heading-text">
+
+                    <span class="footer-eyebrow">
+                        NAVIGATION
+                    </span>
+
+                    <h3>
+                        Quick Links
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <ul class="footer-link-list">
+
+                <li>
+
+                    <a href="{{ url_for('home.home') }}">
+
+                        <span class="footer-link-icon">
+                            <i class="fas fa-home"></i>
+                        </span>
+
+                        <span class="footer-link-text">
+                            Home
+                        </span>
+
+                        <i class="fas fa-chevron-right footer-arrow"></i>
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a href="{{ url_for('home.home') }}#statistics">
+
+                        <span class="footer-link-icon">
+                            <i class="fas fa-chart-column"></i>
+                        </span>
+
+                        <span class="footer-link-text">
+                            Statistics
+                        </span>
+
+                        <i class="fas fa-chevron-right footer-arrow"></i>
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a href="{{ url_for('home.home') }}#categories">
+
+                        <span class="footer-link-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </span>
+
+                        <span class="footer-link-text">
+                            Categories
+                        </span>
+
+                        <i class="fas fa-chevron-right footer-arrow"></i>
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a href="{{ url_for('home.home') }}#about">
+
+                        <span class="footer-link-icon">
+                            <i class="fas fa-circle-info"></i>
+                        </span>
+
+                        <span class="footer-link-text">
+                            About Us
+                        </span>
+
+                        <i class="fas fa-chevron-right footer-arrow"></i>
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a href="{{ url_for('member.submit') }}">
+
+                        <span class="footer-link-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </span>
+
+                        <span class="footer-link-text">
+                            Submit Information
+                        </span>
+
+                        <i class="fas fa-chevron-right footer-arrow"></i>
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+
+
+        <!-- =================================================
+             03. MEMBER CATEGORIES
+        ================================================== -->
+
+        <div class="footer-column footer-links-column">
+
+            <div class="footer-heading">
+
+                <div class="footer-heading-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+
+                <div class="footer-heading-text">
+
+                    <span class="footer-eyebrow">
+                        DIRECTORY
+                    </span>
+
+                    <h3>
+                        Member Categories
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <ul class="footer-link-list">
+
+                <li>
+
+                    <a href="{{ url_for('member.alumni') }}">
+
+                        <span class="footer-link-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </span>
+
+                        <span class="footer-link-text">
+                            Alumni
+                        </span>
+
+                        <i class="fas fa-chevron-right footer-arrow"></i>
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a href="{{ url_for('member.students') }}">
+
+                        <span class="footer-link-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </span>
+
+                        <span class="footer-link-text">
+                            Running Students
+                        </span>
+
+                        <i class="fas fa-chevron-right footer-arrow"></i>
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a href="{{ url_for('member.teachers') }}">
+
+                        <span class="footer-link-icon">
+                            <i class="fas fa-chalkboard-user"></i>
+                        </span>
+
+                        <span class="footer-link-text">
+                            Teachers
+                        </span>
+
+                        <i class="fas fa-chevron-right footer-arrow"></i>
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a href="{{ url_for('member.employees') }}">
+
+                        <span class="footer-link-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </span>
+
+                        <span class="footer-link-text">
+                            Employees
+                        </span>
+
+                        <i class="fas fa-chevron-right footer-arrow"></i>
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+
+
+        <!-- =================================================
+             04. CONTACT US
+             ID KEPT FOR NAVBAR #contact
+        ================================================== -->
+
+        <div
+            id="contact"
+            class="footer-column footer-contact"
+        >
+
+            <div class="footer-heading">
+
+                <div class="footer-heading-icon">
+                    <i class="fas fa-address-book"></i>
+                </div>
+
+                <div class="footer-heading-text">
+
+                    <span class="footer-eyebrow">
+                        GET IN TOUCH
+                    </span>
+
+                    <h3>
+                        Contact Us
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="contact-list">
+
+
+                <!-- =================================================
+                     ADMIN NAME
+                ================================================== -->
+
+                <div class="contact-item">
+
+                    <div class="contact-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+
+                    <div class="contact-content">
+
+                        <span class="contact-label">
+                            ADMINISTRATOR
+                        </span>
+
+                        <span class="contact-value">
+
+                            {% if admin_contact and admin_contact.get('name') %}
+
+                                {{ admin_contact.get('name') }}
+
+                            {% else %}
+
+                                Khaled Mahmud Jon
+
+                            {% endif %}
+
+                            <span class="admin-role">
+                                (Admin)
+                            </span>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     GMAIL
+                ================================================== -->
+
+                <div class="contact-item">
+
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+
+                    <div class="contact-content">
+
+                        <span class="contact-label">
+                            GMAIL
+                        </span>
+
+
+                        {% if admin_contact and admin_contact.get('email') %}
+
+                            <a
+                                class="contact-value contact-link"
+                                href="mailto:{{ admin_contact.get('email') }}"
+                            >
+                                {{ admin_contact.get('email') }}
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                class="contact-value contact-link"
+                                href="mailto:khaledmahmud393@gmail.com"
+                            >
+                                khaledmahmud393@gmail.com
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     PHONE NUMBER
+                ================================================== -->
+
+                <div class="contact-item">
+
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+
+                    <div class="contact-content">
+
+                        <span class="contact-label">
+                            PHONE
+                        </span>
+
+
+                        {% if admin_contact and admin_contact.get('phone') %}
+
+                            <a
+                                class="contact-value contact-link"
+                                href="tel:{{ admin_contact.get('phone') }}"
+                            >
+                                {{ admin_contact.get('phone') }}
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                class="contact-value contact-link"
+                                href="tel:01786883908"
+                            >
+                                01786883908
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     FACEBOOK
+                     Only appears when admin has provided one
+                ================================================== -->
+
+                {% if admin_contact and admin_contact.get('facebook') %}
+
+                    <div class="contact-item">
+
+                        <div class="contact-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </div>
+
+                        <div class="contact-content">
+
+                            <span class="contact-label">
+                                FACEBOOK
+                            </span>
+
+                            <a
+                                class="contact-value contact-link"
+                                href="{{ admin_contact.get('facebook') }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Facebook Profile
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+            </div>
+
+
+            <!-- Admin Login -->
+
+            <a
+                href="{{ url_for('auth.login') }}"
+                class="footer-admin-btn"
+            >
+
+                <span class="admin-btn-icon">
+                    <i class="fas fa-lock"></i>
+                </span>
+
+                <span>
+                    Admin Login
+                </span>
+
+                <i class="fas fa-arrow-right admin-btn-arrow"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         FOOTER BOTTOM
+    ================================================== -->
+
+    <div class="footer-bottom">
+
+        <div class="footer-bottom-line"></div>
+
+        <p>
+
+            <span class="copyright-icon">
+                <i class="fas fa-shield-halved"></i>
+            </span>
+
+            © {{ current_year }}
+
+            <strong>
+                JUians of Gaibandha
+            </strong>
+
+            . All Rights Reserved.
+
+        </p>
+
+        <div class="footer-bottom-line"></div>
+
+    </div>
+
+</div>

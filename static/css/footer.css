@@ -1,0 +1,1628 @@
+/* =========================================================
+   JUians of Gaibandha
+   PREMIUM NAVY + GREEN FOOTER
+========================================================= */
+
+
+/* =========================================================
+   ROOT COLORS
+========================================================= */
+
+:root {
+
+    --footer-navy:
+        #061b32;
+
+    --footer-navy-dark:
+        #041426;
+
+    --footer-navy-light:
+        #0a2742;
+
+    --footer-green:
+        #10b981;
+
+    --footer-green-light:
+        #20c997;
+
+    --footer-green-dark:
+        #087f5b;
+
+    --footer-white:
+        #ffffff;
+
+    --footer-text:
+        rgba(255, 255, 255, 0.78);
+
+    --footer-muted:
+        rgba(255, 255, 255, 0.52);
+
+    --footer-border:
+        rgba(255, 255, 255, 0.10);
+
+}
+
+
+/* =========================================================
+   MAIN FOOTER
+========================================================= */
+
+.site-footer {
+
+    position: relative;
+
+    width: 100%;
+
+    margin-top: 0;
+
+    padding:
+        70px
+        0
+        25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #041426 0%,
+            #061b32 45%,
+            #072b3b 100%
+        );
+
+    color:
+        var(--footer-white);
+
+    overflow: hidden;
+
+}
+
+
+/* =========================================================
+   BACKGROUND GLOW - TOP RIGHT
+========================================================= */
+
+.site-footer::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 520px;
+
+    height: 520px;
+
+    top: -300px;
+
+    right: -180px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(16, 185, 129, 0.16)
+            0%,
+            rgba(16, 185, 129, 0.05)
+            40%,
+            transparent
+            70%
+        );
+
+    pointer-events: none;
+
+}
+
+
+/* =========================================================
+   BACKGROUND GLOW - BOTTOM LEFT
+========================================================= */
+
+.site-footer::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+
+    height: 420px;
+
+    bottom: -280px;
+
+    left: -160px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(16, 185, 129, 0.10)
+            0%,
+            transparent
+            68%
+        );
+
+    pointer-events: none;
+
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
+.footer-container {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: calc(100% - 48px);
+
+    max-width: 1450px;
+
+    margin:
+        0
+        auto;
+
+}
+
+
+/* =========================================================
+   MAIN FOOTER CARD
+========================================================= */
+
+.footer-main {
+
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        1.25fr
+        1fr
+        1fr
+        1.10fr;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(7, 31, 53, 0.97),
+            rgba(5, 25, 43, 0.98)
+        );
+
+    border:
+        1px solid
+        rgba(16, 185, 129, 0.32);
+
+    border-radius:
+        28px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.30);
+
+}
+
+
+/* =========================================================
+   COLUMN
+========================================================= */
+
+.footer-column {
+
+    position: relative;
+
+    min-width: 0;
+
+    padding:
+        42px
+        34px
+        38px;
+
+}
+
+
+/* =========================================================
+   COLUMN DIVIDER
+========================================================= */
+
+.footer-column:not(:last-child)::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 38px;
+
+    right: 0;
+
+    width: 1px;
+
+    height: calc(100% - 76px);
+
+    background:
+        linear-gradient(
+            to bottom,
+            transparent,
+            rgba(16, 185, 129, 0.20),
+            rgba(255, 255, 255, 0.08),
+            transparent
+        );
+
+}
+
+
+/* =========================================================
+   FOOTER HEADING
+========================================================= */
+
+.footer-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    margin-bottom: 30px;
+
+}
+
+
+/* =========================================================
+   HEADING ICON BOX
+========================================================= */
+
+.footer-heading-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(16, 185, 129, 0.16),
+            rgba(16, 185, 129, 0.05)
+        );
+
+    border:
+        1px solid
+        rgba(16, 185, 129, 0.35);
+
+    color:
+        var(--footer-green-light);
+
+    box-shadow:
+        inset 0 0 20px
+        rgba(16, 185, 129, 0.04);
+
+}
+
+
+.footer-heading-icon i {
+
+    font-size: 1.35rem;
+
+}
+
+
+/* =========================================================
+   HEADING TEXT
+========================================================= */
+
+.footer-heading-text {
+
+    min-width: 0;
+
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.footer-eyebrow {
+
+    display: block;
+
+    margin-bottom: 4px;
+
+    color:
+        var(--footer-green);
+
+    font-size:
+        0.70rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        1.8px;
+
+    line-height:
+        1.2;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.footer-heading h3 {
+
+    position: relative;
+
+    margin: 0;
+
+    padding-bottom: 10px;
+
+    color:
+        var(--footer-white);
+
+    font-size:
+        1.22rem;
+
+    font-weight:
+        800;
+
+    line-height:
+        1.25;
+
+}
+
+
+/* =========================================================
+   HEADING UNDERLINE
+========================================================= */
+
+.footer-heading h3::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    bottom: 0;
+
+    width: 38px;
+
+    height: 3px;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--footer-green),
+            var(--footer-green-light)
+        );
+
+}
+
+
+/* =========================================================
+   DEVELOPER PROFILE
+========================================================= */
+
+.developer-profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+}
+
+
+/* =========================================================
+   DEVELOPER IMAGE WRAPPER
+========================================================= */
+
+.developer-image-wrapper {
+
+    position: relative;
+
+    width: 100px;
+
+    height: 100px;
+
+    flex-shrink: 0;
+
+    padding: 4px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--footer-green-light),
+            var(--footer-green-dark)
+        );
+
+    box-shadow:
+        0 10px 28px
+        rgba(0, 0, 0, 0.35);
+
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.developer-image {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border:
+        3px solid
+        var(--footer-navy);
+
+}
+
+
+/* =========================================================
+   DEVELOPER INFO
+========================================================= */
+
+.developer-info {
+
+    min-width: 0;
+
+    flex: 1;
+
+}
+
+
+/* =========================================================
+   DEVELOPER NAME
+========================================================= */
+
+.developer-name {
+
+    margin: 0;
+
+    color:
+        var(--footer-white);
+
+    font-size:
+        1.18rem;
+
+    font-weight:
+        800;
+
+    line-height:
+        1.35;
+
+}
+
+
+/* =========================================================
+   EDUCATION
+========================================================= */
+
+.developer-education {
+
+    margin:
+        6px
+        0
+        0;
+
+    color:
+        var(--footer-green-light);
+
+    font-size:
+        0.86rem;
+
+    font-weight:
+        700;
+
+}
+
+
+/* =========================================================
+   UNIVERSITY
+========================================================= */
+
+.developer-university {
+
+    margin:
+        4px
+        0
+        0;
+
+    color:
+        var(--footer-muted);
+
+    font-size:
+        0.78rem;
+
+    line-height:
+        1.45;
+
+}
+
+
+/* =========================================================
+   DEVELOPER SKILLS
+========================================================= */
+
+.developer-skills {
+
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 25px;
+
+}
+
+
+/* =========================================================
+   SKILL BADGE
+========================================================= */
+
+.developer-skills span {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding:
+        7px
+        12px;
+
+    border-radius:
+        20px;
+
+    background:
+        rgba(16, 185, 129, 0.08);
+
+    border:
+        1px solid
+        rgba(16, 185, 129, 0.25);
+
+    color:
+        var(--footer-green-light);
+
+    font-size:
+        0.70rem;
+
+    font-weight:
+        700;
+
+    line-height:
+        1;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* =========================================================
+   SOCIAL
+========================================================= */
+
+.footer-social {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 26px;
+
+}
+
+
+/* =========================================================
+   SOCIAL BUTTON
+========================================================= */
+
+.footer-social a {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255, 255, 255, 0.045);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    color:
+        rgba(255, 255, 255, 0.88);
+
+    text-decoration: none;
+
+    transition:
+        all 0.25s ease;
+
+}
+
+
+/* =========================================================
+   SOCIAL HOVER
+========================================================= */
+
+.footer-social a:hover {
+
+    transform:
+        translateY(-4px);
+
+    background:
+        var(--footer-green);
+
+    border-color:
+        var(--footer-green);
+
+    color:
+        #ffffff;
+
+    box-shadow:
+        0 8px 20px
+        rgba(16, 185, 129, 0.22);
+
+}
+
+
+/* =========================================================
+   FOOTER LINK LIST
+========================================================= */
+
+.footer-link-list {
+
+    margin: 0;
+
+    padding: 0;
+
+    list-style: none;
+
+}
+
+
+/* =========================================================
+   LINK ITEM
+========================================================= */
+
+.footer-link-list li {
+
+    margin: 0;
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.055);
+
+}
+
+
+.footer-link-list li:last-child {
+
+    border-bottom:
+        none;
+
+}
+
+
+/* =========================================================
+   LINK
+========================================================= */
+
+.footer-link-list li a {
+
+    min-height: 56px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    color:
+        var(--footer-text);
+
+    text-decoration: none;
+
+    transition:
+        all 0.25s ease;
+
+}
+
+
+/* =========================================================
+   LINK ICON
+========================================================= */
+
+.footer-link-icon {
+
+    width: 34px;
+
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background:
+        rgba(16, 185, 129, 0.07);
+
+    color:
+        var(--footer-green);
+
+    transition:
+        all 0.25s ease;
+
+}
+
+
+.footer-link-icon i {
+
+    font-size:
+        0.82rem;
+
+}
+
+
+/* =========================================================
+   LINK TEXT
+========================================================= */
+
+.footer-link-text {
+
+    flex: 1;
+
+    font-size:
+        0.88rem;
+
+    font-weight:
+        500;
+
+}
+
+
+/* =========================================================
+   LINK ARROW
+========================================================= */
+
+.footer-arrow {
+
+    color:
+        rgba(16, 185, 129, 0.65);
+
+    font-size:
+        0.66rem;
+
+    transition:
+        transform 0.25s ease;
+
+}
+
+
+/* =========================================================
+   LINK HOVER
+========================================================= */
+
+.footer-link-list li a:hover {
+
+    color:
+        #ffffff;
+
+    transform:
+        translateX(4px);
+
+}
+
+
+.footer-link-list li a:hover
+.footer-link-icon {
+
+    background:
+        rgba(16, 185, 129, 0.18);
+
+    color:
+        var(--footer-green-light);
+
+}
+
+
+.footer-link-list li a:hover
+.footer-arrow {
+
+    transform:
+        translateX(4px);
+
+    color:
+        var(--footer-green-light);
+
+}
+
+
+/* =========================================================
+   CONTACT LIST
+========================================================= */
+
+.contact-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 22px;
+
+}
+
+
+/* =========================================================
+   CONTACT ITEM
+========================================================= */
+
+.contact-item {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 14px;
+
+}
+
+
+/* =========================================================
+   CONTACT ICON
+========================================================= */
+
+.contact-icon {
+
+    width: 40px;
+
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+        rgba(16, 185, 129, 0.08);
+
+    border:
+        1px solid
+        rgba(16, 185, 129, 0.15);
+
+    color:
+        var(--footer-green-light);
+
+}
+
+
+/* =========================================================
+   CONTACT CONTENT
+========================================================= */
+
+.contact-content {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+
+/* =========================================================
+   CONTACT LABEL
+========================================================= */
+
+.contact-label {
+
+    color:
+        var(--footer-green);
+
+    font-size:
+        0.68rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        1.2px;
+
+}
+
+
+/* =========================================================
+   CONTACT VALUE
+========================================================= */
+
+.contact-value {
+
+    color:
+        var(--footer-text);
+
+    font-size:
+        0.86rem;
+
+    line-height:
+        1.5;
+
+}
+
+
+/* =========================================================
+   ADMIN LOGIN
+========================================================= */
+
+.footer-admin-btn {
+
+    width: 100%;
+
+    min-height: 54px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 30px;
+
+    padding:
+        13px
+        18px;
+
+    border-radius:
+        13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(16, 185, 129, 0.18),
+            rgba(16, 185, 129, 0.08)
+        );
+
+    border:
+        1px solid
+        rgba(16, 185, 129, 0.35);
+
+    color:
+        var(--footer-green-light);
+
+    text-decoration:
+        none;
+
+    font-size:
+        0.88rem;
+
+    font-weight:
+        800;
+
+    transition:
+        all 0.25s ease;
+
+}
+
+
+/* =========================================================
+   ADMIN ICON
+========================================================= */
+
+.admin-btn-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+/* =========================================================
+   ADMIN ARROW
+========================================================= */
+
+.admin-btn-arrow {
+
+    margin-left:
+        auto;
+
+    transition:
+        transform 0.25s ease;
+
+}
+
+
+/* =========================================================
+   ADMIN HOVER
+========================================================= */
+
+.footer-admin-btn:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--footer-green-dark),
+            var(--footer-green)
+        );
+
+    border-color:
+        var(--footer-green);
+
+    color:
+        #ffffff;
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 10px 24px
+        rgba(16, 185, 129, 0.18);
+
+}
+
+
+.footer-admin-btn:hover
+.admin-btn-arrow {
+
+    transform:
+        translateX(5px);
+
+}
+
+
+/* =========================================================
+   FOOTER BOTTOM
+========================================================= */
+
+.footer-bottom {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 18px;
+
+    padding:
+        24px
+        10px
+        4px;
+
+}
+
+
+/* =========================================================
+   BOTTOM LINE
+========================================================= */
+
+.footer-bottom-line {
+
+    flex: 1;
+
+    max-width: 260px;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(16, 185, 129, 0.25),
+            transparent
+        );
+
+}
+
+
+/* =========================================================
+   COPYRIGHT
+========================================================= */
+
+.footer-bottom p {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    margin: 0;
+
+    color:
+        var(--footer-muted);
+
+    font-size:
+        0.76rem;
+
+    line-height:
+        1.5;
+
+    text-align:
+        center;
+
+}
+
+
+/* =========================================================
+   COPYRIGHT ICON
+========================================================= */
+
+.copyright-icon {
+
+    color:
+        var(--footer-green);
+
+    font-size:
+        0.72rem;
+
+}
+
+
+/* =========================================================
+   COPYRIGHT STRONG
+========================================================= */
+
+.footer-bottom strong {
+
+    color:
+        rgba(255, 255, 255, 0.86);
+
+    font-weight:
+        700;
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .footer-column {
+
+        padding:
+            38px
+            24px;
+
+    }
+
+    .footer-main {
+
+        grid-template-columns:
+            1.2fr
+            1fr
+            1fr
+            1fr;
+
+    }
+
+    .developer-profile {
+
+        gap: 13px;
+
+    }
+
+    .developer-image-wrapper {
+
+        width: 82px;
+
+        height: 82px;
+
+    }
+
+    .developer-name {
+
+        font-size:
+            1.05rem;
+
+    }
+
+}
+
+
+/* =========================================================
+   TABLET / SMALL LAPTOP
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .site-footer {
+
+        padding-top:
+            55px;
+
+    }
+
+    .footer-main {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+    .footer-column:nth-child(2) {
+
+        border-right:
+            none;
+
+    }
+
+    .footer-column:nth-child(2)::after {
+
+        display:
+            none;
+
+    }
+
+    .footer-column:nth-child(1),
+    .footer-column:nth-child(2) {
+
+        border-bottom:
+            1px solid
+            rgba(16, 185, 129, 0.12);
+
+    }
+
+    .footer-column:nth-child(1)::after,
+    .footer-column:nth-child(3)::after {
+
+        display:
+            block;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .site-footer {
+
+        padding:
+            42px
+            0
+            20px;
+
+    }
+
+    .footer-container {
+
+        width:
+            calc(100% - 28px);
+
+    }
+
+    .footer-main {
+
+        grid-template-columns:
+            1fr;
+
+        border-radius:
+            22px;
+
+    }
+
+    .footer-column {
+
+        padding:
+            32px
+            24px;
+
+    }
+
+    .footer-column:not(:last-child) {
+
+        border-bottom:
+            1px solid
+            rgba(16, 185, 129, 0.12);
+
+    }
+
+    .footer-column:not(:last-child)::after {
+
+        display:
+            none;
+
+    }
+
+    .footer-heading {
+
+        margin-bottom:
+            24px;
+
+    }
+
+    .footer-heading-icon {
+
+        width:
+            52px;
+
+        height:
+            52px;
+
+    }
+
+    .footer-heading h3 {
+
+        font-size:
+            1.12rem;
+
+    }
+
+    .developer-image-wrapper {
+
+        width:
+            82px;
+
+        height:
+            82px;
+
+    }
+
+    .developer-name {
+
+        font-size:
+            1.02rem;
+
+    }
+
+    .developer-education {
+
+        font-size:
+            0.82rem;
+
+    }
+
+    .developer-university {
+
+        font-size:
+            0.74rem;
+
+    }
+
+    .footer-bottom {
+
+        padding-top:
+            20px;
+
+    }
+
+    .footer-bottom-line {
+
+        display:
+            none;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .footer-container {
+
+        width:
+            calc(100% - 20px);
+
+    }
+
+    .footer-column {
+
+        padding:
+            28px
+            20px;
+
+    }
+
+    .footer-heading {
+
+        gap:
+            12px;
+
+    }
+
+    .footer-heading-icon {
+
+        width:
+            48px;
+
+        height:
+            48px;
+
+        border-radius:
+            13px;
+
+    }
+
+    .footer-eyebrow {
+
+        font-size:
+            0.64rem;
+
+    }
+
+    .footer-heading h3 {
+
+        font-size:
+            1.02rem;
+
+    }
+
+    .developer-profile {
+
+        align-items:
+            flex-start;
+
+    }
+
+    .developer-image-wrapper {
+
+        width:
+            72px;
+
+        height:
+            72px;
+
+    }
+
+    .developer-name {
+
+        font-size:
+            0.96rem;
+
+    }
+
+    .developer-skills {
+
+        margin-top:
+            20px;
+
+    }
+
+    .developer-skills span {
+
+        padding:
+            6px
+            9px;
+
+        font-size:
+            0.64rem;
+
+    }
+
+    .footer-link-list li a {
+
+        min-height:
+            52px;
+
+    }
+
+    .contact-list {
+
+        gap:
+            18px;
+
+    }
+
+    .footer-bottom p {
+
+        font-size:
+            0.68rem;
+
+        flex-wrap:
+            wrap;
+
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.footer-social a:focus-visible,
+.footer-link-list li a:focus-visible,
+.footer-admin-btn:focus-visible {
+
+    outline:
+        2px solid
+        var(--footer-green-light);
+
+    outline-offset:
+        3px;
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .footer-social a,
+    .footer-link-list li a,
+    .footer-link-icon,
+    .footer-arrow,
+    .footer-admin-btn {
+
+        transition:
+            none;
+
+    }
+
+}

@@ -1,0 +1,1384 @@
+{% extends "base.html" %}
+
+{% block title %}
+Manage Administrators | JUians of Gaibandha
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/admin.css') }}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="admin-dashboard admin-inner-page">
+
+
+    <!-- =========================================================
+         ADMIN SIDEBAR
+    ========================================================== -->
+
+    <aside
+        class="admin-sidebar"
+        id="adminSidebar"
+    >
+
+
+        <!-- =====================================================
+             BRAND
+        ====================================================== -->
+
+        <div class="admin-brand">
+
+            <div class="admin-brand-icon">
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+            </div>
+
+            <div class="admin-brand-text">
+
+                <h2>
+                    JUians
+                </h2>
+
+                <span>
+                    of Gaibandha
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             SIDEBAR PROFILE
+        ====================================================== -->
+
+        <div class="admin-sidebar-profile">
+
+            <div class="admin-sidebar-avatar">
+
+                <i class="fa-solid fa-user-shield"></i>
+
+            </div>
+
+            <div class="admin-sidebar-profile-info">
+
+                <strong>
+                    {{ session.get('admin_name', 'Administrator') }}
+                </strong>
+
+                <span>
+                    {{ session.get('admin_role', 'Administrator') }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             NAVIGATION
+        ====================================================== -->
+
+        <nav class="admin-nav">
+
+
+            <!-- MAIN MENU -->
+
+            <p class="admin-nav-title">
+                MAIN MENU
+            </p>
+
+
+            <a
+                href="{{ url_for('admin.dashboard') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.members') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-users"></i>
+
+                <span>
+                    All Members
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.pending_members') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-clock"></i>
+
+                <span>
+                    Pending Requests
+                </span>
+
+            </a>
+
+
+            <!-- DIRECTORY -->
+
+            <p class="admin-nav-title">
+                DIRECTORY
+            </p>
+
+
+            <a
+                href="{{ url_for('member.alumni') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-user-graduate"></i>
+
+                <span>
+                    Alumni
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('member.students') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-user-group"></i>
+
+                <span>
+                    Running Students
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('member.teachers') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-chalkboard-user"></i>
+
+                <span>
+                    Teachers
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('member.employees') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-user-tie"></i>
+
+                <span>
+                    Employees
+                </span>
+
+            </a>
+
+
+            <!-- SYSTEM -->
+
+            <p class="admin-nav-title">
+                SYSTEM
+            </p>
+
+
+            <a
+                href="{{ url_for('admin.profile') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-user-shield"></i>
+
+                <span>
+                    Administrator
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.administrators') }}"
+                class="admin-nav-link active"
+            >
+
+                <i class="fa-solid fa-users-gear"></i>
+
+                <span>
+                    Manage Administrators
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('home.home') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>
+                    Visit Website
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.logout') }}"
+                class="admin-nav-link admin-logout"
+            >
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =========================================================
+         ADMIN MAIN
+    ========================================================== -->
+
+    <main class="admin-main">
+
+
+        <!-- =====================================================
+             TOPBAR
+        ====================================================== -->
+
+        <header class="admin-topbar">
+
+
+            <div class="admin-topbar-left">
+
+
+                <button
+                    class="admin-mobile-toggle"
+                    id="adminMobileToggle"
+                    type="button"
+                    aria-label="Toggle administrator menu"
+                >
+
+                    <i class="fa-solid fa-bars"></i>
+
+                </button>
+
+
+                <div class="admin-breadcrumb">
+
+                    <span>
+                        Administration
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                    <strong>
+                        Manage Administrators
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="admin-topbar-right">
+
+
+                <div class="admin-status">
+
+                    <span class="admin-status-dot"></span>
+
+                    <span>
+                        System Online
+                    </span>
+
+                </div>
+
+
+                <div class="admin-user">
+
+                    <div class="admin-user-avatar">
+
+                        <i class="fa-solid fa-user-shield"></i>
+
+                    </div>
+
+
+                    <div class="admin-user-info">
+
+                        <strong>
+
+                            {% if admin %}
+
+                                {{ admin.full_name }}
+
+                            {% else %}
+
+                                {{ session.get('admin_name', 'Administrator') }}
+
+                            {% endif %}
+
+                        </strong>
+
+
+                        <span>
+
+                            {% if admin %}
+
+                                {{ admin.role }}
+
+                            {% else %}
+
+                                {{ session.get('admin_role', 'Admin') }}
+
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             PAGE CONTENT
+        ====================================================== -->
+
+        <div class="admin-content">
+
+
+            <!-- =================================================
+                 PAGE HERO
+            ================================================== -->
+
+            <section class="admin-page-hero">
+
+
+                <div class="admin-page-hero-content">
+
+
+                    <span class="admin-eyebrow">
+
+                        <i class="fa-solid fa-users-gear"></i>
+
+                        ADMINISTRATOR MANAGEMENT
+
+                    </span>
+
+
+                    <h1>
+                        Manage Administrators
+                    </h1>
+
+
+                    <p>
+                        Add administrators, maintain administrator
+                        history and transfer portal responsibility
+                        securely whenever the association requires.
+                    </p>
+
+
+                </div>
+
+
+                <div class="admin-page-hero-actions">
+
+
+                    <a
+                        href="{{ url_for('admin.create_administrator') }}"
+                        class="admin-btn admin-btn-primary"
+                    >
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                        <span>
+                            Add New Administrator
+                        </span>
+
+                    </a>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 CURRENT ADMINISTRATOR
+            ================================================== -->
+
+            <section class="admin-yearly-section">
+
+
+                <div class="admin-section-header-card">
+
+
+                    <div>
+
+
+                        <span class="admin-panel-label">
+                            CURRENT ADMINISTRATOR
+                        </span>
+
+
+                        <h2>
+                            Active Administrator
+                        </h2>
+
+
+                        <p>
+                            This administrator currently has access
+                            to manage the JUians of Gaibandha
+                            administration portal.
+                        </p>
+
+
+                    </div>
+
+
+                    <div class="admin-section-header-icon">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+
+                </div>
+
+
+                {% if current_administrator %}
+
+
+                    <article class="admin-current-administrator-card">
+
+
+                        <!-- =========================================
+                             ADMIN IDENTITY
+                        ========================================== -->
+
+                        <div class="admin-current-admin-left">
+
+
+                            <div class="admin-current-admin-avatar">
+
+                                <i class="fa-solid fa-user-shield"></i>
+
+                            </div>
+
+
+                            <div class="admin-current-admin-identity">
+
+
+                                <div class="admin-current-admin-badges">
+
+
+                                    <span class="admin-current-badge">
+
+                                        <span></span>
+
+                                        CURRENT
+
+                                    </span>
+
+
+                                    {% if current_administrator.term_year %}
+
+                                        <span class="admin-year-badge">
+
+                                            {{ current_administrator.term_year }}
+
+                                        </span>
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+                                <h2>
+                                    {{ current_administrator.full_name }}
+                                </h2>
+
+
+                                <p>
+                                    JUians of Gaibandha Administrator
+                                </p>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- =========================================
+                             CURRENT ADMIN DETAILS
+                        ========================================== -->
+
+                        <div class="admin-current-admin-details">
+
+
+                            <div>
+
+                                <span>
+                                    Username
+                                </span>
+
+                                <strong>
+                                    {{ current_administrator.username }}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Account Email
+                                </span>
+
+                                <strong>
+
+                                    {% if current_administrator.email %}
+
+                                        {{ current_administrator.email }}
+
+                                    {% else %}
+
+                                        Not provided
+
+                                    {% endif %}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Term Reference
+                                </span>
+
+                                <strong>
+
+                                    {% if current_administrator.term_label %}
+
+                                        {{ current_administrator.term_label }}
+
+                                    {% elif current_administrator.term_year %}
+
+                                        {{ current_administrator.term_year }}
+
+                                    {% else %}
+
+                                        Not assigned
+
+                                    {% endif %}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Status
+                                </span>
+
+                                <strong class="admin-current-status">
+
+                                    <span></span>
+
+                                    Active
+
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- =========================================
+                             ACTION
+                        ========================================== -->
+
+                        <div class="admin-current-admin-actions">
+
+
+                            <a
+                                href="{{ url_for(
+                                    'admin.edit_administrator',
+                                    id=current_administrator.id
+                                ) }}"
+                                class="admin-btn admin-current-edit-btn"
+                            >
+
+                                <i class="fa-solid fa-pen"></i>
+
+                                <span>
+                                    Edit Administrator
+                                </span>
+
+                            </a>
+
+
+                        </div>
+
+
+                    </article>
+
+
+                {% else %}
+
+
+                    <!-- =============================================
+                         NO CURRENT ADMIN
+                    ============================================== -->
+
+                    <div class="admin-yearly-empty-card">
+
+
+                        <div class="admin-yearly-empty-icon">
+
+                            <i class="fa-solid fa-user-shield"></i>
+
+                        </div>
+
+
+                        <h3>
+                            No Current Administrator
+                        </h3>
+
+
+                        <p>
+                            There is currently no active administrator.
+                            Add an administrator or select a stored
+                            administrator and make that account current.
+                        </p>
+
+
+                        <a
+                            href="{{ url_for('admin.create_administrator') }}"
+                            class="admin-btn admin-contact-save-btn"
+                        >
+
+                            <i class="fa-solid fa-user-plus"></i>
+
+                            Add Administrator
+
+                        </a>
+
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </section>
+
+
+            <!-- =================================================
+                 ADMINISTRATOR HISTORY
+            ================================================== -->
+
+            <section class="admin-yearly-section">
+
+
+                <div class="admin-section-header-card">
+
+
+                    <div>
+
+
+                        <span class="admin-panel-label">
+                            ADMINISTRATOR HISTORY
+                        </span>
+
+
+                        <h2>
+                            Previous Administrators
+                        </h2>
+
+
+                        <p>
+                            Previous administrator accounts remain
+                            stored securely for association history
+                            and can be selected again whenever required.
+                        </p>
+
+
+                    </div>
+
+
+                    <div class="admin-section-header-icon">
+
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    </div>
+
+
+                </div>
+
+
+                {% if previous_administrators %}
+
+
+                    <div class="admin-administrator-grid">
+
+
+                        {% for administrator in previous_administrators %}
+
+
+                            <article class="admin-administrator-card">
+
+
+                                <!-- =====================================
+                                     CARD TOP
+                                ====================================== -->
+
+                                <div class="admin-administrator-card-top">
+
+
+                                    <div class="admin-administrator-avatar">
+
+                                        <i class="fa-solid fa-user-shield"></i>
+
+                                    </div>
+
+
+                                    <div class="admin-administrator-card-status">
+
+
+                                        {% if administrator.is_current %}
+
+
+                                            <span class="admin-current-badge">
+
+                                                <span></span>
+
+                                                CURRENT
+
+                                            </span>
+
+
+                                        {% elif administrator.is_active %}
+
+
+                                            <span class="admin-upcoming-badge">
+
+                                                <i class="fa-solid fa-circle-check"></i>
+
+                                                AVAILABLE
+
+                                            </span>
+
+
+                                        {% else %}
+
+
+                                            <span class="admin-previous-badge">
+
+                                                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                                                PREVIOUS
+
+                                            </span>
+
+
+                                        {% endif %}
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <!-- =====================================
+                                     ADMIN IDENTITY
+                                ====================================== -->
+
+                                <div class="admin-administrator-card-body">
+
+
+                                    <span class="admin-panel-label">
+
+
+                                        {% if administrator.term_year %}
+
+                                            TERM REFERENCE
+                                            {{ administrator.term_year }}
+
+                                        {% else %}
+
+                                            ADMINISTRATOR RECORD
+
+                                        {% endif %}
+
+
+                                    </span>
+
+
+                                    <h3>
+                                        {{ administrator.full_name }}
+                                    </h3>
+
+
+                                    <p>
+                                        @{{ administrator.username }}
+                                    </p>
+
+
+                                </div>
+
+
+                                <!-- =====================================
+                                     DETAILS
+                                ====================================== -->
+
+                                <div class="admin-administrator-mini-details">
+
+
+                                    <div>
+
+                                        <span>
+                                            Email
+                                        </span>
+
+                                        <strong>
+
+                                            {% if administrator.email %}
+
+                                                {{ administrator.email }}
+
+                                            {% else %}
+
+                                                Not provided
+
+                                            {% endif %}
+
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span>
+                                            Term Reference
+                                        </span>
+
+                                        <strong>
+
+                                            {% if administrator.term_label %}
+
+                                                {{ administrator.term_label }}
+
+                                            {% elif administrator.term_year %}
+
+                                                {{ administrator.term_year }}
+
+                                            {% else %}
+
+                                                Not assigned
+
+                                            {% endif %}
+
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span>
+                                            Current Access
+                                        </span>
+
+                                        <strong>
+
+                                            {% if administrator.is_current %}
+
+                                                Current Administrator
+
+                                            {% elif administrator.is_active %}
+
+                                                Available
+
+                                            {% else %}
+
+                                                Inactive
+
+                                            {% endif %}
+
+                                        </strong>
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <!-- =====================================
+                                     ACTIONS
+                                ====================================== -->
+
+                                <div class="admin-administrator-card-actions">
+
+
+                                    <a
+                                        href="{{ url_for(
+                                            'admin.edit_administrator',
+                                            id=administrator.id
+                                        ) }}"
+                                        class="admin-administrator-action edit"
+                                    >
+
+                                        <i class="fa-solid fa-pen"></i>
+
+                                        <span>
+                                            Edit
+                                        </span>
+
+                                    </a>
+
+
+                                    {% if not administrator.is_current %}
+
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for(
+                                                'admin.make_current_administrator',
+                                                id=administrator.id
+                                            ) }}"
+                                            class="admin-make-current-form"
+                                            data-admin-name="{{ administrator.full_name|e }}"
+                                            data-term-year="{{ administrator.term_year if administrator.term_year else '' }}"
+                                        >
+
+
+                                            <button
+                                                type="submit"
+                                                class="admin-administrator-action current"
+                                            >
+
+                                                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+
+                                                <span>
+                                                    Make Current
+                                                </span>
+
+                                            </button>
+
+
+                                        </form>
+
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+                            </article>
+
+
+                        {% endfor %}
+
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <!-- =============================================
+                         EMPTY HISTORY
+                    ============================================== -->
+
+                    <div class="admin-yearly-empty-card">
+
+
+                        <div class="admin-yearly-empty-icon">
+
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+
+                        </div>
+
+
+                        <h3>
+                            No Administrator History Yet
+                        </h3>
+
+
+                        <p>
+                            Previous administrator records will remain
+                            here whenever administrator responsibility
+                            is transferred to another account.
+                        </p>
+
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </section>
+
+
+            <!-- =================================================
+                 HANDOVER INFORMATION
+            ================================================== -->
+
+            <section class="admin-handover-information-card">
+
+
+                <div class="admin-handover-icon">
+
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+
+                </div>
+
+
+                <div class="admin-handover-content">
+
+
+                    <span class="admin-panel-label">
+                        FLEXIBLE HANDOVER
+                    </span>
+
+
+                    <h2>
+                        Change administrator whenever required
+                    </h2>
+
+
+                    <p>
+                        Select any stored administrator and choose
+                        Make Current to transfer portal responsibility.
+                        The existing administrator will become inactive,
+                        but the account and administrator history will
+                        remain stored in the database.
+                    </p>
+
+
+                </div>
+
+
+                <div class="admin-handover-security">
+
+                    <i class="fa-solid fa-database"></i>
+
+                    History Preserved
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 IMPORTANT NOTICE
+            ================================================== -->
+
+            <section class="admin-security-card">
+
+
+                <div class="security-icon">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                </div>
+
+
+                <div>
+
+
+                    <span class="admin-panel-label">
+                        ADMINISTRATOR ACCESS
+                    </span>
+
+
+                    <h2>
+                        Only one administrator remains current
+                    </h2>
+
+
+                    <p>
+                        When administrator responsibility is transferred,
+                        the previous administrator account remains stored
+                        for history but loses active portal access until
+                        it is made current again.
+                    </p>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 ADMIN FOOTER
+            ================================================== -->
+
+            <footer class="admin-footer">
+
+
+                <div class="admin-footer-brand">
+
+
+                    <strong>
+                        JUians of Gaibandha
+                    </strong>
+
+
+                    <span>
+                        Administration Portal
+                    </span>
+
+
+                </div>
+
+
+                <span class="admin-footer-copyright">
+
+                    © 2026 JUians of Gaibandha
+
+                </span>
+
+
+            </footer>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        /* =====================================================
+           MOBILE SIDEBAR
+        ====================================================== */
+
+        const toggle =
+            document.getElementById(
+                "adminMobileToggle"
+            );
+
+        const sidebar =
+            document.getElementById(
+                "adminSidebar"
+            );
+
+
+        if (
+            toggle &&
+            sidebar
+        ) {
+
+            toggle.addEventListener(
+                "click",
+                function () {
+
+                    sidebar.classList.toggle(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           CLOSE SIDEBAR OUTSIDE
+        ====================================================== */
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    window.innerWidth <= 900 &&
+                    sidebar &&
+                    sidebar.classList.contains(
+                        "active"
+                    ) &&
+                    !sidebar.contains(
+                        event.target
+                    ) &&
+                    toggle &&
+                    !toggle.contains(
+                        event.target
+                    )
+                ) {
+
+                    sidebar.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           ADMINISTRATOR HANDOVER CONFIRMATION
+        ====================================================== */
+
+        const handoverForms =
+            document.querySelectorAll(
+                ".admin-make-current-form"
+            );
+
+
+        handoverForms.forEach(
+            function (form) {
+
+                form.addEventListener(
+                    "submit",
+                    function (event) {
+
+                        const administratorName =
+                            form.dataset.adminName ||
+                            "this administrator";
+
+                        const termYear =
+                            form.dataset.termYear ||
+                            "";
+
+
+                        let message =
+                            "Make " +
+                            administratorName +
+                            " the current administrator?";
+
+
+                        if (termYear) {
+
+                            message +=
+                                "\n\nTerm reference: " +
+                                termYear;
+
+                        }
+
+
+                        message +=
+                            "\n\nThe existing current administrator will become inactive.";
+
+                        message +=
+                            "\n\nAdministrator history will remain stored.";
+
+                        message +=
+                            "\n\nYou will be logged out after the handover and the new current administrator must sign in using their own credentials.";
+
+
+                        const confirmed =
+                            window.confirm(
+                                message
+                            );
+
+
+                        if (!confirmed) {
+
+                            event.preventDefault();
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           WINDOW RESIZE
+        ====================================================== */
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (
+                    window.innerWidth > 900 &&
+                    sidebar
+                ) {
+
+                    sidebar.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+{% endblock %}

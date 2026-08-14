@@ -1,0 +1,160 @@
+<!-- ==========================================
+                HERO SECTION
+========================================== -->
+
+<section class="hero" id="hero">
+
+    <!-- ======================================
+            BLURRED BACKGROUND IMAGE
+    ======================================= -->
+
+    <div class="hero-background">
+
+        <img
+            src="{{ url_for('static', filename='images/ju_campus.jpeg') }}"
+            alt=""
+            class="hero-background-image">
+
+        <div class="hero-background-overlay"></div>
+
+    </div>
+
+
+    <!-- ======================================
+            HERO CONTENT
+    ======================================= -->
+
+    <div class="container hero-container">
+
+        <div class="hero-content">
+
+            <!-- University -->
+
+            <div class="hero-university">
+
+                <i class="fa-solid fa-building-columns"></i>
+
+                <span>
+                    Jahangirnagar University
+                </span>
+
+            </div>
+
+
+            <!-- Heading -->
+
+            <h1 class="hero-title">
+
+                Welcome to
+                <span>JUians of Gaibandha</span>
+
+            </h1>
+
+
+            <!-- Description -->
+
+            <p class="hero-description">
+
+                Official Information & Directory Portal of
+                Gaibandha District Student's Welfare Association,
+                Jahangirnagar University.
+
+                This platform connects Alumni, Running Students,
+                Teachers, and Employees of Gaibandha District.
+
+            </p>
+
+
+            <!-- ==================================
+                    BUTTONS
+            =================================== -->
+
+            <div class="hero-actions">
+
+                <a href="{{ url_for('member.submit') }}"
+                   class="hero-btn hero-btn-primary">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Submit Information
+
+                </a>
+
+
+                <a href="#statistics"
+                   class="hero-btn hero-btn-secondary">
+
+                    <i class="fa-solid fa-chart-column"></i>
+
+                    View Statistics
+
+                </a>
+
+            </div>
+
+
+            <!-- ==================================
+                    HERO INFO
+            =================================== -->
+
+            <div class="hero-info">
+
+                <div class="hero-info-item">
+
+                    <div class="hero-info-icon">
+
+                        <i class="fa-solid fa-users"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Alumni Network
+                        </strong>
+
+                        <span>
+                            Connected Members
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="hero-info-divider"></div>
+
+
+                <div class="hero-info-item">
+
+                    <div class="hero-info-icon">
+
+                        <i class="fa-solid fa-building-columns"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Jahangirnagar University
+                        </strong>
+
+                        <span>
+                            Since 1970
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ==========================================
+                HERO SECTION END
+========================================== -->

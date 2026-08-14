@@ -1,0 +1,486 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Administrator | JUians of Gaibandha
+{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/admin.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="admin-dashboard admin-inner-page">
+
+    <aside class="admin-sidebar" id="adminSidebar">
+
+        <div class="admin-brand">
+
+            <div class="admin-brand-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+
+            <div class="admin-brand-text">
+                <h2>JUians</h2>
+                <span>of Gaibandha</span>
+            </div>
+
+        </div>
+
+
+        <div class="admin-sidebar-profile">
+
+            <div class="admin-sidebar-avatar">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+
+            <div class="admin-sidebar-profile-info">
+
+                <strong>
+                    {{ session.get('admin_name', 'Administrator') }}
+                </strong>
+
+                <span>
+                    {{ session.get('admin_role', 'Administrator') }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="admin-nav">
+
+            <p class="admin-nav-title">
+                MAIN MENU
+            </p>
+
+            <a
+                href="{{ url_for('admin.dashboard') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a
+                href="{{ url_for('admin.members') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-users"></i>
+                <span>All Members</span>
+            </a>
+
+            <a
+                href="{{ url_for('admin.pending_members') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-clock"></i>
+                <span>Pending Requests</span>
+            </a>
+
+            <p class="admin-nav-title">
+                DIRECTORY
+            </p>
+
+            <a
+                href="{{ url_for('member.alumni') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-graduate"></i>
+                <span>Alumni</span>
+            </a>
+
+            <a
+                href="{{ url_for('member.students') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-group"></i>
+                <span>Running Students</span>
+            </a>
+
+            <a
+                href="{{ url_for('member.teachers') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-chalkboard-user"></i>
+                <span>Teachers</span>
+            </a>
+
+            <a
+                href="{{ url_for('member.employees') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-tie"></i>
+                <span>Employees</span>
+            </a>
+
+            <p class="admin-nav-title">
+                SYSTEM
+            </p>
+
+            <a
+                href="{{ url_for('admin.profile') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-shield"></i>
+                <span>Administrator</span>
+            </a>
+
+            <a
+                href="{{ url_for('admin.administrators') }}"
+                class="admin-nav-link active"
+            >
+                <i class="fa-solid fa-users-gear"></i>
+                <span>Manage Administrators</span>
+            </a>
+
+            <a
+                href="{{ url_for('home.home') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Visit Website</span>
+            </a>
+
+            <a
+                href="{{ url_for('admin.logout') }}"
+                class="admin-nav-link admin-logout"
+            >
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="admin-main">
+
+        <header class="admin-topbar">
+
+            <div class="admin-topbar-left">
+
+                <button
+                    class="admin-mobile-toggle"
+                    id="adminMobileToggle"
+                    type="button"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="admin-breadcrumb">
+
+                    <span>Administration</span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                    <strong>
+                        Edit Administrator
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-topbar-right">
+
+                <div class="admin-status">
+                    <span class="admin-status-dot"></span>
+                    <span>System Online</span>
+                </div>
+
+                <div class="admin-user">
+
+                    <div class="admin-user-avatar">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+
+                    <div class="admin-user-info">
+
+                        <strong>
+                            {{ admin.full_name if admin else session.get('admin_name', 'Administrator') }}
+                        </strong>
+
+                        <span>
+                            {{ admin.role if admin else 'Admin' }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <div class="admin-content">
+
+            <section class="admin-page-hero">
+
+                <div class="admin-page-hero-content">
+
+                    <span class="admin-eyebrow">
+                        <i class="fa-solid fa-user-pen"></i>
+                        YEARLY ADMINISTRATION
+                    </span>
+
+                    <h1>
+                        Edit Administrator
+                    </h1>
+
+                    <p>
+                        Update administrator identity, account details,
+                        term information and public contact information.
+                    </p>
+
+                </div>
+
+                <div class="admin-page-hero-actions">
+
+                    <a
+                        href="{{ url_for('admin.administrators') }}"
+                        class="admin-btn admin-btn-primary"
+                    >
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back to Administrators
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <section class="admin-profile-card">
+
+                <div class="admin-section-header-card">
+
+                    <div>
+
+                        <span class="admin-panel-label">
+                            ADMINISTRATOR INFORMATION
+                        </span>
+
+                        <h2>
+                            Edit {{ administrator.full_name }}
+                        </h2>
+
+                        <p>
+                            Account status and current administrator
+                            activation are managed separately.
+                        </p>
+
+                    </div>
+
+                    <div class="admin-section-header-icon">
+                        <i class="fa-solid fa-user-pen"></i>
+                    </div>
+
+                </div>
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for('admin.edit_administrator', id=administrator.id) }}"
+                    class="admin-contact-form"
+                >
+
+                    <div class="admin-form-group">
+
+                        <label for="full_name">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="full_name"
+                            name="full_name"
+                            value="{{ administrator.full_name }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="admin-form-group">
+
+                        <label for="username">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            value="{{ administrator.username }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="admin-form-group">
+
+                        <label for="email">
+                            Account Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value="{{ administrator.email if administrator.email else '' }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="admin-form-group">
+
+                        <label for="term_year">
+                            Term Year
+                        </label>
+
+                        <input
+                            type="number"
+                            id="term_year"
+                            name="term_year"
+                            min="2000"
+                            max="2100"
+                            value="{{ administrator.term_year if administrator.term_year else '' }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="admin-form-group">
+
+                        <label for="contact_email">
+                            Contact Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="contact_email"
+                            name="contact_email"
+                            value="{{ administrator.contact_email if administrator.contact_email else '' }}"
+                            placeholder="Public contact email"
+                        >
+
+                    </div>
+
+
+                    <div class="admin-form-group">
+
+                        <label for="contact_phone">
+                            Contact Phone
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="contact_phone"
+                            name="contact_phone"
+                            value="{{ administrator.contact_phone if administrator.contact_phone else '' }}"
+                            placeholder="Public contact phone"
+                        >
+
+                    </div>
+
+
+                    <div class="admin-form-group">
+
+                        <label for="facebook_url">
+                            Facebook Profile
+                        </label>
+
+                        <input
+                            type="url"
+                            id="facebook_url"
+                            name="facebook_url"
+                            value="{{ administrator.facebook_url if administrator.facebook_url else '' }}"
+                            placeholder="https://facebook.com/profile"
+                        >
+
+                    </div>
+
+
+                    <div class="admin-form-actions">
+
+                        <a
+                            href="{{ url_for('admin.administrators') }}"
+                            class="admin-btn admin-btn-secondary"
+                        >
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="admin-btn admin-contact-save-btn"
+                        >
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Save Changes
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const toggle =
+            document.getElementById(
+                "adminMobileToggle"
+            );
+
+        const sidebar =
+            document.getElementById(
+                "adminSidebar"
+            );
+
+
+        if (toggle && sidebar) {
+
+            toggle.addEventListener(
+                "click",
+                function () {
+
+                    sidebar.classList.toggle(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

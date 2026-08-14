@@ -1,0 +1,224 @@
+/* =====================================================
+   NAVBAR.CSS
+   JUians of Gaibandha
+===================================================== */
+
+/* ==========================
+        NAVBAR
+========================== */
+
+.navbar{
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background: rgba(255,255,255,.95);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(0,0,0,.05);
+    z-index: var(--z-navbar);
+    transition: var(--transition);
+}
+
+.navbar.scrolled{
+    box-shadow: var(--shadow-md);
+}
+
+/* ==========================
+    NAV CONTAINER
+========================== */
+
+.nav-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 82px;
+    gap: 25px;
+}
+
+/* ==========================
+        LOGO
+========================== */
+
+.logo{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+}
+
+.logo img{
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.logo-text h2{
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.logo-text span{
+    display: block;
+    margin-top: 2px;
+    color: var(--text-light);
+    font-size: .82rem;
+}
+
+/* ==========================
+        MENU
+========================== */
+
+.nav-menu{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-menu li{
+    list-style: none;
+}
+
+.nav-menu a{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border-radius: var(--radius-full);
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.nav-menu a i{
+    font-size: .95rem;
+    color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.nav-menu a:hover{
+    background: rgba(0,106,78,.08);
+    color: var(--primary-color);
+}
+
+.nav-menu a:hover i{
+    transform: rotate(-10deg);
+}
+
+.nav-menu a.active{
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.nav-menu a.active i{
+    color: #fff;
+}
+
+/* ==========================
+        RIGHT SIDE
+========================== */
+
+.nav-actions{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+/* ==========================
+      SUBMIT BUTTON
+========================== */
+
+.submit-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 22px;
+
+    background: var(--primary-color);
+    color: #fff;
+
+    border-radius: var(--radius-full);
+
+    font-weight: 600;
+
+    transition: var(--transition);
+}
+
+.submit-btn:hover{
+    background: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ==========================
+      LOGIN BUTTON
+========================== */
+
+.login-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 22px;
+
+    border: 2px solid var(--primary-color);
+
+    color: var(--primary-color);
+
+    border-radius: var(--radius-full);
+
+    font-weight: 600;
+
+    transition: var(--transition);
+}
+
+.login-btn:hover{
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.login-btn:hover i{
+    color: #fff;
+}
+
+/* ==========================
+      MOBILE TOGGLE
+========================== */
+
+.menu-toggle{
+    display: none;
+
+    width: 46px;
+    height: 46px;
+
+    border-radius: 10px;
+
+    background: var(--primary-color);
+
+    color: #fff;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.2rem;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.menu-toggle:hover{
+    background: var(--primary-dark);
+}
+
+/* ==========================
+        ICON
+========================== */
+
+.menu-toggle i{
+    pointer-events: none;
+}

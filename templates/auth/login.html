@@ -1,0 +1,1256 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Login | JUians of Gaibandha
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   ADMIN LOGIN PAGE
+========================================================= */
+
+.admin-login-page {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px 20px;
+
+    background:
+        radial-gradient(
+            circle at 10% 15%,
+            rgba(0, 106, 78, 0.10),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 85%,
+            rgba(0, 106, 78, 0.06),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #f2f8f5 0%,
+            #f9fbfa 50%,
+            #edf6f2 100%
+        );
+}
+
+
+/* =========================================================
+   LOGIN CONTAINER
+========================================================= */
+
+.admin-login-container {
+    width: 100%;
+    max-width: 1080px;
+
+    min-height: 620px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 0.9fr)
+        minmax(0, 1.1fr);
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(0, 106, 78, 0.08);
+
+    border-radius: 26px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 30px 80px rgba(22, 55, 44, 0.13);
+}
+
+
+/* =========================================================
+   LEFT BRAND PANEL
+========================================================= */
+
+.admin-login-brand {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 58px 46px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            #07533f 0%,
+            #054633 50%,
+            #03362a 100%
+        );
+
+    color: #ffffff;
+
+    isolation: isolate;
+}
+
+
+.admin-login-brand::before {
+    content: "";
+
+    position: absolute;
+
+    width: 330px;
+    height: 330px;
+
+    top: -145px;
+    right: -125px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.07);
+
+    box-shadow:
+        0 0 0 45px rgba(255, 255, 255, 0.025),
+        0 0 0 90px rgba(255, 255, 255, 0.015);
+
+    z-index: -1;
+}
+
+
+.admin-login-brand::after {
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    left: -90px;
+    bottom: -105px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(120, 223, 187, 0.10);
+
+    z-index: -1;
+}
+
+
+/* =========================================================
+   BRAND CONTENT
+========================================================= */
+
+.admin-brand-content {
+    position: relative;
+
+    z-index: 2;
+}
+
+
+.admin-brand-logo {
+    width: 100px;
+    height: 100px;
+
+    display: block;
+
+    margin-bottom: 28px;
+
+    padding: 7px;
+
+    object-fit: cover;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.18);
+
+    border-radius: 24px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 14px 32px rgba(0, 0, 0, 0.20);
+}
+
+
+.admin-brand-title {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 38px;
+    line-height: 1.05;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+}
+
+
+.admin-brand-title span {
+    display: block;
+
+    margin-top: 5px;
+
+    color:
+        rgba(255, 255, 255, 0.82);
+
+    font-size: 27px;
+
+    font-weight: 500;
+}
+
+
+.admin-brand-description {
+    max-width: 390px;
+
+    margin: 22px 0 0;
+
+    color:
+        rgba(255, 255, 255, 0.72);
+
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   BRAND FEATURES
+========================================================= */
+
+.admin-brand-features {
+    display: grid;
+
+    gap: 13px;
+
+    margin-top: 32px;
+}
+
+
+.admin-brand-feature {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    color:
+        rgba(255, 255, 255, 0.86);
+
+    font-size: 12px;
+}
+
+
+.admin-brand-feature i {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.10);
+
+    color: #a8e6d0;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   RIGHT LOGIN PANEL
+========================================================= */
+
+.admin-login-form-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 58px 64px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #fbfdfc
+        );
+}
+
+
+/* =========================================================
+   LOGIN HEADER
+========================================================= */
+
+.admin-login-header {
+    margin-bottom: 30px;
+}
+
+
+.admin-login-eyebrow {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 11px;
+
+    color: #006a4e;
+
+    font-size: 9px;
+
+    font-weight: 850;
+
+    letter-spacing: 1.4px;
+
+    text-transform: uppercase;
+}
+
+
+.admin-login-eyebrow i {
+    font-size: 10px;
+}
+
+
+.admin-login-header h1 {
+    margin: 0;
+
+    color: #172f27;
+
+    font-size: 31px;
+    line-height: 1.2;
+
+    font-weight: 800;
+
+    letter-spacing: -0.6px;
+}
+
+
+.admin-login-header p {
+    max-width: 500px;
+
+    margin: 10px 0 0;
+
+    color: #77857f;
+
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   LOGIN FORM
+========================================================= */
+
+.admin-login-form {
+    width: 100%;
+}
+
+
+.admin-form-group {
+    margin-bottom: 20px;
+}
+
+
+.admin-form-label {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 8px;
+
+    color: #30453d;
+
+    font-size: 11px;
+
+    font-weight: 750;
+}
+
+
+.admin-form-label i {
+    width: 15px;
+
+    color: #006a4e;
+
+    text-align: center;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.admin-input-wrapper {
+    position: relative;
+}
+
+
+.admin-input-icon {
+    position: absolute;
+
+    left: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #98a69f;
+
+    font-size: 13px;
+
+    pointer-events: none;
+}
+
+
+.admin-form-input {
+    width: 100%;
+    height: 51px;
+
+    box-sizing: border-box;
+
+    padding:
+        0 15px
+        0 44px;
+
+    border:
+        1px solid #dbe5e1;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    background: #f8fbfa;
+
+    color: #1e342c;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 550;
+
+    transition:
+        border-color 0.22s ease,
+        background 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+
+.admin-form-input::placeholder {
+    color: #a3ada9;
+}
+
+
+.admin-form-input:hover {
+    border-color: #cbdad4;
+
+    background: #ffffff;
+}
+
+
+.admin-form-input:focus {
+    border-color:
+        rgba(0, 106, 78, 0.55);
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(0, 106, 78, 0.07);
+}
+
+
+.admin-password-input {
+    padding-right: 50px;
+}
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+========================================================= */
+
+.admin-password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 9px;
+
+    width: 35px;
+    height: 35px;
+
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: #87968f;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.admin-password-toggle:hover {
+    background: #eaf6f1;
+
+    color: #006a4e;
+}
+
+
+/* =========================================================
+   LOGIN OPTIONS
+========================================================= */
+
+.admin-login-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin:
+        3px 0
+        25px;
+
+    font-size: 11px;
+}
+
+
+.admin-remember {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #697970;
+
+    cursor: pointer;
+
+    user-select: none;
+}
+
+
+.admin-remember input {
+    width: 15px;
+    height: 15px;
+
+    margin: 0;
+
+    accent-color: #006a4e;
+
+    cursor: pointer;
+}
+
+
+.admin-forgot {
+    color: #006a4e;
+
+    font-weight: 750;
+
+    text-decoration: none;
+}
+
+
+.admin-forgot:hover {
+    color: #004f3b;
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.admin-login-button {
+    width: 100%;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #006a4e,
+            #075a45
+        );
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 11px 25px
+        rgba(0, 106, 78, 0.20);
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease;
+}
+
+
+.admin-login-button:hover {
+    transform: translateY(-2px);
+
+    background:
+        linear-gradient(
+            135deg,
+            #00533e,
+            #006a4e
+        );
+
+    box-shadow:
+        0 15px 30px
+        rgba(0, 106, 78, 0.27);
+}
+
+
+.admin-login-button:disabled {
+    opacity: 0.75;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   SECURITY NOTE
+========================================================= */
+
+.admin-security-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-top: 19px;
+
+    color: #8a9791;
+
+    font-size: 9px;
+
+    font-weight: 600;
+}
+
+
+.admin-security-note i {
+    color: #006a4e;
+}
+
+
+/* =========================================================
+   BACK HOME
+========================================================= */
+
+.admin-back-home {
+    display: flex;
+    justify-content: center;
+
+    margin-top: 27px;
+
+    padding-top: 20px;
+
+    border-top:
+        1px solid #edf2ef;
+}
+
+
+.admin-back-home a {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: #677970;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease;
+}
+
+
+.admin-back-home a:hover {
+    color: #006a4e;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .admin-login-container {
+        max-width: 680px;
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .admin-login-brand {
+        min-height: 280px;
+
+        padding: 40px;
+    }
+
+
+    .admin-brand-logo {
+        width: 78px;
+        height: 78px;
+
+        margin-bottom: 18px;
+
+        border-radius: 19px;
+    }
+
+
+    .admin-brand-title {
+        font-size: 30px;
+    }
+
+
+    .admin-brand-title span {
+        font-size: 22px;
+    }
+
+
+    .admin-brand-description {
+        margin-top: 13px;
+    }
+
+
+    .admin-brand-features {
+        display: none;
+    }
+
+
+    .admin-login-form-panel {
+        padding: 46px 42px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .admin-login-page {
+        padding: 18px 12px;
+    }
+
+
+    .admin-login-container {
+        border-radius: 19px;
+    }
+
+
+    .admin-login-brand {
+        min-height: 235px;
+
+        padding: 30px 24px;
+    }
+
+
+    .admin-brand-logo {
+        width: 68px;
+        height: 68px;
+    }
+
+
+    .admin-brand-title {
+        font-size: 27px;
+    }
+
+
+    .admin-brand-title span {
+        font-size: 20px;
+    }
+
+
+    .admin-login-form-panel {
+        padding: 35px 24px;
+    }
+
+
+    .admin-login-header h1 {
+        font-size: 26px;
+    }
+
+}
+
+
+@media (max-width: 420px) {
+
+    .admin-login-options {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+}
+
+
+/* =========================================================
+   REMOVE OLD LOGIN COMPONENTS
+========================================================= */
+
+.admin-login-page .login-card {
+    display: none !important;
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="admin-login-page">
+
+    <div class="admin-login-container">
+
+
+        <!-- =================================================
+             LEFT BRANDING
+        ================================================== -->
+
+        <section class="admin-login-brand">
+
+            <div class="admin-brand-content">
+
+                <img
+                    src="{{ url_for('static', filename='images/association_logo.jpeg') }}"
+                    alt="JUians of Gaibandha Association Logo"
+                    class="admin-brand-logo"
+                >
+
+
+                <h2 class="admin-brand-title">
+
+                    JUians
+
+                    <span>
+                        of Gaibandha
+                    </span>
+
+                </h2>
+
+
+                <p class="admin-brand-description">
+
+                    Official Information &amp; Directory Portal of
+                    Gaibandha District Student's Welfare Association,
+                    Jahangirnagar University.
+
+                </p>
+
+
+                <div class="admin-brand-features">
+
+                    <div class="admin-brand-feature">
+
+                        <i class="fa-solid fa-users"></i>
+
+                        <span>
+                            Manage JUians member directory
+                        </span>
+
+                    </div>
+
+
+                    <div class="admin-brand-feature">
+
+                        <i class="fa-solid fa-user-check"></i>
+
+                        <span>
+                            Review and approve submissions
+                        </span>
+
+                    </div>
+
+
+                    <div class="admin-brand-feature">
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                        <span>
+                            Manage yearly administration
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             LOGIN FORM PANEL
+        ================================================== -->
+
+        <section class="admin-login-form-panel">
+
+
+            <div class="admin-login-header">
+
+                <div class="admin-login-eyebrow">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    Secure Administration
+
+                </div>
+
+
+                <h1>
+                    Welcome Back
+                </h1>
+
+
+                <p>
+                    Sign in using the credentials of the current
+                    JUians of Gaibandha administrator.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGIN FORM
+            ================================================== -->
+
+            <form
+                method="POST"
+                action="{{ url_for('auth.login') }}"
+                class="admin-login-form"
+                id="adminLoginForm"
+            >
+
+
+                <!-- USERNAME / EMAIL -->
+
+                <div class="admin-form-group">
+
+                    <label
+                        for="adminUsername"
+                        class="admin-form-label"
+                    >
+
+                        <i class="fa-solid fa-user"></i>
+
+                        Username or Email
+
+                    </label>
+
+
+                    <div class="admin-input-wrapper">
+
+                        <i class="fa-solid fa-user admin-input-icon"></i>
+
+                        <input
+                            type="text"
+                            id="adminUsername"
+                            name="username"
+                            class="admin-form-input"
+                            placeholder="Enter username or email"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="admin-form-group">
+
+                    <label
+                        for="adminPassword"
+                        class="admin-form-label"
+                    >
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        Password
+
+                    </label>
+
+
+                    <div class="admin-input-wrapper">
+
+                        <i class="fa-solid fa-lock admin-input-icon"></i>
+
+                        <input
+                            type="password"
+                            id="adminPassword"
+                            name="password"
+                            class="admin-form-input admin-password-input"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            class="admin-password-toggle"
+                            id="adminPasswordToggle"
+                            aria-label="Show password"
+                        >
+
+                            <i
+                                class="fa-solid fa-eye"
+                                id="adminPasswordIcon"
+                            ></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OPTIONS -->
+
+                <div class="admin-login-options">
+
+                    <label class="admin-remember">
+
+                        <input
+                            type="checkbox"
+                            name="remember"
+                            value="1"
+                        >
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+
+                    <a
+                        href="{{ url_for('auth.forgot_password') }}"
+                        class="admin-forgot"
+                    >
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <!-- SIGN IN -->
+
+                <button
+                    type="submit"
+                    class="admin-login-button"
+                    id="adminLoginButton"
+                >
+
+                    <i class="fa-solid fa-right-to-bracket"></i>
+
+                    <span>
+                        Sign In
+                    </span>
+
+                </button>
+
+            </form>
+
+
+            <div class="admin-security-note">
+
+                <i class="fa-solid fa-lock"></i>
+
+                Current administrator access only
+
+            </div>
+
+
+            <div class="admin-back-home">
+
+                <a href="{{ url_for('home.home') }}">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back to main website
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        /* =====================================================
+           PASSWORD SHOW / HIDE
+        ====================================================== */
+
+        const passwordInput =
+            document.getElementById(
+                "adminPassword"
+            );
+
+        const passwordToggle =
+            document.getElementById(
+                "adminPasswordToggle"
+            );
+
+        const passwordIcon =
+            document.getElementById(
+                "adminPasswordIcon"
+            );
+
+
+        if (
+            passwordInput &&
+            passwordToggle &&
+            passwordIcon
+        ) {
+
+            passwordToggle.addEventListener(
+                "click",
+                function () {
+
+                    const isPassword =
+                        passwordInput.type ===
+                        "password";
+
+
+                    passwordInput.type =
+                        isPassword
+                            ? "text"
+                            : "password";
+
+
+                    passwordIcon.classList.toggle(
+                        "fa-eye",
+                        !isPassword
+                    );
+
+
+                    passwordIcon.classList.toggle(
+                        "fa-eye-slash",
+                        isPassword
+                    );
+
+
+                    passwordToggle.setAttribute(
+                        "aria-label",
+                        isPassword
+                            ? "Hide password"
+                            : "Show password"
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           LOGIN BUTTON LOADING STATE
+        ====================================================== */
+
+        const loginForm =
+            document.getElementById(
+                "adminLoginForm"
+            );
+
+        const loginButton =
+            document.getElementById(
+                "adminLoginButton"
+            );
+
+
+        if (
+            loginForm &&
+            loginButton
+        ) {
+
+            loginForm.addEventListener(
+                "submit",
+                function () {
+
+                    loginButton.disabled = true;
+
+
+                    loginButton.innerHTML =
+                        '<i class="fa-solid fa-spinner fa-spin"></i>' +
+                        '<span>Signing in...</span>';
+
+                }
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

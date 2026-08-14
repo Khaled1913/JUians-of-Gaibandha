@@ -1,0 +1,610 @@
+/* =====================================================
+   HERO.CSS
+   JUians of Gaibandha
+   Background Image + Blur Hero
+===================================================== */
+
+
+/* ==========================
+   HERO SECTION
+========================== */
+
+.hero {
+
+    position: relative;
+
+    min-height: 700px;
+
+    display: flex;
+
+    align-items: center;
+
+    overflow: hidden;
+
+    padding: 110px 0 90px;
+
+}
+
+
+/* ==========================
+   BACKGROUND IMAGE
+========================== */
+
+.hero-background {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 0;
+
+    overflow: hidden;
+
+}
+
+
+/* ==========================
+   BACKGROUND IMAGE
+========================== */
+
+.hero-background-image {
+
+    position: absolute;
+
+    inset: -20px;
+
+    width: calc(100% + 40px);
+
+    height: calc(100% + 40px);
+
+    object-fit: cover;
+
+    object-position: center;
+
+    filter: blur(7px);
+
+    transform: scale(1.04);
+
+}
+
+
+/* ==========================
+   DARK / GREEN OVERLAY
+========================== */
+
+.hero-background-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 55, 40, 0.72),
+            rgba(0, 106, 78, 0.58)
+        );
+
+}
+
+
+/* ==========================
+   HERO CONTAINER
+========================== */
+
+.hero-container {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+
+}
+
+
+/* ==========================
+   HERO CONTENT
+========================== */
+
+.hero-content {
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    text-align: center;
+
+    color: #ffffff;
+
+}
+
+
+/* ==========================
+   UNIVERSITY LABEL
+========================== */
+
+.hero-university {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-bottom: 22px;
+
+    padding: 9px 19px;
+
+    border: 1px solid rgba(255,255,255,0.30);
+
+    border-radius: 50px;
+
+    background: rgba(255,255,255,0.12);
+
+    color: #ffffff;
+
+    font-size: 0.92rem;
+
+    font-weight: 600;
+
+    backdrop-filter: blur(10px);
+
+}
+
+
+.hero-university i {
+
+    font-size: 1rem;
+
+}
+
+
+/* ==========================
+   HERO TITLE
+========================== */
+
+.hero-title {
+
+    margin: 0 0 24px;
+
+    color: #ffffff;
+
+    font-size: 3.6rem;
+
+    font-weight: 800;
+
+    line-height: 1.15;
+
+    letter-spacing: -1px;
+
+    text-shadow:
+        0 4px 20px rgba(0,0,0,0.25);
+
+}
+
+
+.hero-title span {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color: #ffffff;
+
+}
+
+
+/* ==========================
+   DESCRIPTION
+========================== */
+
+.hero-description {
+
+    max-width: 800px;
+
+    margin: 0 auto 34px;
+
+    color: rgba(255,255,255,0.92);
+
+    font-size: 1.05rem;
+
+    line-height: 1.9;
+
+    text-shadow:
+        0 2px 10px rgba(0,0,0,0.25);
+
+}
+
+
+/* ==========================
+   HERO ACTIONS
+========================== */
+
+.hero-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 42px;
+
+}
+
+
+/* ==========================
+   HERO BUTTON
+========================== */
+
+.hero-btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    min-height: 50px;
+
+    padding: 13px 25px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-size: 0.95rem;
+
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+
+}
+
+
+/* ==========================
+   PRIMARY BUTTON
+========================== */
+
+.hero-btn-primary {
+
+    background: #ffffff;
+
+    color: var(--primary-color);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.20);
+
+}
+
+
+.hero-btn-primary:hover {
+
+    color: var(--primary-color);
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,0.28);
+
+}
+
+
+/* ==========================
+   SECONDARY BUTTON
+========================== */
+
+.hero-btn-secondary {
+
+    background: rgba(255,255,255,0.12);
+
+    color: #ffffff;
+
+    border: 1px solid rgba(255,255,255,0.45);
+
+    backdrop-filter: blur(10px);
+
+}
+
+
+.hero-btn-secondary:hover {
+
+    background: #ffffff;
+
+    color: var(--primary-color);
+
+    transform: translateY(-3px);
+
+}
+
+
+/* ==========================
+   HERO INFO
+========================== */
+
+.hero-info {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 30px;
+
+    max-width: 720px;
+
+    margin: 0 auto;
+
+    padding: 18px 25px;
+
+    background: rgba(255,255,255,0.10);
+
+    border: 1px solid rgba(255,255,255,0.20);
+
+    border-radius: 16px;
+
+    backdrop-filter: blur(12px);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.15);
+
+}
+
+
+/* ==========================
+   HERO INFO ITEM
+========================== */
+
+.hero-info-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    text-align: left;
+
+}
+
+
+.hero-info-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: rgba(255,255,255,0.15);
+
+    color: #ffffff;
+
+}
+
+
+.hero-info-item strong {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #ffffff;
+
+    font-size: 0.88rem;
+
+    font-weight: 700;
+
+}
+
+
+.hero-info-item span {
+
+    display: block;
+
+    color: rgba(255,255,255,0.75);
+
+    font-size: 0.78rem;
+
+}
+
+
+/* ==========================
+   INFO DIVIDER
+========================== */
+
+.hero-info-divider {
+
+    width: 1px;
+
+    height: 42px;
+
+    background: rgba(255,255,255,0.25);
+
+}
+
+
+/* ==========================
+   TABLET
+========================== */
+
+@media (max-width: 992px) {
+
+    .hero {
+
+        min-height: 650px;
+
+        padding: 90px 0 70px;
+
+    }
+
+
+    .hero-title {
+
+        font-size: 2.9rem;
+
+    }
+
+
+    .hero-description {
+
+        font-size: 1rem;
+
+    }
+
+}
+
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width: 768px) {
+
+    .hero {
+
+        min-height: auto;
+
+        padding: 90px 0 65px;
+
+    }
+
+
+    .hero-title {
+
+        font-size: 2.3rem;
+
+    }
+
+
+    .hero-description {
+
+        font-size: 0.92rem;
+
+        line-height: 1.75;
+
+    }
+
+
+    .hero-actions {
+
+        gap: 10px;
+
+        margin-bottom: 30px;
+
+    }
+
+
+    .hero-btn {
+
+        width: 100%;
+
+        max-width: 280px;
+
+    }
+
+
+    .hero-info {
+
+        flex-direction: column;
+
+        gap: 16px;
+
+        padding: 18px;
+
+    }
+
+
+    .hero-info-item {
+
+        width: 100%;
+
+    }
+
+
+    .hero-info-divider {
+
+        width: 80%;
+
+        height: 1px;
+
+    }
+
+
+    .hero-background-image {
+
+        filter: blur(9px);
+
+    }
+
+}
+
+
+/* ==========================
+   SMALL MOBILE
+========================== */
+
+@media (max-width: 480px) {
+
+    .hero {
+
+        padding: 75px 0 50px;
+
+    }
+
+
+    .hero-university {
+
+        font-size: 0.78rem;
+
+        padding: 8px 14px;
+
+    }
+
+
+    .hero-title {
+
+        font-size: 1.95rem;
+
+    }
+
+
+    .hero-description {
+
+        font-size: 0.85rem;
+
+    }
+
+
+    .hero-info-item strong {
+
+        font-size: 0.82rem;
+
+    }
+
+
+    .hero-info-item span {
+
+        font-size: 0.72rem;
+
+    }
+
+}

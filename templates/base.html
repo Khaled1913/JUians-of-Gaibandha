@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- =====================================================
+         BASIC META
+    ====================================================== -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Official Information & Directory Portal of JUians of Gaibandha District Student's Welfare Association, Jahangirnagar University"
+    >
+
+    <meta
+        name="keywords"
+        content="JUians, Gaibandha, Jahangirnagar University, Alumni, Students, Directory"
+    >
+
+    <meta
+        name="author"
+        content="Khaled Mahmud Jon"
+    >
+
+    <meta
+        name="robots"
+        content="index, follow"
+    >
+
+    <meta
+        name="theme-color"
+        content="#006A4E"
+    >
+
+
+    <!-- =====================================================
+         PAGE TITLE
+    ====================================================== -->
+
+    <title>
+        {% block title %}
+            JUians of Gaibandha
+        {% endblock %}
+    </title>
+
+
+    <!-- =====================================================
+         FAVICON
+    ====================================================== -->
+
+    <link
+        rel="icon"
+        type="image/jpeg"
+        href="{{ url_for('static', filename='images/association_logo.jpeg') }}"
+    >
+
+
+    <!-- =====================================================
+         GOOGLE FONTS
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+
+    <!-- =====================================================
+         MAIN CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- =====================================================
+         PAGE SPECIFIC CSS
+    ====================================================== -->
+
+    {% block extra_css %}
+    {% endblock %}
+
+
+    <!-- =====================================================
+         PREMIUM FLASH NOTIFICATION CSS
+    ====================================================== -->
+
+    <style>
+
+        /* =====================================================
+           FLASH NOTIFICATION WRAPPER
+        ====================================================== */
+
+        .flash-notification-wrapper {
+            position: fixed;
+
+            top: 24px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            width: min(
+                460px,
+                calc(100% - 32px)
+            );
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 12px;
+
+            z-index: 99999;
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           NOTIFICATION CARD
+        ====================================================== */
+
+        .flash-notification {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 15px 17px;
+
+            overflow: hidden;
+
+            border:
+                1px solid rgba(
+                    0,
+                    106,
+                    78,
+                    0.12
+                );
+
+            border-radius: 16px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.97
+                );
+
+            box-shadow:
+                0 18px 45px
+                rgba(0, 0, 0, 0.14),
+
+                0 4px 12px
+                rgba(0, 0, 0, 0.06);
+
+            backdrop-filter: blur(16px);
+
+            -webkit-backdrop-filter:
+                blur(16px);
+
+            animation:
+                flashSlideDown
+                0.45s
+                ease
+                forwards;
+
+            pointer-events: auto;
+        }
+
+
+        /* =====================================================
+           LEFT ACCENT
+        ====================================================== */
+
+        .flash-notification::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 4px;
+            height: 100%;
+
+            background: #006A4E;
+        }
+
+
+        /* =====================================================
+           SUCCESS
+        ====================================================== */
+
+        .flash-success::before {
+            background: #16a34a;
+        }
+
+
+        .flash-success .flash-icon {
+            background:
+                rgba(
+                    22,
+                    163,
+                    74,
+                    0.10
+                );
+
+            color: #16a34a;
+        }
+
+
+        /* =====================================================
+           DANGER
+        ====================================================== */
+
+        .flash-danger::before {
+            background: #dc2626;
+        }
+
+
+        .flash-danger .flash-icon {
+            background:
+                rgba(
+                    220,
+                    38,
+                    38,
+                    0.10
+                );
+
+            color: #dc2626;
+        }
+
+
+        /* =====================================================
+           WARNING
+        ====================================================== */
+
+        .flash-warning::before {
+            background: #d97706;
+        }
+
+
+        .flash-warning .flash-icon {
+            background:
+                rgba(
+                    217,
+                    119,
+                    6,
+                    0.10
+                );
+
+            color: #d97706;
+        }
+
+
+        /* =====================================================
+           INFO
+        ====================================================== */
+
+        .flash-info::before {
+            background: #2563eb;
+        }
+
+
+        .flash-info .flash-icon {
+            background:
+                rgba(
+                    37,
+                    99,
+                    235,
+                    0.10
+                );
+
+            color: #2563eb;
+        }
+
+
+        /* =====================================================
+           ICON
+        ====================================================== */
+
+        .flash-icon {
+            width: 40px;
+            height: 40px;
+
+            min-width: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ====================================================== */
+
+        .flash-content {
+            flex: 1;
+
+            min-width: 0;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 2px;
+        }
+
+
+        .flash-content strong {
+            color: #17211d;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        .flash-content span {
+            color: #68736e;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           CLOSE BUTTON
+        ====================================================== */
+
+        .flash-close {
+            width: 30px;
+            height: 30px;
+
+            min-width: 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: transparent;
+
+            color: #9aa39f;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+
+        .flash-close:hover {
+            background:
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.06
+                );
+
+            color: #17211d;
+        }
+
+
+        /* =====================================================
+           OPEN ANIMATION
+        ====================================================== */
+
+        @keyframes flashSlideDown {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(-25px)
+                    scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+
+        }
+
+
+        /* =====================================================
+           CLOSE ANIMATION
+        ====================================================== */
+
+        @keyframes flashSlideUp {
+
+            from {
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+
+            to {
+                opacity: 0;
+
+                transform:
+                    translateY(-20px)
+                    scale(0.96);
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .flash-notification-wrapper {
+                top: 15px;
+
+                width:
+                    calc(
+                        100% - 24px
+                    );
+            }
+
+
+            .flash-notification {
+                padding:
+                    13px 14px;
+
+                border-radius: 14px;
+            }
+
+
+            .flash-icon {
+                width: 36px;
+                height: 36px;
+
+                min-width: 36px;
+
+                font-size: 15px;
+            }
+
+
+            .flash-content strong {
+                font-size: 12px;
+            }
+
+
+            .flash-content span {
+                font-size: 12px;
+            }
+
+
+            .flash-close {
+                width: 28px;
+                height: 28px;
+
+                min-width: 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     PAGE TYPE DETECTION
+
+     Public website components will be hidden from:
+     - All admin.* routes
+     - Admin login
+     - Change password
+     - Forgot password
+     - Reset password
+     - Auth profile
+     - First admin creation
+========================================================= -->
+
+{% set is_admin_page =
+    request.endpoint
+    and (
+        request.endpoint.startswith('admin.')
+        or request.endpoint == 'auth.login'
+        or request.endpoint == 'auth.change_password'
+        or request.endpoint == 'auth.forgot_password'
+        or request.endpoint == 'auth.reset_password'
+        or request.endpoint == 'auth.profile'
+        or request.endpoint == 'auth.create_admin'
+    )
+%}
+
+
+<!-- =========================================================
+     PUBLIC WEBSITE PRELOADER
+========================================================= -->
+
+{% if not is_admin_page %}
+
+    <div class="preloader">
+
+        <div class="loader"></div>
+
+    </div>
+
+{% endif %}
+
+
+<!-- =========================================================
+     PUBLIC WEBSITE NAVBAR
+========================================================= -->
+
+{% if not is_admin_page %}
+
+    {% include "includes/navbar.html" %}
+
+{% endif %}
+
+
+<!-- =========================================================
+     PREMIUM FLASH MESSAGES
+========================================================= -->
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+    {% if messages %}
+
+        <div class="flash-notification-wrapper">
+
+            {% for category, message in messages %}
+
+                <div
+                    class="flash-notification flash-{{ category }}"
+                >
+
+                    <!-- ICON -->
+
+                    <div class="flash-icon">
+
+                        {% if category == "success" %}
+
+                            <i class="fa-solid fa-check"></i>
+
+                        {% elif category == "danger" %}
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        {% elif category == "warning" %}
+
+                            <i class="fa-solid fa-exclamation"></i>
+
+                        {% else %}
+
+                            <i class="fa-solid fa-info"></i>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- CONTENT -->
+
+                    <div class="flash-content">
+
+                        <strong>
+
+                            {% if category == "success" %}
+
+                                Success
+
+                            {% elif category == "danger" %}
+
+                                Error
+
+                            {% elif category == "warning" %}
+
+                                Warning
+
+                            {% else %}
+
+                                Information
+
+                            {% endif %}
+
+                        </strong>
+
+
+                        <span>
+                            {{ message }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- CLOSE -->
+
+                    <button
+                        type="button"
+                        class="flash-close"
+                        aria-label="Close notification"
+                    >
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+{% endwith %}
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+
+<main
+    class="main-content{% if is_admin_page %} admin-page-content{% endif %}"
+>
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+
+<!-- =========================================================
+     PUBLIC WEBSITE FOOTER
+========================================================= -->
+
+{% if not is_admin_page %}
+
+    {% include "includes/footer.html" %}
+
+{% endif %}
+
+
+<!-- =========================================================
+     SCROLL TO TOP
+========================================================= -->
+
+{% if not is_admin_page %}
+
+    <button
+        id="scrollTopBtn"
+        type="button"
+        aria-label="Scroll to Top"
+    >
+
+        <i class="fa-solid fa-arrow-up"></i>
+
+    </button>
+
+{% endif %}
+
+
+<!-- =========================================================
+     MAIN JAVASCRIPT
+========================================================= -->
+
+<script
+    src="{{ url_for('static', filename='js/script.js') }}"
+></script>
+
+
+<!-- =========================================================
+     FLASH NOTIFICATION JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        /* =====================================================
+           GET NOTIFICATIONS
+        ====================================================== */
+
+        const notifications =
+            document.querySelectorAll(
+                ".flash-notification"
+            );
+
+
+        /* =====================================================
+           CLOSE FUNCTION
+        ====================================================== */
+
+        function closeNotification(
+            notification
+        ) {
+
+            if (
+                !notification ||
+                notification.dataset.closed ===
+                "true"
+            ) {
+
+                return;
+
+            }
+
+
+            notification.dataset.closed =
+                "true";
+
+
+            notification.style.animation =
+                "flashSlideUp 0.35s ease forwards";
+
+
+            setTimeout(
+                function () {
+
+                    if (
+                        notification &&
+                        notification.parentNode
+                    ) {
+
+                        notification.remove();
+
+                    }
+
+                },
+                350
+            );
+
+        }
+
+
+        /* =====================================================
+           PROCESS NOTIFICATIONS
+        ====================================================== */
+
+        notifications.forEach(
+            function (notification) {
+
+                const closeButton =
+                    notification.querySelector(
+                        ".flash-close"
+                    );
+
+
+                if (closeButton) {
+
+                    closeButton.addEventListener(
+                        "click",
+                        function () {
+
+                            closeNotification(
+                                notification
+                            );
+
+                        }
+                    );
+
+                }
+
+
+                setTimeout(
+                    function () {
+
+                        closeNotification(
+                            notification
+                        );
+
+                    },
+                    4000
+                );
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+
+<!-- =========================================================
+     PAGE SPECIFIC JAVASCRIPT
+========================================================= -->
+
+{% block extra_js %}
+{% endblock %}
+
+
+</body>
+
+</html>

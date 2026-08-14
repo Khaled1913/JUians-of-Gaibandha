@@ -1,0 +1,448 @@
+
+<!-- =================================================
+     STATISTICS SECTION
+================================================== -->
+
+<section
+    id="statistics"
+    class="statistics"
+>
+
+
+    <!-- =================================================
+         SECTION HEADER
+    ================================================== -->
+
+    <div class="section-header">
+
+        <span class="section-tag">
+            Association Overview
+        </span>
+
+        <h2>
+            Association Statistics
+        </h2>
+
+        <p>
+            Current information of JUians of Gaibandha
+            District Students' Welfare Association.
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         STATISTICS GRID
+    ================================================== -->
+
+    <div class="statistics-grid">
+
+
+        <!-- =================================================
+             ALUMNI
+        ================================================== -->
+
+        <div class="stat-card stat-alumni">
+
+            <!-- Top Accent -->
+
+            <div class="stat-accent"></div>
+
+
+            <!-- Icon -->
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-user-graduate"></i>
+
+            </div>
+
+
+            <!-- Category -->
+
+            <div class="stat-category">
+
+                <span>
+                    DIRECTORY CATEGORY
+                </span>
+
+            </div>
+
+
+            <!-- Title -->
+
+            <h3>
+                Alumni
+            </h3>
+
+
+            <!-- Description -->
+
+            <p class="stat-description">
+
+                Graduated students of Jahangirnagar
+                University from Gaibandha District.
+
+            </p>
+
+
+            <!-- Member Count -->
+
+            <div class="stat-count-wrapper">
+
+                <span class="stat-count-label">
+                    Total Members
+                </span>
+
+                <div class="stat-number counter">
+
+                    {{ total_alumni }}
+
+                </div>
+
+            </div>
+
+
+            <!-- Status -->
+
+            <div class="stat-status">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    Approved Directory
+                </span>
+
+            </div>
+
+
+            <!-- View Link -->
+
+            <a
+                href="{{ url_for('member.alumni') }}"
+                class="stat-link"
+            >
+
+                <span>
+                    View Alumni Directory
+                </span>
+
+                <span class="stat-link-icon">
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             RUNNING STUDENTS
+        ================================================== -->
+
+        <div class="stat-card stat-students">
+
+            <!-- Top Accent -->
+
+            <div class="stat-accent"></div>
+
+
+            <!-- Icon -->
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-user-group"></i>
+
+            </div>
+
+
+            <!-- Category -->
+
+            <div class="stat-category">
+
+                <span>
+                    DIRECTORY CATEGORY
+                </span>
+
+            </div>
+
+
+            <!-- Title -->
+
+            <h3>
+                Running Students
+            </h3>
+
+
+            <!-- Description -->
+
+            <p class="stat-description">
+
+                Current students studying at
+                Jahangirnagar University.
+
+            </p>
+
+
+            <!-- Member Count -->
+
+            <div class="stat-count-wrapper">
+
+                <span class="stat-count-label">
+                    Total Members
+                </span>
+
+                <div class="stat-number counter">
+
+                    {{ total_students }}
+
+                </div>
+
+            </div>
+
+
+            <!-- Status -->
+
+            <div class="stat-status">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    Approved Directory
+                </span>
+
+            </div>
+
+
+            <!-- View Link -->
+
+            <a
+                href="{{ url_for('member.students') }}"
+                class="stat-link"
+            >
+
+                <span>
+                    View Student Directory
+                </span>
+
+                <span class="stat-link-icon">
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             TEACHERS
+        ================================================== -->
+
+        <div class="stat-card stat-teachers">
+
+            <!-- Top Accent -->
+
+            <div class="stat-accent"></div>
+
+
+            <!-- Icon -->
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-chalkboard-user"></i>
+
+            </div>
+
+
+            <!-- Category -->
+
+            <div class="stat-category">
+
+                <span>
+                    DIRECTORY CATEGORY
+                </span>
+
+            </div>
+
+
+            <!-- Title -->
+
+            <h3>
+                Teachers
+            </h3>
+
+
+            <!-- Description -->
+
+            <p class="stat-description">
+
+                Faculty members of Jahangirnagar
+                University from Gaibandha District.
+
+            </p>
+
+
+            <!-- Member Count -->
+
+            <div class="stat-count-wrapper">
+
+                <span class="stat-count-label">
+                    Total Members
+                </span>
+
+                <div class="stat-number counter">
+
+                    {{ total_teachers }}
+
+                </div>
+
+            </div>
+
+
+            <!-- Status -->
+
+            <div class="stat-status">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    Approved Directory
+                </span>
+
+            </div>
+
+
+            <!-- View Link -->
+
+            <a
+                href="{{ url_for('member.teachers') }}"
+                class="stat-link"
+            >
+
+                <span>
+                    View Teacher Directory
+                </span>
+
+                <span class="stat-link-icon">
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             EMPLOYEES
+        ================================================== -->
+
+        <div class="stat-card stat-employees">
+
+            <!-- Top Accent -->
+
+            <div class="stat-accent"></div>
+
+
+            <!-- Icon -->
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-user-tie"></i>
+
+            </div>
+
+
+            <!-- Category -->
+
+            <div class="stat-category">
+
+                <span>
+                    DIRECTORY CATEGORY
+                </span>
+
+            </div>
+
+
+            <!-- Title -->
+
+            <h3>
+                Employees
+            </h3>
+
+
+            <!-- Description -->
+
+            <p class="stat-description">
+
+                Officers and employees of Jahangirnagar
+                University from Gaibandha District.
+
+            </p>
+
+
+            <!-- Member Count -->
+
+            <div class="stat-count-wrapper">
+
+                <span class="stat-count-label">
+                    Total Members
+                </span>
+
+                <div class="stat-number counter">
+
+                    {{ total_employees }}
+
+                </div>
+
+            </div>
+
+
+            <!-- Status -->
+
+            <div class="stat-status">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    Approved Directory
+                </span>
+
+            </div>
+
+
+            <!-- View Link -->
+
+            <a
+                href="{{ url_for('member.employees') }}"
+                class="stat-link"
+            >
+
+                <span>
+                    View Employee Directory
+                </span>
+
+                <span class="stat-link-icon">
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+

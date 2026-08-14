@@ -1,0 +1,128 @@
+/* =====================================================
+   VARIABLES.CSS
+   Global Design System
+   JUians of Gaibandha
+===================================================== */
+
+:root {
+
+    /* ======================================
+                    COLORS
+    ====================================== */
+
+    --primary-color: #006A4E;
+    --primary-dark: #00523D;
+    --primary-light: #0B8A66;
+
+    --secondary-color: #F4C542;
+    --secondary-dark: #D4A017;
+
+    --success-color: #16A34A;
+    --danger-color: #DC2626;
+    --warning-color: #F59E0B;
+    --info-color: #2563EB;
+
+    /* ======================================
+                BACKGROUND COLORS
+    ====================================== */
+
+    --background-color: #F8FAFC;
+    --surface-color: #FFFFFF;
+    --section-bg: #F1F5F9;
+
+    /* ======================================
+                    TEXT COLORS
+    ====================================== */
+
+    --text-dark: #1E293B;
+    --text-medium: #475569;
+    --text-light: #64748B;
+    --text-white: #FFFFFF;
+
+    /* ======================================
+                    BORDER
+    ====================================== */
+
+    --border-color: #E2E8F0;
+    --border-light: #F1F5F9;
+
+    /* ======================================
+                    SHADOW
+    ====================================== */
+
+    --shadow-sm: 0 2px 8px rgba(0,0,0,.05);
+
+    --shadow-md: 0 8px 20px rgba(0,0,0,.08);
+
+    --shadow-lg: 0 15px 40px rgba(0,0,0,.12);
+
+    /* ======================================
+                    RADIUS
+    ====================================== */
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-xl: 25px;
+    --radius-full: 999px;
+
+    /* ======================================
+                    FONT
+    ====================================== */
+
+    --font-family: "Poppins", sans-serif;
+
+    --font-xs: .75rem;
+    --font-sm: .875rem;
+    --font-md: 1rem;
+    --font-lg: 1.125rem;
+    --font-xl: 1.5rem;
+    --font-2xl: 2rem;
+    --font-3xl: 2.8rem;
+    --font-4xl: 3.5rem;
+
+    /* ======================================
+                FONT WEIGHT
+    ====================================== */
+
+    --weight-light: 300;
+    --weight-normal: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+    --weight-extra-bold: 800;
+
+    /* ======================================
+                    SPACING
+    ====================================== */
+
+    --space-xs: .5rem;
+    --space-sm: .75rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 5rem;
+
+    /* ======================================
+                CONTAINER WIDTH
+    ====================================== */
+
+    --container-width: 1320px;
+
+    /* ======================================
+                TRANSITION
+    ====================================== */
+
+    --transition: .35s ease;
+
+    /* ======================================
+                    Z INDEX
+    ====================================== */
+
+    --z-navbar: 1000;
+    --z-dropdown: 1100;
+    --z-modal: 1200;
+    --z-loader: 9999;
+
+}

@@ -1,0 +1,296 @@
+/* =====================================================
+   RECENT_EVENTS.CSS
+   JUians of Gaibandha
+===================================================== */
+
+/* ==========================
+        SECTION
+========================== */
+
+.recent-events{
+
+    padding:100px 0;
+
+    background:var(--section-bg);
+
+}
+
+/* ==========================
+        HEADER
+========================== */
+
+.recent-events .section-header{
+
+    margin-bottom:60px;
+
+}
+
+/* ==========================
+        GRID
+========================== */
+
+.events-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+
+    gap:35px;
+
+}
+
+/* ==========================
+        CARD
+========================== */
+
+.event-card{
+
+    background:var(--surface-color);
+
+    border-radius:var(--radius-lg);
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow-sm);
+
+    transition:var(--transition);
+
+    position:relative;
+
+}
+
+.event-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:var(--shadow-lg);
+
+}
+
+/* ==========================
+        IMAGE
+========================== */
+
+.event-image{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.event-image img{
+
+    width:100%;
+
+    height:240px;
+
+    object-fit:cover;
+
+    transition:.5s;
+
+}
+
+.event-card:hover .event-image img{
+
+    transform:scale(1.08);
+
+}
+
+/* ==========================
+        DATE
+========================== */
+
+.event-date{
+
+    position:absolute;
+
+    top:18px;
+
+    left:18px;
+
+    background:var(--primary-color);
+
+    color:#fff;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    box-shadow:var(--shadow-md);
+
+}
+
+.event-date h3{
+
+    margin:0;
+
+    font-size:1.5rem;
+
+    color:#fff;
+
+}
+
+.event-date span{
+
+    display:block;
+
+    margin-top:2px;
+
+    font-size:.85rem;
+
+}
+
+/* ==========================
+        BODY
+========================== */
+
+.event-body{
+
+    padding:30px;
+
+}
+
+/* ==========================
+        TITLE
+========================== */
+
+.event-body h3{
+
+    margin-bottom:15px;
+
+}
+
+/* ==========================
+        META
+========================== */
+
+.event-meta{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:18px;
+
+    margin-bottom:18px;
+
+    color:var(--text-light);
+
+    font-size:.92rem;
+
+}
+
+.event-meta span{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.event-meta i{
+
+    color:var(--primary-color);
+
+}
+
+/* ==========================
+        DESCRIPTION
+========================== */
+
+.event-body p{
+
+    margin-bottom:25px;
+
+}
+
+/* ==========================
+        BUTTON
+========================== */
+
+.event-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:13px 24px;
+
+    background:var(--primary-color);
+
+    color:#fff;
+
+    border-radius:var(--radius-full);
+
+    font-weight:600;
+
+    transition:var(--transition);
+
+}
+
+.event-btn:hover{
+
+    background:var(--primary-dark);
+
+    transform:translateY(-3px);
+
+}
+
+.event-btn i{
+
+    transition:var(--transition);
+
+}
+
+.event-btn:hover i{
+
+    transform:translateX(5px);
+
+}
+
+/* ==========================
+        EMPTY STATE
+========================== */
+
+.no-event{
+
+    text-align:center;
+
+    padding:70px 40px;
+
+    background:#fff;
+
+    border-radius:var(--radius-lg);
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.no-event i{
+
+    font-size:60px;
+
+    color:var(--primary-color);
+
+    margin-bottom:20px;
+
+}
+
+.no-event h3{
+
+    margin-bottom:15px;
+
+}
+
+.no-event p{
+
+    color:var(--text-light);
+
+}

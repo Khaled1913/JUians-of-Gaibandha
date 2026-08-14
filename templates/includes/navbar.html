@@ -1,0 +1,199 @@
+<div class="container nav-container">
+
+    <!-- ==============================
+                LOGO
+    =============================== -->
+
+    <a href="{{ url_for('home.home') }}"
+       class="logo">
+
+        <img
+            src="{{ url_for('static', filename='images/association_logo.jpeg') }}"
+            alt="JUians of Gaibandha Logo">
+
+        <div class="logo-text">
+
+            <h2>
+                JUians
+            </h2>
+
+            <span>
+                of Gaibandha
+            </span>
+
+        </div>
+
+    </a>
+
+
+    <!-- ==============================
+            MOBILE MENU TOGGLE
+    =============================== -->
+
+    <button
+        class="menu-toggle"
+        id="menu-toggle"
+        type="button"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false">
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+    <!-- ==============================
+            NAVIGATION MENU
+    =============================== -->
+
+    <ul class="nav-menu" id="nav-menu">
+
+        <!-- ==============================
+                HOME
+        =============================== -->
+
+        <li>
+
+            <a
+                href="{{ url_for('home.home') }}"
+                class="nav-link">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>
+                    Home
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <!-- ==============================
+                SUBMIT INFORMATION
+        =============================== -->
+
+        <li>
+
+            <a
+                href="{{ url_for('member.submit') }}"
+                class="nav-link">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                <span>
+                    Submit Information
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <!-- ==============================
+                STATISTICS
+        =============================== -->
+
+        <li>
+
+            <a
+                href="{{ url_for('home.home') }}#statistics"
+                class="nav-link">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                <span>
+                    Statistics
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <!-- ==============================
+                CATEGORIES
+        =============================== -->
+
+        <li>
+
+            <a
+                href="{{ url_for('home.home') }}#categories"
+                class="nav-link">
+
+                <i class="fa-solid fa-layer-group"></i>
+
+                <span>
+                    Categories
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <!-- ==============================
+                ABOUT
+        =============================== -->
+
+        <li>
+
+            <a
+                href="{{ url_for('home.home') }}#about"
+                class="nav-link">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <span>
+                    About
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <!-- ==============================
+                CONTACT
+        =============================== -->
+
+        <li>
+
+            <a
+                href="{{ url_for('home.home') }}#contact"
+                class="nav-link">
+
+                <i class="fa-solid fa-envelope"></i>
+
+                <span>
+                    Contact
+                </span>
+
+            </a>
+
+        </li>
+
+    </ul>
+
+
+    <!-- ==============================
+            RIGHT SIDE ACTION
+    =============================== -->
+
+    <div class="nav-actions">
+
+        <a
+            href="{{ url_for('auth.login') }}"
+            class="login-btn">
+
+            <i class="fa-solid fa-lock"></i>
+
+            <span>
+                Admin Login
+            </span>
+
+        </a>
+
+    </div>
+
+</div>

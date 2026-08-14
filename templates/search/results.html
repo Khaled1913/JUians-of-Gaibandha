@@ -1,0 +1,547 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Search Results | JUians of Gaibandha
+{% endblock %}
+
+{% block extra_css %}
+<!-- Search page styles are loaded from search.css -->
+{% endblock %}
+
+{% block content %}
+
+<!-- =====================================================
+     PREMIUM SEARCH PAGE
+====================================================== -->
+
+<div class="premium-search-page">
+
+
+    <!-- =================================================
+         SEARCH HERO
+    ================================================== -->
+
+    <section class="premium-search-hero">
+
+        <div class="search-hero-content">
+
+            <span class="search-eyebrow">
+
+                <i class="fa-solid fa-users"></i>
+
+                JUians DIRECTORY
+
+            </span>
+
+
+            <h1>
+                Search <span>Results</span>
+            </h1>
+
+
+            <p>
+                Find verified Alumni, Running Students, Teachers
+                and Employees of Jahangirnagar University
+                from Gaibandha District.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         SEARCH CONTAINER
+    ================================================== -->
+
+    <div class="premium-search-container">
+
+
+        <!-- =================================================
+             SEARCH BOX
+        ================================================== -->
+
+        <div class="premium-search-box">
+
+
+            <div class="search-box-heading">
+
+                <div class="search-heading-icon">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Find a Member
+                    </h2>
+
+                    <p>
+                        Search using a member's name or department
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SEARCH FORM -->
+
+            <form
+                method="GET"
+                action="{{ url_for('search.search') }}"
+                class="premium-directory-search-form"
+            >
+
+                <div class="premium-search-input">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ request.args.get('q', '') }}"
+                        placeholder="Search by name or department..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="premium-search-button"
+                >
+
+                    <i class="fa-solid fa-search"></i>
+
+                    <span>
+                        Search
+                    </span>
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SEARCH QUERY
+        ================================================== -->
+
+        {% if request.args.get('q') %}
+
+        <div class="premium-search-query">
+
+            <div class="query-icon">
+
+                <i class="fa-solid fa-filter"></i>
+
+            </div>
+
+
+            <div class="query-text">
+
+                <span>
+                    Search results for
+                </span>
+
+                <strong>
+                    "{{ request.args.get('q') }}"
+                </strong>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             RESULTS
+        ================================================== -->
+
+        <div class="premium-results-wrapper">
+
+
+            {% if results %}
+
+
+                <!-- =================================================
+                     RESULTS HEADER
+                ================================================== -->
+
+                <div class="premium-results-header">
+
+                    <div>
+
+                        <span class="results-label">
+                            DIRECTORY RESULTS
+                        </span>
+
+
+                        <h2>
+                            Verified Members
+                        </h2>
+
+                    </div>
+
+
+                    <div class="premium-results-count">
+
+                        <span class="count-number">
+                            {{ results|length }}
+                        </span>
+
+
+                        <span class="count-label">
+
+                            member{% if results|length != 1 %}s{% endif %}
+                            found
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     MEMBER GRID
+                ================================================== -->
+
+                <div class="premium-member-grid">
+
+
+                    {% for member in results %}
+
+
+                    <article class="premium-member-card">
+
+
+                        <!-- =================================================
+                             CARD TOP
+                        ================================================== -->
+
+                        <div class="member-card-top">
+
+
+                            <!-- MEMBER PHOTO -->
+
+                            <div class="member-avatar">
+
+
+                                {% if member.photo
+                                      and member.photo != "default.png" %}
+
+
+                                    <img
+                                        src="{{ url_for(
+                                            'static',
+                                            filename='uploads/' + member.photo
+                                        ) }}"
+                                        alt="{{ member.full_name }}"
+                                    >
+
+
+                                {% else %}
+
+
+                                    <div class="default-member-avatar">
+
+                                        <i class="fa-solid fa-user"></i>
+
+                                    </div>
+
+
+                                {% endif %}
+
+
+                            </div>
+
+
+
+                            <!-- VERIFIED STATUS -->
+
+                            <div class="member-status">
+
+                                <span class="verified-badge">
+
+                                    <i class="fa-solid fa-circle-check"></i>
+
+                                    Verified
+
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             CARD CONTENT
+                        ================================================== -->
+
+                        <div class="member-card-content">
+
+
+                            <!-- NAME -->
+
+                            <h3>
+                                {{ member.full_name }}
+                            </h3>
+
+
+
+                            <!-- CATEGORY -->
+
+                            {% if member.category %}
+
+                            <div class="member-category">
+
+                                <i class="fa-solid fa-layer-group"></i>
+
+                                <span>
+                                    {{ member.category }}
+                                </span>
+
+                            </div>
+
+                            {% endif %}
+
+
+
+                            <!-- DEPARTMENT -->
+
+                            {% if member.department %}
+
+                            <div class="member-department">
+
+
+                                <div class="department-icon">
+
+                                    <i class="fa-solid fa-building-columns"></i>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span class="department-label">
+                                        Department
+                                    </span>
+
+
+                                    <strong>
+                                        {{ member.department }}
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+                            {% endif %}
+
+
+
+                            <!-- =================================================
+                                 PRIVACY PROTECTION
+                                 
+                                 The following private fields are intentionally
+                                 NOT displayed on public search results:
+                                 
+                                 Phone
+                                 Email
+                                 Student ID
+                                 Registration Number
+                                 Date of Birth
+                                 Blood Group
+                                 Present Address
+                                 Permanent Address
+                                 Company
+                                 Designation
+                                 Social Media
+                                 Remarks
+                            ================================================== -->
+
+
+
+                            <!-- DIVIDER -->
+
+                            <div class="member-card-divider"></div>
+
+
+
+                            <!-- =================================================
+                                 DIRECTORY BUTTON
+                            ================================================== -->
+
+                            <div class="member-card-action">
+
+
+                                {% if member.category == "Alumni" %}
+
+
+                                    <a
+                                        href="{{ url_for('member.alumni') }}"
+                                        class="member-view-button"
+                                    >
+
+                                        <span>
+                                            View Alumni Directory
+                                        </span>
+
+                                        <i class="fa-solid fa-arrow-right"></i>
+
+                                    </a>
+
+
+                                {% elif member.category == "Running Student" %}
+
+
+                                    <a
+                                        href="{{ url_for('member.students') }}"
+                                        class="member-view-button"
+                                    >
+
+                                        <span>
+                                            View Student Directory
+                                        </span>
+
+                                        <i class="fa-solid fa-arrow-right"></i>
+
+                                    </a>
+
+
+                                {% elif member.category == "Teacher" %}
+
+
+                                    <a
+                                        href="{{ url_for('member.teachers') }}"
+                                        class="member-view-button"
+                                    >
+
+                                        <span>
+                                            View Teacher Directory
+                                        </span>
+
+                                        <i class="fa-solid fa-arrow-right"></i>
+
+                                    </a>
+
+
+                                {% elif member.category == "Employee" %}
+
+
+                                    <a
+                                        href="{{ url_for('member.employees') }}"
+                                        class="member-view-button"
+                                    >
+
+                                        <span>
+                                            View Employee Directory
+                                        </span>
+
+                                        <i class="fa-solid fa-arrow-right"></i>
+
+                                    </a>
+
+
+                                {% endif %}
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </article>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- =================================================
+                     EMPTY STATE
+                ================================================== -->
+
+                <div class="premium-empty-state">
+
+
+                    <div class="empty-icon">
+
+                        <i class="fa-solid fa-user-slash"></i>
+
+                    </div>
+
+
+                    <span class="empty-label">
+                        NO RESULTS
+                    </span>
+
+
+                    <h2>
+                        No Members Found
+                    </h2>
+
+
+                    <p>
+                        We couldn't find any verified member
+                        matching your search.
+                    </p>
+
+
+                    <span class="empty-help">
+                        Try searching with a different name
+                        or department.
+                    </span>
+
+
+                    <a
+                        href="{{ url_for('home.home') }}"
+                        class="empty-back-button"
+                    >
+
+                        <i class="fa-solid fa-house"></i>
+
+                        Back to Home
+
+                    </a>
+
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,2299 @@
+{% extends "base.html" %}
+
+{% block title %}
+All Members | JUians of Gaibandha
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/admin.css') }}"
+>
+
+<style>
+
+/* ============================================================
+   ADMIN MEMBERS PAGE
+   PREMIUM PAGE-SPECIFIC DESIGN
+============================================================ */
+
+.admin-members-page {
+    --members-green: #006a4e;
+    --members-green-dark: #034b39;
+    --members-green-deep: #023a2d;
+    --members-soft: #edf7f3;
+    --members-border: #e2ebe7;
+    --members-text: #18352c;
+    --members-muted: #75837d;
+    --members-white: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f4f8f6 0%,
+            #f8faf9 55%,
+            #f2f7f5 100%
+        );
+}
+
+
+/* ============================================================
+   CONTENT SPACING
+============================================================ */
+
+.admin-members-page .admin-content {
+    padding-top: 26px;
+}
+
+
+/* ============================================================
+   HERO
+============================================================ */
+
+.admin-members-page .admin-page-hero {
+    position: relative;
+
+    min-height: 220px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 22px;
+
+    padding: 35px 38px;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #053d30 0%,
+            #075a45 52%,
+            #087057 100%
+        );
+
+    box-shadow:
+        0 20px 46px
+        rgba(0, 80, 60, 0.17);
+}
+
+
+.admin-members-page .admin-page-hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 340px;
+    height: 340px;
+
+    right: -115px;
+    top: -170px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.09);
+
+    box-shadow:
+        0 0 0 45px rgba(255,255,255,0.025),
+        0 0 0 90px rgba(255,255,255,0.015);
+}
+
+
+.admin-members-page .admin-page-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 250px;
+    height: 250px;
+
+    right: 160px;
+    bottom: -220px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(132, 232, 198, 0.13);
+
+    filter: blur(6px);
+}
+
+
+.admin-members-page .admin-page-hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 720px;
+}
+
+
+.admin-members-page .admin-page-hero .admin-eyebrow {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 12px;
+
+    color: #a4e4cd;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.3px;
+}
+
+
+.admin-members-page .admin-page-hero h1 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: clamp(
+        30px,
+        3vw,
+        40px
+    );
+
+    line-height: 1.1;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+}
+
+
+.admin-members-page .admin-page-hero p {
+    max-width: 680px;
+
+    margin: 14px 0 0;
+
+    color:
+        rgba(255, 255, 255, 0.70);
+
+    font-size: 12px;
+
+    line-height: 1.75;
+}
+
+
+.admin-members-page .admin-page-hero-actions {
+    position: relative;
+
+    z-index: 3;
+
+    flex: 0 0 auto;
+}
+
+
+.admin-members-page .admin-page-hero-actions .admin-btn-primary {
+    min-height: 44px;
+
+    padding:
+        0 18px;
+
+    border:
+        1px solid rgba(255,255,255,0.18);
+
+    background: #ffffff;
+
+    color: var(--members-green);
+
+    box-shadow:
+        0 10px 25px
+        rgba(0,0,0,0.13);
+}
+
+
+.admin-members-page .admin-page-hero-actions .admin-btn-primary:hover {
+    transform: translateY(-2px);
+
+    color: var(--members-green-dark);
+
+    box-shadow:
+        0 14px 30px
+        rgba(0,0,0,0.18);
+}
+
+
+/* ============================================================
+   STATISTICS GRID
+============================================================ */
+
+.admin-members-page .admin-mini-stat-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 15px;
+
+    margin-bottom: 22px;
+}
+
+
+.admin-members-page .admin-mini-stat {
+    position: relative;
+
+    min-height: 108px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 18px;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--members-border);
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #fbfdfc
+        );
+
+    box-shadow:
+        0 7px 22px
+        rgba(22, 55, 44, 0.05);
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+}
+
+
+.admin-members-page .admin-mini-stat:hover {
+    transform: translateY(-4px);
+
+    border-color:
+        rgba(0, 106, 78, 0.17);
+
+    box-shadow:
+        0 14px 30px
+        rgba(22, 55, 44, 0.09);
+}
+
+
+.admin-members-page .admin-mini-stat::after {
+    content: "";
+
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    right: -50px;
+    bottom: -54px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(0, 106, 78, 0.035);
+}
+
+
+.admin-members-page .admin-mini-stat > i {
+    width: 46px;
+    height: 46px;
+
+    flex: 0 0 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e7f5ef,
+            #dcefe7
+        );
+
+    color: var(--members-green);
+
+    font-size: 15px;
+}
+
+
+.admin-members-page .admin-mini-stat:nth-child(2) > i {
+    background: #e9f7ef;
+
+    color: #24855a;
+}
+
+
+.admin-members-page .admin-mini-stat:nth-child(3) > i {
+    background: #fff4df;
+
+    color: #b37b16;
+}
+
+
+.admin-members-page .admin-mini-stat:nth-child(4) > i {
+    background: #fdebed;
+
+    color: #c1525d;
+}
+
+
+.admin-members-page .admin-mini-stat div {
+    position: relative;
+
+    z-index: 2;
+}
+
+
+.admin-members-page .admin-mini-stat span {
+    display: block;
+
+    color: #89968f;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.4px;
+
+    text-transform: uppercase;
+}
+
+
+.admin-members-page .admin-mini-stat strong {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--members-text);
+
+    font-size: 25px;
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -0.6px;
+}
+
+
+/* ============================================================
+   MAIN DIRECTORY PANEL
+============================================================ */
+
+.admin-members-page .admin-panel {
+    overflow: hidden;
+
+    margin-bottom: 22px;
+
+    border:
+        1px solid var(--members-border);
+
+    border-radius: 19px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 12px 35px
+        rgba(22, 55, 44, 0.065);
+}
+
+
+/* ============================================================
+   PANEL HEADER
+============================================================ */
+
+.admin-members-page .admin-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 23px 25px;
+
+    border-bottom:
+        1px solid #edf2ef;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #fbfdfc
+        );
+}
+
+
+.admin-members-page .admin-panel-label {
+    color: var(--members-green);
+
+    font-size: 9px;
+
+    font-weight: 850;
+
+    letter-spacing: 1.2px;
+}
+
+
+.admin-members-page .admin-panel-header h2 {
+    margin: 5px 0 0;
+
+    color: var(--members-text);
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+    letter-spacing: -0.35px;
+}
+
+
+.admin-members-page .admin-panel-header p {
+    margin: 6px 0 0;
+
+    color: #89958f;
+
+    font-size: 10px;
+
+    line-height: 1.55;
+}
+
+
+.admin-members-page .admin-count-pill {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    flex: 0 0 auto;
+
+    padding:
+        8px 12px;
+
+    border:
+        1px solid #d9ebe3;
+
+    border-radius: 999px;
+
+    background: #edf8f3;
+
+    color: var(--members-green);
+
+    font-size: 9px;
+
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   FILTER BAR
+============================================================ */
+
+.admin-members-page .admin-filter-bar {
+    display: grid;
+
+    grid-template-columns:
+        minmax(260px, 1.8fr)
+        minmax(150px, 0.7fr)
+        minmax(140px, 0.65fr)
+        auto
+        auto;
+
+    gap: 10px;
+
+    align-items: center;
+
+    padding:
+        18px 22px;
+
+    border-bottom:
+        1px solid #edf2ef;
+
+    background: #f8fbfa;
+}
+
+
+.admin-members-page .admin-search-field {
+    position: relative;
+}
+
+
+.admin-members-page .admin-search-field > i {
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #93a199;
+
+    font-size: 12px;
+
+    pointer-events: none;
+}
+
+
+.admin-members-page .admin-search-field input,
+.admin-members-page .admin-filter-bar select {
+    width: 100%;
+    height: 42px;
+
+    box-sizing: border-box;
+
+    border:
+        1px solid #dde7e3;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #33483f;
+
+    font-family: inherit;
+
+    font-size: 10px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.admin-members-page .admin-search-field input {
+    padding:
+        0 14px
+        0 40px;
+}
+
+
+.admin-members-page .admin-filter-bar select {
+    padding:
+        0 12px;
+}
+
+
+.admin-members-page .admin-search-field input:focus,
+.admin-members-page .admin-filter-bar select:focus {
+    border-color:
+        rgba(0, 106, 78, 0.45);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(0, 106, 78, 0.065);
+}
+
+
+.admin-members-page .admin-filter-btn {
+    min-height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding:
+        0 15px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #006a4e,
+            #075b45
+        );
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 17px
+        rgba(0, 106, 78, 0.16);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.admin-members-page .admin-filter-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 21px
+        rgba(0, 106, 78, 0.22);
+}
+
+
+.admin-members-page .admin-clear-btn {
+    min-height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        0 13px;
+
+    border:
+        1px solid #dce6e2;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #718079;
+
+    font-size: 9px;
+
+    font-weight: 750;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.admin-members-page .admin-clear-btn:hover {
+    border-color: #c5dbd2;
+
+    background: #edf7f3;
+
+    color: var(--members-green);
+}
+
+
+/* ============================================================
+   TABLE
+============================================================ */
+
+.admin-members-page .admin-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+
+    background: #ffffff;
+}
+
+
+.admin-members-page .admin-modern-table {
+    width: 100%;
+
+    min-width: 880px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+
+.admin-members-page .admin-modern-table thead {
+    background: #f5f8f7;
+}
+
+
+.admin-members-page .admin-modern-table th {
+    padding:
+        12px 18px;
+
+    border-bottom:
+        1px solid #e4ebe8;
+
+    color: #8b9892;
+
+    text-align: left;
+
+    font-size: 8px;
+
+    font-weight: 850;
+
+    letter-spacing: 0.55px;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+}
+
+
+.admin-members-page .admin-modern-table td {
+    padding:
+        14px 18px;
+
+    border-bottom:
+        1px solid #edf2ef;
+
+    color: #65736d;
+
+    font-size: 9px;
+
+    vertical-align: middle;
+}
+
+
+.admin-members-page .admin-modern-table tbody tr {
+    transition:
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.admin-members-page .admin-modern-table tbody tr:hover {
+    background:
+        linear-gradient(
+            90deg,
+            #fbfdfc,
+            #f7fbf9
+        );
+}
+
+
+.admin-members-page .admin-modern-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ============================================================
+   MEMBER CELL
+============================================================ */
+
+.admin-members-page .admin-member-cell {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    min-width: 220px;
+}
+
+
+.admin-members-page .admin-member-avatar {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border:
+        1px solid #e0eae6;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eaf5f1,
+            #dceee7
+        );
+
+    color: var(--members-green);
+
+    box-shadow:
+        0 4px 12px
+        rgba(22,55,44,0.05);
+}
+
+
+.admin-members-page .admin-member-avatar img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+
+.admin-members-page .admin-member-info {
+    min-width: 0;
+}
+
+
+.admin-members-page .admin-member-info strong {
+    display: block;
+
+    max-width: 220px;
+
+    overflow: hidden;
+
+    color: #30483f;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.admin-members-page .admin-member-info span {
+    display: block;
+
+    max-width: 220px;
+
+    margin-top: 4px;
+
+    overflow: hidden;
+
+    color: #a0aaa6;
+
+    font-size: 8px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   CATEGORY
+============================================================ */
+
+.admin-members-page .admin-category {
+    display: inline-flex;
+    align-items: center;
+
+    padding:
+        6px 9px;
+
+    border:
+        1px solid #e0ebe6;
+
+    border-radius: 8px;
+
+    background: #f2f7f5;
+
+    color: #527267;
+
+    font-size: 8px;
+
+    font-weight: 750;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   DEPARTMENT / PHONE
+============================================================ */
+
+.admin-members-page .admin-table-text {
+    display: block;
+
+    max-width: 230px;
+
+    overflow: hidden;
+
+    color: #617169;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.admin-members-page .admin-contact {
+    color: #51685f;
+
+    font-size: 9px;
+
+    font-weight: 650;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   STATUS BADGES
+============================================================ */
+
+.admin-members-page .admin-badge {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding:
+        6px 9px;
+
+    border-radius: 999px;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+.admin-members-page .admin-badge > span {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+}
+
+
+.admin-members-page .admin-badge.approved {
+    border:
+        1px solid #cce8da;
+
+    background: #eaf7f0;
+
+    color: #24865a;
+}
+
+
+.admin-members-page .admin-badge.approved > span {
+    background: #2aa06f;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(42, 160, 111, 0.10);
+}
+
+
+.admin-members-page .admin-badge.pending {
+    border:
+        1px solid #f1dfb8;
+
+    background: #fff6e4;
+
+    color: #a9771c;
+}
+
+
+.admin-members-page .admin-badge.pending > span {
+    background: #d99d2b;
+}
+
+
+.admin-members-page .admin-badge.rejected {
+    border:
+        1px solid #f0ced2;
+
+    background: #fff0f1;
+
+    color: #c0525c;
+}
+
+
+.admin-members-page .admin-badge.rejected > span {
+    background: #d46069;
+}
+
+
+/* ============================================================
+   ACTION BUTTONS
+============================================================ */
+
+.admin-members-page .admin-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+.admin-members-page .admin-action {
+    width: 31px;
+    height: 31px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid #e0e9e5;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #7a8982;
+
+    font-size: 9px;
+
+    box-shadow:
+        0 3px 8px
+        rgba(22,55,44,0.03);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.admin-members-page .admin-action:hover {
+    transform: translateY(-2px);
+}
+
+
+.admin-members-page .admin-action.view:hover {
+    border-color: #bcd9cd;
+
+    background: #edf7f3;
+
+    color: var(--members-green);
+}
+
+
+.admin-members-page .admin-action.approve:hover {
+    border-color: #b8dfcb;
+
+    background: #e9f7ef;
+
+    color: #23875b;
+}
+
+
+.admin-members-page .admin-action.reject:hover {
+    border-color: #edc5ca;
+
+    background: #fff0f1;
+
+    color: #c3525c;
+}
+
+
+.admin-members-page .admin-action.delete:hover {
+    border-color: #d94e59;
+
+    background: #d94e59;
+
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.admin-members-page .admin-empty-large {
+    min-height: 330px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 45px 20px;
+
+    text-align: center;
+}
+
+
+.admin-members-page .admin-empty-icon {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 14px;
+
+    border-radius: 15px;
+
+    background: #eaf6f1;
+
+    color: var(--members-green);
+
+    font-size: 18px;
+}
+
+
+.admin-members-page .admin-empty-large strong {
+    color: #40564d;
+
+    font-size: 13px;
+}
+
+
+.admin-members-page .admin-empty-large span {
+    margin:
+        5px 0
+        16px;
+
+    color: #97a39e;
+
+    font-size: 9px;
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.admin-members-page .admin-footer {
+    margin-top: 20px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 1200px) {
+
+    .admin-members-page .admin-mini-stat-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .admin-members-page .admin-filter-bar {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .admin-members-page .admin-search-field {
+        grid-column:
+            1 / -1;
+    }
+
+}
+
+
+@media (max-width: 900px) {
+
+    .admin-members-page .admin-page-hero {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .admin-members-page .admin-page-hero-actions {
+        width: 100%;
+    }
+
+
+    .admin-members-page .admin-page-hero-actions .admin-btn {
+        width: 100%;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .admin-members-page .admin-content {
+        padding:
+            17px 12px
+            0;
+    }
+
+
+    .admin-members-page .admin-page-hero {
+        min-height: auto;
+
+        padding:
+            25px 22px;
+
+        border-radius: 18px;
+    }
+
+
+    .admin-members-page .admin-page-hero h1 {
+        font-size: 27px;
+    }
+
+
+    .admin-members-page .admin-mini-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .admin-members-page .admin-filter-bar {
+        grid-template-columns: 1fr;
+
+        padding:
+            15px;
+    }
+
+
+    .admin-members-page .admin-search-field {
+        grid-column: auto;
+    }
+
+
+    .admin-members-page .admin-panel-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        padding:
+            19px;
+    }
+
+
+    .admin-members-page .admin-count-pill {
+        align-self: flex-start;
+    }
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .admin-members-page *,
+    .admin-members-page *::before,
+    .admin-members-page *::after {
+        transition: none !important;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="admin-dashboard admin-inner-page admin-members-page">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="admin-sidebar"
+        id="adminSidebar"
+    >
+
+
+        <!-- BRAND -->
+
+        <div class="admin-brand">
+
+            <div class="admin-brand-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+
+            <div class="admin-brand-text">
+                <h2>JUians</h2>
+                <span>of Gaibandha</span>
+            </div>
+
+        </div>
+
+
+        <!-- ADMIN PROFILE -->
+
+        <div class="admin-sidebar-profile">
+
+            <div class="admin-sidebar-avatar">
+
+                <i class="fa-solid fa-user-shield"></i>
+
+            </div>
+
+            <div class="admin-sidebar-profile-info">
+
+                <strong>
+                    {{ session.get('admin_name', 'Administrator') }}
+                </strong>
+
+                <span>
+                    {{ session.get('admin_role', 'Admin') }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="admin-nav">
+
+
+            <p class="admin-nav-title">
+                MAIN MENU
+            </p>
+
+
+            <a
+                href="{{ url_for('admin.dashboard') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.members') }}"
+                class="admin-nav-link active"
+            >
+                <i class="fa-solid fa-users"></i>
+                <span>All Members</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.pending_members') }}"
+                class="admin-nav-link"
+            >
+
+                <i class="fa-solid fa-clock"></i>
+
+                <span>
+                    Pending Requests
+                </span>
+
+
+                {% if pending|int > 0 %}
+
+                    <span class="admin-nav-badge">
+                        {{ pending }}
+                    </span>
+
+                {% endif %}
+
+            </a>
+
+
+            <p class="admin-nav-title">
+                DIRECTORY
+            </p>
+
+
+            <a
+                href="{{ url_for('member.alumni') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-graduate"></i>
+                <span>Alumni</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('member.students') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-group"></i>
+                <span>Running Students</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('member.teachers') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-chalkboard-user"></i>
+                <span>Teachers</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('member.employees') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-tie"></i>
+                <span>Employees</span>
+            </a>
+
+
+            <p class="admin-nav-title">
+                SYSTEM
+            </p>
+
+
+            <a
+                href="{{ url_for('admin.profile') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-shield"></i>
+                <span>Administrator</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.administrators') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-users-gear"></i>
+                <span>Manage Administrators</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('home.home') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Visit Website</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.logout') }}"
+                class="admin-nav-link admin-logout"
+            >
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="admin-main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="admin-topbar">
+
+
+            <div class="admin-topbar-left">
+
+                <button
+                    class="admin-mobile-toggle"
+                    id="adminMobileToggle"
+                    type="button"
+                    aria-label="Toggle sidebar"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+
+                <div class="admin-breadcrumb">
+
+                    <span>
+                        Administration
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                    <strong>
+                        All Members
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-topbar-right">
+
+
+                <div class="admin-status">
+
+                    <span class="admin-status-dot"></span>
+
+                    <span>
+                        System Online
+                    </span>
+
+                </div>
+
+
+                <div class="admin-user">
+
+                    <div class="admin-user-avatar">
+
+                        <i class="fa-solid fa-user-shield"></i>
+
+                    </div>
+
+
+                    <div class="admin-user-info">
+
+                        <strong>
+                            {{ session.get('admin_name', 'Administrator') }}
+                        </strong>
+
+                        <span>
+                            {{ session.get('admin_role', 'Admin') }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             PAGE CONTENT
+        ================================================== -->
+
+        <div class="admin-content">
+
+
+            <!-- HERO -->
+
+            <section class="admin-page-hero">
+
+
+                <div class="admin-page-hero-content">
+
+
+                    <span class="admin-eyebrow">
+
+                        <i class="fa-solid fa-users"></i>
+
+                        DIRECTORY MANAGEMENT
+
+                    </span>
+
+
+                    <h1>
+                        All Members
+                    </h1>
+
+
+                    <p>
+                        Search, filter and manage verified member records
+                        of JUians of Gaibandha from one secure
+                        administration workspace.
+                    </p>
+
+
+                </div>
+
+
+                <div class="admin-page-hero-actions">
+
+                    <a
+                        href="{{ url_for('member.submit') }}"
+                        class="admin-btn admin-btn-primary"
+                    >
+                        <i class="fa-solid fa-user-plus"></i>
+
+                        <span>
+                            Add Member
+                        </span>
+                    </a>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================== -->
+
+            <section class="admin-mini-stat-grid">
+
+
+                <div class="admin-mini-stat">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <div>
+
+                        <span>
+                            Total Members
+                        </span>
+
+                        <strong>
+                            {{ total_members }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-mini-stat">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <div>
+
+                        <span>
+                            Approved
+                        </span>
+
+                        <strong>
+                            {{ approved }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-mini-stat">
+
+                    <i class="fa-solid fa-hourglass-half"></i>
+
+                    <div>
+
+                        <span>
+                            Pending
+                        </span>
+
+                        <strong>
+                            {{ pending }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-mini-stat">
+
+                    <i class="fa-solid fa-circle-xmark"></i>
+
+                    <div>
+
+                        <span>
+                            Rejected
+                        </span>
+
+                        <strong>
+                            {{ rejected }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 MEMBER DIRECTORY
+            ================================================== -->
+
+            <section class="admin-panel">
+
+
+                <div class="admin-panel-header">
+
+
+                    <div>
+
+                        <span class="admin-panel-label">
+                            MEMBER DIRECTORY
+                        </span>
+
+                        <h2>
+                            Manage Member Records
+                        </h2>
+
+                        <p>
+                            Search, filter, review and manage
+                            association member information.
+                        </p>
+
+                    </div>
+
+
+                    <span class="admin-count-pill">
+
+                        <i class="fa-solid fa-database"></i>
+
+                        {{ members|length }} Results
+
+                    </span>
+
+
+                </div>
+
+
+                <!-- FILTER BAR -->
+
+                <form
+                    method="GET"
+                    action="{{ url_for('admin.members') }}"
+                    class="admin-filter-bar"
+                >
+
+
+                    <div class="admin-search-field">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="search"
+                            name="q"
+                            value="{{ keyword }}"
+                            placeholder="Search name, department, phone or email..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <select
+                        name="category"
+                        aria-label="Filter by category"
+                    >
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+
+                        <option
+                            value="Alumni"
+                            {% if selected_category == 'Alumni' %}
+                                selected
+                            {% endif %}
+                        >
+                            Alumni
+                        </option>
+
+
+                        <option
+                            value="Running Student"
+                            {% if selected_category == 'Running Student' %}
+                                selected
+                            {% endif %}
+                        >
+                            Running Student
+                        </option>
+
+
+                        <option
+                            value="Teacher"
+                            {% if selected_category == 'Teacher' %}
+                                selected
+                            {% endif %}
+                        >
+                            Teacher
+                        </option>
+
+
+                        <option
+                            value="Employee"
+                            {% if selected_category == 'Employee' %}
+                                selected
+                            {% endif %}
+                        >
+                            Employee
+                        </option>
+
+                    </select>
+
+
+                    <select
+                        name="status"
+                        aria-label="Filter by status"
+                    >
+
+                        <option value="">
+                            All Status
+                        </option>
+
+
+                        <option
+                            value="Approved"
+                            {% if selected_status == 'Approved' %}
+                                selected
+                            {% endif %}
+                        >
+                            Approved
+                        </option>
+
+
+                        <option
+                            value="Pending"
+                            {% if selected_status == 'Pending' %}
+                                selected
+                            {% endif %}
+                        >
+                            Pending
+                        </option>
+
+
+                        <option
+                            value="Rejected"
+                            {% if selected_status == 'Rejected' %}
+                                selected
+                            {% endif %}
+                        >
+                            Rejected
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        type="submit"
+                        class="admin-filter-btn"
+                    >
+                        <i class="fa-solid fa-filter"></i>
+
+                        <span>
+                            Filter
+                        </span>
+                    </button>
+
+
+                    <a
+                        href="{{ url_for('admin.members') }}"
+                        class="admin-clear-btn"
+                    >
+                        Clear
+                    </a>
+
+
+                </form>
+
+
+                <!-- TABLE -->
+
+                <div class="admin-table-wrapper">
+
+
+                    {% if members %}
+
+
+                        <table class="admin-table admin-modern-table">
+
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Member
+                                    </th>
+
+                                    <th>
+                                        Category
+                                    </th>
+
+                                    <th>
+                                        Department
+                                    </th>
+
+                                    <th>
+                                        Phone
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Actions
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+
+                                {% for member in members %}
+
+
+                                    <tr>
+
+
+                                        <td>
+
+                                            <div class="admin-member-cell">
+
+
+                                                <div class="admin-member-avatar">
+
+
+                                                    {% if member.photo and member.photo != 'default.png' %}
+
+                                                        <img
+                                                            src="{{ url_for(
+                                                                'static',
+                                                                filename='uploads/' + member.photo
+                                                            ) }}"
+                                                            alt="{{ member.full_name }}"
+                                                        >
+
+                                                    {% else %}
+
+                                                        <i class="fa-solid fa-user"></i>
+
+                                                    {% endif %}
+
+
+                                                </div>
+
+
+                                                <div class="admin-member-info">
+
+                                                    <strong>
+                                                        {{ member.full_name }}
+                                                    </strong>
+
+                                                    <span>
+                                                        #{{ member.id }}
+                                                        ·
+                                                        {{ member.email or 'No email' }}
+                                                    </span>
+
+                                                </div>
+
+
+                                            </div>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <span class="admin-category">
+                                                {{ member.category }}
+                                            </span>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <span class="admin-table-text">
+                                                {{ member.department or '—' }}
+                                            </span>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <span class="admin-contact">
+                                                {{ member.phone or '—' }}
+                                            </span>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <span
+                                                class="admin-badge {{ member.status|lower }}"
+                                            >
+
+                                                <span></span>
+
+                                                {{ member.status }}
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <div class="admin-actions">
+
+
+                                                <a
+                                                    href="{{ url_for(
+                                                        'admin.member_details',
+                                                        id=member.id
+                                                    ) }}"
+                                                    class="admin-action view"
+                                                    title="View Details"
+                                                    aria-label="View member details"
+                                                >
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+
+
+                                                {% if member.status == 'Pending' %}
+
+
+                                                    <a
+                                                        href="{{ url_for(
+                                                            'admin.approve',
+                                                            id=member.id
+                                                        ) }}"
+                                                        class="admin-action approve"
+                                                        title="Approve Member"
+                                                        aria-label="Approve member"
+                                                        onclick="return confirm('Approve this member?');"
+                                                    >
+                                                        <i class="fa-solid fa-check"></i>
+                                                    </a>
+
+
+                                                    <a
+                                                        href="{{ url_for(
+                                                            'admin.reject',
+                                                            id=member.id
+                                                        ) }}"
+                                                        class="admin-action reject"
+                                                        title="Reject Member"
+                                                        aria-label="Reject member"
+                                                        onclick="return confirm('Reject this member?');"
+                                                    >
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </a>
+
+
+                                                {% endif %}
+
+
+                                                <a
+                                                    href="{{ url_for(
+                                                        'admin.delete',
+                                                        id=member.id
+                                                    ) }}"
+                                                    class="admin-action delete"
+                                                    title="Delete Member"
+                                                    aria-label="Delete member"
+                                                    onclick="return confirm('Delete this member permanently?');"
+                                                >
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+
+
+                                            </div>
+
+                                        </td>
+
+
+                                    </tr>
+
+
+                                {% endfor %}
+
+
+                            </tbody>
+
+                        </table>
+
+
+                    {% else %}
+
+
+                        <div class="admin-empty admin-empty-large">
+
+
+                            <div class="admin-empty-icon">
+
+                                <i class="fa-solid fa-users-slash"></i>
+
+                            </div>
+
+
+                            <strong>
+                                No members found
+                            </strong>
+
+
+                            <span>
+                                Try another search or clear the current filters.
+                            </span>
+
+
+                            <a
+                                href="{{ url_for('admin.members') }}"
+                                class="admin-btn admin-btn-secondary"
+                            >
+                                <i class="fa-solid fa-rotate-left"></i>
+
+                                <span>
+                                    Clear Filters
+                                </span>
+                            </a>
+
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- FOOTER -->
+
+            <footer class="admin-footer">
+
+
+                <div class="admin-footer-brand">
+
+                    <strong>
+                        JUians of Gaibandha
+                    </strong>
+
+                    <span>
+                        Administration Portal
+                    </span>
+
+                </div>
+
+
+                <span class="admin-footer-copyright">
+                    © 2026 JUians of Gaibandha
+                </span>
+
+
+            </footer>
+
+
+        </div>
+
+
+    </main>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const toggle =
+            document.getElementById(
+                "adminMobileToggle"
+            );
+
+        const sidebar =
+            document.getElementById(
+                "adminSidebar"
+            );
+
+
+        if (
+            toggle &&
+            sidebar
+        ) {
+
+            toggle.addEventListener(
+                "click",
+                function () {
+
+                    sidebar.classList.toggle(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    window.innerWidth <= 900 &&
+                    sidebar &&
+                    sidebar.classList.contains(
+                        "active"
+                    ) &&
+                    !sidebar.contains(
+                        event.target
+                    ) &&
+                    toggle &&
+                    !toggle.contains(
+                        event.target
+                    )
+                ) {
+
+                    sidebar.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (
+                    window.innerWidth > 900 &&
+                    sidebar
+                ) {
+
+                    sidebar.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+{% endblock %}

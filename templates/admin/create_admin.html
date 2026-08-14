@@ -1,0 +1,931 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Administrator | JUians of Gaibandha
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/admin.css') }}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="admin-dashboard admin-inner-page">
+
+
+    <!-- =========================================================
+         ADMIN SIDEBAR
+    ========================================================== -->
+
+    <aside
+        class="admin-sidebar"
+        id="adminSidebar"
+    >
+
+        <!-- BRAND -->
+
+        <div class="admin-brand">
+
+            <div class="admin-brand-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+
+            <div class="admin-brand-text">
+
+                <h2>
+                    JUians
+                </h2>
+
+                <span>
+                    of Gaibandha
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIDEBAR PROFILE -->
+
+        <div class="admin-sidebar-profile">
+
+            <div class="admin-sidebar-avatar">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+
+            <div class="admin-sidebar-profile-info">
+
+                <strong>
+                    {{ session.get('admin_name', 'Administrator') }}
+                </strong>
+
+                <span>
+                    {{ session.get('admin_role', 'Administrator') }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="admin-nav">
+
+            <p class="admin-nav-title">
+                MAIN MENU
+            </p>
+
+
+            <a
+                href="{{ url_for('admin.dashboard') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.members') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-users"></i>
+                <span>All Members</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.pending_members') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-clock"></i>
+                <span>Pending Requests</span>
+            </a>
+
+
+            <p class="admin-nav-title">
+                DIRECTORY
+            </p>
+
+
+            <a
+                href="{{ url_for('member.alumni') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-graduate"></i>
+                <span>Alumni</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('member.students') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-group"></i>
+                <span>Running Students</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('member.teachers') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-chalkboard-user"></i>
+                <span>Teachers</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('member.employees') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-tie"></i>
+                <span>Employees</span>
+            </a>
+
+
+            <p class="admin-nav-title">
+                SYSTEM
+            </p>
+
+
+            <a
+                href="{{ url_for('admin.profile') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-user-shield"></i>
+                <span>Administrator</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.administrators') }}"
+                class="admin-nav-link active"
+            >
+                <i class="fa-solid fa-users-gear"></i>
+                <span>Manage Administrators</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('home.home') }}"
+                class="admin-nav-link"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Visit Website</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.logout') }}"
+                class="admin-nav-link admin-logout"
+            >
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =========================================================
+         ADMIN MAIN
+    ========================================================== -->
+
+    <main class="admin-main">
+
+
+        <!-- =====================================================
+             TOPBAR
+        ====================================================== -->
+
+        <header class="admin-topbar">
+
+            <div class="admin-topbar-left">
+
+                <button
+                    class="admin-mobile-toggle"
+                    id="adminMobileToggle"
+                    type="button"
+                    aria-label="Toggle administrator menu"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+
+                <div class="admin-breadcrumb">
+
+                    <span>
+                        Administration
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                    <span>
+                        Manage Administrators
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                    <strong>
+                        Add Administrator
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-topbar-right">
+
+                <div class="admin-status">
+
+                    <span class="admin-status-dot"></span>
+
+                    <span>
+                        System Online
+                    </span>
+
+                </div>
+
+
+                <div class="admin-user">
+
+                    <div class="admin-user-avatar">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+
+                    <div class="admin-user-info">
+
+                        <strong>
+                            {% if admin %}
+                                {{ admin.full_name }}
+                            {% else %}
+                                {{ session.get('admin_name', 'Administrator') }}
+                            {% endif %}
+                        </strong>
+
+                        <span>
+                            {% if admin %}
+                                {{ admin.role }}
+                            {% else %}
+                                {{ session.get('admin_role', 'Admin') }}
+                            {% endif %}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             PAGE CONTENT
+        ====================================================== -->
+
+        <div class="admin-content">
+
+
+            <!-- =================================================
+                 PAGE HERO
+            ================================================== -->
+
+            <section class="admin-page-hero">
+
+                <div class="admin-page-hero-content">
+
+                    <span class="admin-eyebrow">
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                        YEARLY ADMINISTRATION
+
+                    </span>
+
+                    <h1>
+                        Add New Administrator
+                    </h1>
+
+                    <p>
+                        Create the administrator account for the next
+                        administrative term. The account will remain
+                        inactive until it is officially made current.
+                    </p>
+
+                </div>
+
+
+                <div class="admin-page-hero-actions">
+
+                    <a
+                        href="{{ url_for('admin.administrators') }}"
+                        class="admin-btn admin-btn-primary"
+                    >
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        <span>
+                            Back to Administrators
+                        </span>
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 INFORMATION NOTICE
+            ================================================== -->
+
+            <section class="admin-handover-information-card">
+
+                <div class="admin-handover-icon">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                </div>
+
+                <div class="admin-handover-content">
+
+                    <span class="admin-panel-label">
+                        NEW ADMINISTRATOR
+                    </span>
+
+                    <h2>
+                        Prepare the next administrator account
+                    </h2>
+
+                    <p>
+                        Creating this account will not replace the current
+                        administrator. After creation, use the
+                        Make Current option when the official handover
+                        takes place.
+                    </p>
+
+                </div>
+
+                <div class="admin-handover-security">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    Secure Setup
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ADMINISTRATOR FORM
+            ================================================== -->
+
+            <section class="admin-profile-card admin-contact-edit-card">
+
+                <div class="admin-section-header-card">
+
+                    <div>
+
+                        <span class="admin-panel-label">
+                            ADMINISTRATOR ACCOUNT
+                        </span>
+
+                        <h2>
+                            Administrator Information
+                        </h2>
+
+                        <p>
+                            Enter account credentials, yearly term
+                            information and public contact details.
+                        </p>
+
+                    </div>
+
+
+                    <div class="admin-section-header-icon">
+
+                        <i class="fa-solid fa-id-card"></i>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for('admin.create_administrator') }}"
+                    class="admin-contact-form"
+                >
+
+
+                    <!-- =================================================
+                         FULL NAME
+                    ================================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="full_name">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            Full Name
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="full_name"
+                            name="full_name"
+                            placeholder="Enter administrator full name"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         USERNAME
+                    ================================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="username">
+
+                            <i class="fa-solid fa-at"></i>
+
+                            Username
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Enter unique username"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ACCOUNT EMAIL
+                    ================================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="email">
+
+                            <i class="fa-solid fa-envelope"></i>
+
+                            Account Email
+
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="administrator@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         TERM YEAR
+                    ================================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="term_year">
+
+                            <i class="fa-solid fa-calendar-days"></i>
+
+                            Term Year
+
+                        </label>
+
+                        <input
+                            type="number"
+                            id="term_year"
+                            name="term_year"
+                            min="2000"
+                            max="2100"
+                            value="{{ suggested_year }}"
+                            placeholder="2027"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PASSWORD
+                    ================================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="password">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            Password
+
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            minlength="6"
+                            placeholder="Minimum 6 characters"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         CONFIRM PASSWORD
+                    ================================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="confirm_password">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                            Confirm Password
+
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            minlength="6"
+                            placeholder="Re-enter password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         CONTACT EMAIL
+                    ================================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="contact_email">
+
+                            <i class="fa-solid fa-envelope-open-text"></i>
+
+                            Contact Email
+
+                        </label>
+
+                        <input
+                            type="email"
+                            id="contact_email"
+                            name="contact_email"
+                            placeholder="Public contact email"
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         CONTACT PHONE
+                    ================================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="contact_phone">
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            Contact Phone
+
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="contact_phone"
+                            name="contact_phone"
+                            placeholder="Public contact phone"
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         FACEBOOK
+                    ================================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label for="facebook_url">
+
+                            <i class="fa-brands fa-facebook"></i>
+
+                            Facebook Profile
+
+                        </label>
+
+                        <input
+                            type="url"
+                            id="facebook_url"
+                            name="facebook_url"
+                            placeholder="https://facebook.com/profile"
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ACCOUNT STATUS INFORMATION
+                    ================================================== -->
+
+                    <div class="admin-form-group">
+
+                        <label>
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            Initial Account Status
+
+                        </label>
+
+                        <div class="admin-yearly-account-status">
+
+                            <span class="admin-previous-badge">
+
+                                <i class="fa-solid fa-lock"></i>
+
+                                INACTIVE
+
+                            </span>
+
+                            <p>
+                                This account becomes active only after
+                                you select Make Current Administrator.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         FORM ACTIONS
+                    ================================================== -->
+
+                    <div class="admin-form-actions">
+
+                        <a
+                            href="{{ url_for('admin.administrators') }}"
+                            class="admin-btn admin-btn-secondary"
+                        >
+                            <i class="fa-solid fa-xmark"></i>
+
+                            <span>
+                                Cancel
+                            </span>
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="admin-btn admin-contact-save-btn"
+                        >
+                            <i class="fa-solid fa-user-plus"></i>
+
+                            <span>
+                                Create Administrator
+                            </span>
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- =================================================
+                 SECURITY NOTE
+            ================================================== -->
+
+            <section class="admin-security-card">
+
+                <div class="security-icon">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                </div>
+
+                <div>
+
+                    <span class="admin-panel-label">
+                        SECURITY
+                    </span>
+
+                    <h2>
+                        Administrator account protection
+                    </h2>
+
+                    <p>
+                        Use a unique username and a strong password.
+                        Do not share administrator credentials before
+                        the official handover.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ADMIN FOOTER
+            ================================================== -->
+
+            <footer class="admin-footer">
+
+                <div class="admin-footer-brand">
+
+                    <strong>
+                        JUians of Gaibandha
+                    </strong>
+
+                    <span>
+                        Administration Portal
+                    </span>
+
+                </div>
+
+                <span class="admin-footer-copyright">
+                    © 2026 JUians of Gaibandha
+                </span>
+
+            </footer>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        /* =====================================================
+           MOBILE SIDEBAR
+        ====================================================== */
+
+        const toggle =
+            document.getElementById(
+                "adminMobileToggle"
+            );
+
+        const sidebar =
+            document.getElementById(
+                "adminSidebar"
+            );
+
+
+        if (toggle && sidebar) {
+
+            toggle.addEventListener(
+                "click",
+                function () {
+
+                    sidebar.classList.toggle(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           PASSWORD MATCH VALIDATION
+        ====================================================== */
+
+        const password =
+            document.getElementById(
+                "password"
+            );
+
+        const confirmPassword =
+            document.getElementById(
+                "confirm_password"
+            );
+
+
+        function validatePasswordMatch() {
+
+            if (
+                !password ||
+                !confirmPassword
+            ) {
+                return;
+            }
+
+
+            if (
+                confirmPassword.value &&
+                password.value !==
+                confirmPassword.value
+            ) {
+
+                confirmPassword.setCustomValidity(
+                    "Passwords do not match."
+                );
+
+            } else {
+
+                confirmPassword.setCustomValidity(
+                    ""
+                );
+
+            }
+
+        }
+
+
+        if (
+            password &&
+            confirmPassword
+        ) {
+
+            password.addEventListener(
+                "input",
+                validatePasswordMatch
+            );
+
+            confirmPassword.addEventListener(
+                "input",
+                validatePasswordMatch
+            );
+
+        }
+
+
+        /* =====================================================
+           CLOSE SIDEBAR WHEN WINDOW RESIZES
+        ====================================================== */
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (
+                    window.innerWidth > 900 &&
+                    sidebar
+                ) {
+
+                    sidebar.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,329 @@
+<!-- =================================================
+     ABOUT SECTION
+================================================== -->
+
+<section id="about" class="about">
+
+    <div class="container">
+
+        <div class="about-grid">
+
+
+            <!-- =================================================
+                 LEFT SIDE
+            ================================================== -->
+
+            <div class="about-visual">
+
+                <!-- FULL ASSOCIATION IMAGE -->
+
+                <div class="about-image">
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename='images/association_logo.jpeg'
+                        ) }}"
+                        alt="JUians of Gaibandha District Student's Welfare Association"
+                    >
+
+                </div>
+
+
+                <!-- =================================================
+                     ASSOCIATION INFORMATION BAR
+                     DIRECTLY BELOW IMAGE
+                ================================================== -->
+
+                <div class="association-title-bar">
+
+                    <!-- Association Icon -->
+
+                    <div class="association-title-icon">
+
+                        <i class="fa-solid fa-users"></i>
+
+                    </div>
+
+
+                    <!-- Association Text -->
+
+                    <div class="association-title-text">
+
+                        <span>
+                            Official Association
+                        </span>
+
+                        <strong>
+                            JUians of Gaibandha
+                        </strong>
+
+                        <small>
+                            District Students' Welfare Association
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 RIGHT SIDE
+                 ABOUT OUR ASSOCIATION
+            ================================================== -->
+
+            <div class="about-content">
+
+                <!-- Section Label -->
+
+                <span class="section-tag">
+                    About Our Association
+                </span>
+
+
+                <!-- Main Heading -->
+
+                <h2>
+                    Connecting JUians of Gaibandha
+                </h2>
+
+
+                <!-- Introduction -->
+
+                <p class="about-intro">
+
+                    JUians of Gaibandha is a community platform
+                    for students, alumni, teachers and employees
+                    of Jahangirnagar University who have
+                    connections with Gaibandha District.
+
+                </p>
+
+
+                <p class="about-intro">
+
+                    Our goal is to build a strong network among
+                    JUians, preserve our community connection and
+                    make important information easily accessible
+                    through a centralized digital platform.
+
+                </p>
+
+
+                <!-- =================================================
+                     COMMUNITY FEATURES
+                ================================================== -->
+
+                <!-- Strong Community -->
+
+                <div class="about-card">
+
+                    <div class="about-card-icon">
+
+                        <i class="fa-solid fa-people-group"></i>
+
+                    </div>
+
+
+                    <div class="about-card-content">
+
+                        <h4>
+                            Strong Community
+                        </h4>
+
+                        <p>
+                            Connecting JUians from different
+                            generations and building a stronger
+                            community network.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Member Directory -->
+
+                <div class="about-card">
+
+                    <div class="about-card-icon">
+
+                        <i class="fa-solid fa-address-book"></i>
+
+                    </div>
+
+
+                    <div class="about-card-content">
+
+                        <h4>
+                            Member Directory
+                        </h4>
+
+                        <p>
+                            Easy access to verified member
+                            information through a centralized
+                            JUians directory.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Community Events -->
+
+                <div class="about-card">
+
+                    <div class="about-card-icon">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+
+                    </div>
+
+
+                    <div class="about-card-content">
+
+                        <h4>
+                            Community Events
+                        </h4>
+
+                        <p>
+                            Stay informed about association
+                            programs, events and community
+                            activities.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Better Networking -->
+
+                <div class="about-card">
+
+                    <div class="about-card-icon">
+
+                        <i class="fa-solid fa-network-wired"></i>
+
+                    </div>
+
+
+                    <div class="about-card-content">
+
+                        <h4>
+                            Better Networking
+                        </h4>
+
+                        <p>
+                            Create meaningful academic,
+                            professional and social connections
+                            among JUians.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ASSOCIATION FEATURES LIST
+                ================================================== -->
+
+                <ul class="about-list">
+
+                    <li>
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        <span>
+                            Centralized JUians directory
+                        </span>
+
+                    </li>
+
+
+                    <li>
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        <span>
+                            Easy member information submission
+                        </span>
+
+                    </li>
+
+
+                    <li>
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        <span>
+                            Community events and activities
+                        </span>
+
+                    </li>
+
+
+                    <li>
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        <span>
+                            Stronger connection among JUians
+                        </span>
+
+                    </li>
+
+                </ul>
+
+
+                <!-- =================================================
+                     ACTION BUTTONS
+                ================================================== -->
+
+                <div class="about-buttons">
+
+                    <!-- Submit Information -->
+
+                    <a
+                        href="{{ url_for('member.submit') }}"
+                        class="btn btn-primary"
+                    >
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                        <span>
+                            Submit Your Information
+                        </span>
+
+                    </a>
+
+
+                    <!-- Explore Directory -->
+
+                    <a
+                        href="#categories"
+                        class="btn btn-outline"
+                    >
+
+                        <i class="fa-solid fa-users"></i>
+
+                        <span>
+                            Explore Directory
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>

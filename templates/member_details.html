@@ -1,0 +1,2142 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+{{ member.full_name }} | JUians of Gaibandha
+
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   JUians of Gaibandha
+   PREMIUM MEMBER PROFILE PAGE
+========================================================= */
+
+.member-profile-page {
+
+    width: 100%;
+    min-height: 100vh;
+
+    padding: 55px 20px 90px;
+
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            circle at 8% 8%,
+            rgba(0, 106, 78, 0.08),
+            transparent 27%
+        ),
+        radial-gradient(
+            circle at 92% 82%,
+            rgba(246, 195, 58, 0.09),
+            transparent 28%
+        ),
+        #f4f8f6;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
+.member-profile-container {
+
+    width: 100%;
+    max-width: 1050px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   PAGE INTRO
+========================================================= */
+
+.profile-page-intro {
+
+    margin-bottom: 25px;
+}
+
+
+.profile-page-eyebrow {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 8px;
+
+    color: #006a4e;
+
+    font-size: 0.75rem;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+
+.profile-page-intro h2 {
+
+    margin: 0 0 5px;
+
+    color: #17251f;
+
+    font-size: 1.55rem;
+
+    font-weight: 850;
+}
+
+
+.profile-page-intro p {
+
+    margin: 0;
+
+    color: #77837e;
+
+    font-size: 0.88rem;
+}
+
+
+/* =========================================================
+   PROFILE HERO
+========================================================= */
+
+.profile-hero {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+
+    width: 100%;
+
+    padding: 34px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid rgba(0, 106, 78, 0.12);
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 15px 45px rgba(20, 65, 52, 0.08);
+
+    margin-bottom: 24px;
+}
+
+
+.profile-hero::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #006a4e,
+            #008b67,
+            #f4c542,
+            #006a4e
+        );
+}
+
+
+.profile-hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(0, 106, 78, 0.035);
+
+    right: -80px;
+    top: -105px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   PROFILE IMAGE
+========================================================= */
+
+.profile-image-box {
+
+    position: relative;
+
+    flex: 0 0 145px;
+
+    width: 145px;
+    height: 145px;
+
+    padding: 5px;
+
+    box-sizing: border-box;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #006a4e,
+            #008b67,
+            #f4c542
+        );
+
+    box-shadow:
+        0 12px 30px rgba(0, 106, 78, 0.17);
+
+    z-index: 2;
+}
+
+
+.profile-image-box img {
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 4px solid #ffffff;
+
+    box-sizing: border-box;
+
+    background: #eef4f1;
+}
+
+
+/* =========================================================
+   PROFILE HERO CONTENT
+========================================================= */
+
+.profile-header {
+
+    position: relative;
+
+    flex: 1;
+
+    min-width: 0;
+
+    z-index: 2;
+}
+
+
+.profile-header h1 {
+
+    margin: 0 0 7px;
+
+    color: #17251f;
+
+    font-size: clamp(
+        1.9rem,
+        4vw,
+        2.7rem
+    );
+
+    line-height: 1.15;
+
+    font-weight: 850;
+
+    letter-spacing: -1px;
+}
+
+
+.profile-header h4 {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    margin: 0 0 13px;
+
+    padding: 6px 12px;
+
+    color: #006a4e;
+
+    background: rgba(0, 106, 78, 0.08);
+
+    border: 1px solid rgba(0, 106, 78, 0.10);
+
+    border-radius: 50px;
+
+    font-size: 0.76rem;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+
+.profile-header p {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin: 0 0 15px;
+
+    color: #66746e;
+
+    font-size: 0.91rem;
+}
+
+
+.profile-header p i {
+
+    color: #006a4e;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+========================================================= */
+
+.badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 7px 13px;
+
+    border-radius: 50px;
+
+    font-size: 0.74rem;
+
+    font-weight: 800;
+}
+
+
+.badge-success {
+
+    color: #08734f;
+
+    background: #e8f7f0;
+
+    border: 1px solid #c8eadc;
+}
+
+
+.badge-warning {
+
+    color: #946d08;
+
+    background: #fff8df;
+
+    border: 1px solid #f3e3a7;
+}
+
+
+.badge-danger {
+
+    color: #a92e3a;
+
+    background: #fff0f1;
+
+    border: 1px solid #f3cdd1;
+}
+
+
+/* =========================================================
+   ADMIN EDIT BUTTON
+========================================================= */
+
+.admin-edit-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 14px;
+
+    min-height: 42px;
+
+    padding: 0 16px;
+
+    box-sizing: border-box;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #006a4e,
+            #008b67
+        );
+
+    border: 1px solid rgba(0, 106, 78, 0.15);
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-size: 0.78rem;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 7px 18px rgba(0, 106, 78, 0.16);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.admin-edit-button:hover {
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #005b43,
+            #007657
+        );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 23px rgba(0, 106, 78, 0.24);
+}
+
+
+.admin-edit-button i {
+
+    font-size: 0.75rem;
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.admin-edit-button:hover i {
+
+    transform:
+        rotate(-8deg);
+}
+
+
+/* =========================================================
+   INFORMATION GRID
+========================================================= */
+
+.profile-information-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.55fr)
+        minmax(0, 0.85fr);
+
+    gap: 24px;
+
+    margin-bottom: 24px;
+}
+
+
+/* =========================================================
+   DETAILS CARD
+========================================================= */
+
+.profile-details-card {
+
+    width: 100%;
+
+    padding: 28px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e1eae6;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 9px 30px rgba(22, 55, 44, 0.055);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+    margin-bottom: 24px;
+}
+
+
+.profile-details-card:hover {
+
+    transform: translateY(-2px);
+
+    border-color:
+        rgba(0, 106, 78, 0.18);
+
+    box-shadow:
+        0 14px 35px rgba(22, 55, 44, 0.08);
+}
+
+
+/* =========================================================
+   DETAILS TITLE
+========================================================= */
+
+.details-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding-bottom: 18px;
+
+    margin-bottom: 21px;
+
+    color: #17251f;
+
+    border-bottom: 1px solid #edf2ef;
+
+    font-size: 1.05rem;
+
+    font-weight: 800;
+}
+
+
+.details-title i {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #006a4e,
+            #008b67
+        );
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 7px 16px rgba(0, 106, 78, 0.14);
+
+    font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   DETAILS GRID
+========================================================= */
+
+.details-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 14px;
+}
+
+
+.details-grid > div {
+
+    min-width: 0;
+
+    padding: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fbfdfc,
+            #f7faf8
+        );
+
+    border: 1px solid #e8efeb;
+
+    border-radius: 13px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.details-grid > div:hover {
+
+    border-color:
+        rgba(0, 106, 78, 0.16);
+
+    background: #ffffff;
+}
+
+
+.details-grid strong {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #7a8781;
+
+    font-size: 0.71rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+    text-transform: uppercase;
+}
+
+
+.details-grid p {
+
+    margin: 0;
+
+    color: #26352f;
+
+    font-size: 0.88rem;
+
+    line-height: 1.5;
+
+    font-weight: 650;
+
+    word-break: break-word;
+}
+
+
+.details-grid a {
+
+    color: #006a4e;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    word-break: break-all;
+}
+
+
+.details-grid a:hover {
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   VERIFICATION CARD
+========================================================= */
+
+.verification-card {
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+.verification-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 120px;
+    height: 120px;
+
+    border-radius: 50%;
+
+    right: -50px;
+    top: -50px;
+
+    background:
+        rgba(0, 106, 78, 0.045);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   VERIFICATION STATUS
+========================================================= */
+
+.verification-status {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 16px;
+
+    margin-bottom: 14px;
+
+    border-radius: 14px;
+
+    background: #eef9f4;
+
+    border: 1px solid #d4eee2;
+}
+
+
+.verification-status-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 43px;
+    height: 43px;
+
+    flex: 0 0 43px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #006a4e,
+            #008b67
+        );
+
+    border-radius: 12px;
+}
+
+
+.verification-status strong {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #12684e;
+
+    font-size: 0.88rem;
+}
+
+
+.verification-status span {
+
+    color: #719085;
+
+    font-size: 0.72rem;
+}
+
+
+/* =========================================================
+   PRIVACY CARD
+========================================================= */
+
+.privacy-card {
+
+    margin-top: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #f9fbfa
+        );
+}
+
+
+.privacy-content {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 14px;
+}
+
+
+.privacy-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 43px;
+    height: 43px;
+
+    flex: 0 0 43px;
+
+    color: #006a4e;
+
+    background:
+        rgba(0, 106, 78, 0.08);
+
+    border: 1px solid rgba(0, 106, 78, 0.10);
+
+    border-radius: 12px;
+
+    font-size: 0.9rem;
+}
+
+
+.privacy-text {
+
+    min-width: 0;
+}
+
+
+.privacy-text h3 {
+
+    margin: 0 0 5px;
+
+    color: #26352f;
+
+    font-size: 0.92rem;
+
+    font-weight: 800;
+}
+
+
+.privacy-text p {
+
+    margin: 0;
+
+    color: #7a8781;
+
+    font-size: 0.78rem;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   ACCESS INFORMATION
+========================================================= */
+
+.access-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 12px;
+
+    padding: 7px 12px;
+
+    border-radius: 50px;
+
+    color: #006a4e;
+
+    background: #eef9f4;
+
+    border: 1px solid #d4eee2;
+
+    font-size: 0.72rem;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   BACK ACTION
+========================================================= */
+
+.profile-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 22px 25px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1eae6;
+
+    border-radius: 17px;
+
+    box-shadow:
+        0 8px 25px rgba(22, 55, 44, 0.045);
+}
+
+
+.profile-actions-text {
+
+    color: #7a8781;
+
+    font-size: 0.77rem;
+
+    line-height: 1.5;
+}
+
+
+.profile-actions-text strong {
+
+    display: block;
+
+    margin-bottom: 2px;
+
+    color: #35433d;
+
+    font-size: 0.84rem;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+.btn-primary {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    min-height: 45px;
+
+    padding: 0 18px;
+
+    box-sizing: border-box;
+
+    border: none;
+
+    border-radius: 10px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #006a4e,
+            #008762
+        );
+
+    text-decoration: none;
+
+    font-family: inherit;
+
+    font-size: 0.82rem;
+
+    font-weight: 750;
+
+    box-shadow:
+        0 8px 19px rgba(0, 106, 78, 0.18);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.btn-primary:hover {
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #005b43,
+            #007657
+        );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 11px 24px rgba(0, 106, 78, 0.25);
+}
+
+
+.btn-primary i {
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.btn-primary:hover i {
+
+    transform:
+        translateX(-3px);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .member-profile-page {
+
+        padding:
+            45px 16px 75px;
+    }
+
+
+    .profile-hero {
+
+        padding: 28px;
+
+        gap: 23px;
+    }
+
+
+    .profile-image-box {
+
+        flex-basis: 120px;
+
+        width: 120px;
+        height: 120px;
+    }
+
+
+    .profile-information-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .member-profile-page {
+
+        padding:
+            35px 12px 60px;
+    }
+
+
+    .profile-page-intro {
+
+        margin-bottom: 19px;
+    }
+
+
+    .profile-page-intro h2 {
+
+        font-size: 1.3rem;
+    }
+
+
+    .profile-page-intro p {
+
+        font-size: 0.8rem;
+    }
+
+
+    .profile-hero {
+
+        flex-direction: column;
+
+        align-items: center;
+
+        text-align: center;
+
+        padding:
+            30px 20px;
+
+        border-radius: 19px;
+    }
+
+
+    .profile-image-box {
+
+        flex-basis: 115px;
+
+        width: 115px;
+        height: 115px;
+    }
+
+
+    .profile-header {
+
+        width: 100%;
+    }
+
+
+    .profile-header h1 {
+
+        font-size: 1.75rem;
+
+        letter-spacing: -0.6px;
+    }
+
+
+    .profile-header p {
+
+        justify-content: center;
+
+        font-size: 0.82rem;
+    }
+
+
+    .admin-edit-button {
+
+        width: 100%;
+
+        margin-top: 14px;
+    }
+
+
+    .profile-details-card {
+
+        padding:
+            21px 17px;
+
+        border-radius: 17px;
+    }
+
+
+    .details-title {
+
+        font-size: 0.95rem;
+
+        padding-bottom: 16px;
+
+        margin-bottom: 17px;
+    }
+
+
+    .details-title i {
+
+        width: 37px;
+        height: 37px;
+
+        flex-basis: 37px;
+
+        border-radius: 10px;
+    }
+
+
+    .details-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+
+    .details-grid > div {
+
+        padding: 14px;
+    }
+
+
+    .privacy-card {
+
+        margin-top: 0;
+    }
+
+
+    .profile-actions {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        padding:
+            18px;
+
+        text-align: center;
+    }
+
+
+    .profile-actions-text {
+
+        margin-bottom: 3px;
+    }
+
+
+    .btn-primary {
+
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .profile-hero {
+
+        padding:
+            25px 15px;
+    }
+
+
+    .profile-image-box {
+
+        width: 100px;
+        height: 100px;
+
+        flex-basis: 100px;
+    }
+
+
+    .profile-header h1 {
+
+        font-size: 1.5rem;
+    }
+
+
+    .profile-details-card {
+
+        padding:
+            18px 14px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="member-profile-page">
+
+<div class="member-profile-container">
+
+
+    <!-- =================================================
+         PAGE INTRO
+    ================================================== -->
+
+    <div class="profile-page-intro">
+
+        <span class="profile-page-eyebrow">
+
+            <i class="fa-solid fa-id-card"></i>
+
+            MEMBER PROFILE
+
+        </span>
+
+
+        <h2>
+            Member Profile
+        </h2>
+
+
+        <p>
+            Official Member Information
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         PREMIUM PROFILE HERO
+    ================================================== -->
+
+    <div class="profile-hero">
+
+
+        <!-- PROFILE IMAGE -->
+
+        <div class="profile-image-box">
+
+            {% if member.photo and member.photo != "default.png" %}
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='uploads/' + member.photo
+                    ) }}"
+                    alt="{{ member.full_name }}"
+                >
+
+            {% else %}
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='images/default_user.png'
+                    ) }}"
+                    alt="Default User"
+                >
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- PROFILE HEADER -->
+
+        <div class="profile-header">
+
+            <h1>
+                {{ member.full_name }}
+            </h1>
+
+
+            <h4>
+                {{ member.category or "Member" }}
+            </h4>
+
+
+            <p>
+
+                <i class="fa-solid fa-building-columns"></i>
+
+                {{ member.department or "N/A" }}
+
+            </p>
+
+
+            {% if member.status == "Approved" %}
+
+                <span class="badge badge-success">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Approved Member
+
+                </span>
+
+            {% elif member.status == "Pending" %}
+
+                <span class="badge badge-warning">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    Pending Verification
+
+                </span>
+
+            {% else %}
+
+                <span class="badge badge-danger">
+
+                    <i class="fa-solid fa-circle-xmark"></i>
+
+                    Rejected
+
+                </span>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 ACCESS INFORMATION
+            ================================================== -->
+
+            {% if session.get("admin_id") %}
+
+                <div class="access-badge">
+
+                    <i class="fa-solid fa-user-shield"></i>
+
+                    Administrator Full Access
+
+                </div>
+
+
+                <!-- =================================================
+                     ADMIN EDIT BUTTON
+                ================================================== -->
+
+                <a
+                    href="{{ url_for(
+                        'admin.edit_member',
+                        id=member.id
+                    ) }}"
+                    class="admin-edit-button"
+                >
+
+                    <i class="fa-solid fa-pen-to-square"></i>
+
+                    Edit Member
+
+                </a>
+
+
+            {% elif member.category == "Alumni" and member.status == "Approved" %}
+
+                <div class="access-badge">
+
+                    <i class="fa-solid fa-graduation-cap"></i>
+
+                    Alumni Full Profile
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         BASIC / ACADEMIC INFORMATION
+    ================================================== -->
+
+    <div class="profile-information-grid">
+
+
+        <!-- =================================================
+             ACADEMIC INFORMATION
+        ================================================== -->
+
+        <div class="profile-details-card">
+
+            <div class="details-title">
+
+                <i class="fa-solid fa-user-graduate"></i>
+
+                <span>
+                    Academic Information
+                </span>
+
+            </div>
+
+
+            <div class="details-grid">
+
+
+                <div>
+
+                    <strong>
+                        Category
+                    </strong>
+
+                    <p>
+                        {{ member.category or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Department
+                    </strong>
+
+                    <p>
+                        {{ member.department or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Batch
+                    </strong>
+
+                    <p>
+                        {{ member.batch or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Session
+                    </strong>
+
+                    <p>
+                        {{ member.session or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Upazila
+                    </strong>
+
+                    <p>
+                        {{ member.upazila or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        District
+                    </strong>
+
+                    <p>
+                        {{ member.district or "Gaibandha" }}
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             VERIFICATION
+        ================================================== -->
+
+        <div class="profile-details-card verification-card">
+
+            <div class="details-title">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <span>
+                    Verification
+                </span>
+
+            </div>
+
+
+            <div class="verification-status">
+
+                <div class="verification-status-icon">
+
+                    <i class="fa-solid fa-check"></i>
+
+                </div>
+
+
+                <div>
+
+                    {% if member.status == "Approved" %}
+
+                        <strong>
+                            Verified Member
+                        </strong>
+
+                        <span>
+                            Officially approved
+                        </span>
+
+                    {% else %}
+
+                        <strong>
+                            Not Publicly Verified
+                        </strong>
+
+                        <span>
+                            Verification pending
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="details-grid">
+
+                <div>
+
+                    <strong>
+                        Membership Status
+                    </strong>
+
+                    <p>
+
+                        {% if member.status == "Approved" %}
+
+                            <span class="badge badge-success">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                                Verified Member
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge badge-warning">
+
+                                Not Publicly Verified
+
+                            </span>
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        District
+                    </strong>
+
+                    <p>
+                        {{ member.district or "Gaibandha" }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         FULL INFORMATION
+    ================================================== -->
+
+    {% if session.get("admin_id") or
+          (member.category == "Alumni" and member.status == "Approved") %}
+
+
+        <!-- =================================================
+             PERSONAL INFORMATION
+        ================================================== -->
+
+        <div class="profile-details-card">
+
+            <div class="details-title">
+
+                <i class="fa-solid fa-address-card"></i>
+
+                <span>
+                    Personal Information
+                </span>
+
+            </div>
+
+
+            <div class="details-grid">
+
+
+                <div>
+
+                    <strong>
+                        Full Name
+                    </strong>
+
+                    <p>
+                        {{ member.full_name or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Gender
+                    </strong>
+
+                    <p>
+                        {{ member.gender or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Date of Birth
+                    </strong>
+
+                    <p>
+                        {{ member.date_of_birth or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Blood Group
+                    </strong>
+
+                    <p>
+                        {{ member.blood_group or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Mobile Number
+                    </strong>
+
+                    <p>
+                        {{ member.phone or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Email Address
+                    </strong>
+
+                    <p>
+
+                        {% if member.email %}
+
+                            <a
+                                href="mailto:{{ member.email }}"
+                            >
+                                {{ member.email }}
+                            </a>
+
+                        {% else %}
+
+                            N/A
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ADDRESS INFORMATION
+        ================================================== -->
+
+        <div class="profile-details-card">
+
+            <div class="details-title">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <span>
+                    Address Information
+                </span>
+
+            </div>
+
+
+            <div class="details-grid">
+
+
+                <div>
+
+                    <strong>
+                        Present Address
+                    </strong>
+
+                    <p>
+                        {{ member.present_address or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Permanent Address
+                    </strong>
+
+                    <p>
+                        {{ member.permanent_address or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        District
+                    </strong>
+
+                    <p>
+                        {{ member.district or "Gaibandha" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Upazila
+                    </strong>
+
+                    <p>
+                        {{ member.upazila or "N/A" }}
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PROFESSIONAL INFORMATION
+        ================================================== -->
+
+        <div class="profile-details-card">
+
+            <div class="details-title">
+
+                <i class="fa-solid fa-briefcase"></i>
+
+                <span>
+                    Professional Information
+                </span>
+
+            </div>
+
+
+            <div class="details-grid">
+
+
+                <div>
+
+                    <strong>
+                        Occupation
+                    </strong>
+
+                    <p>
+                        {{ member.occupation or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Current Workplace
+                    </strong>
+
+                    <p>
+                        {{ member.company or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Designation
+                    </strong>
+
+                    <p>
+                        {{ member.designation or "N/A" }}
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SOCIAL MEDIA
+        ================================================== -->
+
+        <div class="profile-details-card">
+
+            <div class="details-title">
+
+                <i class="fa-solid fa-globe"></i>
+
+                <span>
+                    Social Media
+                </span>
+
+            </div>
+
+
+            <div class="details-grid">
+
+
+                <div>
+
+                    <strong>
+                        Facebook Profile
+                    </strong>
+
+                    <p>
+
+                        {% if member.facebook %}
+
+                            <a
+                                href="{{ member.facebook }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                View Facebook Profile
+                            </a>
+
+                        {% else %}
+
+                            N/A
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    {% endif %}
+
+
+    <!-- =================================================
+         PRIVACY / ACCESS MESSAGE
+    ================================================== -->
+
+    <div class="profile-details-card privacy-card">
+
+        <div class="details-title">
+
+            <i class="fa-solid fa-lock"></i>
+
+            <span>
+
+                {% if session.get("admin_id") %}
+
+                    Administrator Access
+
+                {% elif member.category == "Alumni" and member.status == "Approved" %}
+
+                    Alumni Profile Access
+
+                {% else %}
+
+                    Privacy Protected
+
+                {% endif %}
+
+            </span>
+
+        </div>
+
+
+        <div class="privacy-content">
+
+            <div class="privacy-icon">
+
+                {% if session.get("admin_id") %}
+
+                    <i class="fa-solid fa-user-shield"></i>
+
+                {% elif member.category == "Alumni" and member.status == "Approved" %}
+
+                    <i class="fa-solid fa-graduation-cap"></i>
+
+                {% else %}
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="privacy-text">
+
+
+                {% if session.get("admin_id") %}
+
+                    <h3>
+                        Administrator Full Access
+                    </h3>
+
+                    <p>
+
+                        You are viewing this member as an
+                        authorized administrator. All available
+                        information submitted through the
+                        Member Registration form is visible
+                        for verification and administrative
+                        purposes.
+
+                    </p>
+
+
+                {% elif member.category == "Alumni" and member.status == "Approved" %}
+
+                    <h3>
+                        Verified Alumni Profile
+                    </h3>
+
+                    <p>
+
+                        This is an officially approved Alumni
+                        profile. Full information submitted
+                        through the Member Registration form
+                        is displayed according to the Alumni
+                        profile access policy.
+
+                    </p>
+
+
+                {% else %}
+
+                    <h3>
+                        Your Information Is Protected
+                    </h3>
+
+                    <p>
+
+                        Personal contact and identity information
+                        of this member is protected for privacy
+                        and security. Only limited public
+                        information is displayed.
+
+                    </p>
+
+                {% endif %}
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         ACTION AREA
+    ================================================== -->
+
+    <div class="profile-actions">
+
+        <div class="profile-actions-text">
+
+            <strong>
+                Community Directory
+            </strong>
+
+            Return to the previous page or continue
+            exploring JUians of Gaibandha.
+
+        </div>
+
+
+        <a
+            href="{{ request.referrer or url_for('home.home') }}"
+            class="btn-primary"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+
+</div>
+
+</div>
+
+{% endblock %}

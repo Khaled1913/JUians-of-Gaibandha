@@ -1,0 +1,987 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+{{ title }} | JUians of Gaibandha
+{% endblock %}
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/category.css') }}"
+>
+
+{% endblock %}
+
+{% block content %}
+
+
+<!-- =================================================
+     CATEGORY HERO
+================================================== -->
+
+<section class="category-hero-card">
+
+    <div class="hero-glow hero-glow-one"></div>
+    <div class="hero-glow hero-glow-two"></div>
+
+
+    <div class="hero-logo-wrapper">
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/ju_logo.jpg'
+            ) }}"
+            class="hero-logo"
+            alt="Jahangirnagar University Logo"
+        >
+
+    </div>
+
+
+    <div class="hero-eyebrow">
+
+        <i class="fa-solid fa-shield-halved"></i>
+
+        <span>
+            Gaibandha District Student's Welfare Association
+        </span>
+
+    </div>
+
+
+    <h1>
+        {{ title }}
+        <span>Directory</span>
+    </h1>
+
+
+    <p class="hero-description">
+
+        Official verified directory of
+        <strong>{{ title }}</strong>
+        from Jahangirnagar University.
+
+    </p>
+
+
+    <div class="hero-meta">
+
+        <span>
+            <i class="fa-solid fa-location-dot"></i>
+            Gaibandha
+        </span>
+
+
+        <span>
+            <i class="fa-solid fa-building-columns"></i>
+            Jahangirnagar University
+        </span>
+
+
+        <span>
+            <i class="fa-solid fa-circle-check"></i>
+            Verified Directory
+        </span>
+
+    </div>
+
+
+    <div class="hero-bottom-line">
+
+        <span></span>
+
+        <i class="fa-solid fa-star"></i>
+
+        <span></span>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================================
+     DIRECTORY OVERVIEW
+================================================== -->
+
+<section class="category-section">
+
+    <div class="category-section-heading">
+
+        <span class="section-label">
+            <i class="fa-solid fa-chart-simple"></i>
+            DIRECTORY OVERVIEW
+        </span>
+
+
+        <h2>
+            {{ title }} Statistics
+        </h2>
+
+
+        <p>
+            A quick overview of approved members
+            in this category.
+        </p>
+
+    </div>
+
+
+
+    <div class="dashboard-grid">
+
+
+        <!-- TOTAL MEMBERS -->
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+
+            <div class="dashboard-content">
+
+                <span>
+                    Total Members
+                </span>
+
+
+                <strong>
+                    {{ members|length }}
+                </strong>
+
+
+                <small>
+                    Registered members
+                </small>
+
+            </div>
+
+
+            <div class="dashboard-card-arrow">
+                <i class="fa-solid fa-arrow-up-right"></i>
+            </div>
+
+        </div>
+
+
+
+        <!-- APPROVED -->
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon approved-icon">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </div>
+
+
+            <div class="dashboard-content">
+
+                <span>
+                    Approved Members
+                </span>
+
+
+                <strong>
+                    {{ members|length }}
+                </strong>
+
+
+                <small>
+                    Verified members
+                </small>
+
+            </div>
+
+
+            <div class="dashboard-card-arrow">
+                <i class="fa-solid fa-shield-check"></i>
+            </div>
+
+        </div>
+
+
+
+        <!-- UNIVERSITY -->
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon university-icon">
+
+                <i class="fa-solid fa-building-columns"></i>
+
+            </div>
+
+
+            <div class="dashboard-content">
+
+                <span>
+                    University
+                </span>
+
+
+                <strong>
+                    JU
+                </strong>
+
+
+                <small>
+                    Jahangirnagar University
+                </small>
+
+            </div>
+
+
+            <div class="dashboard-card-arrow">
+                <i class="fa-solid fa-arrow-up-right"></i>
+            </div>
+
+        </div>
+
+
+
+        <!-- DISTRICT -->
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon location-icon">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+            </div>
+
+
+            <div class="dashboard-content">
+
+                <span>
+                    District
+                </span>
+
+
+                <strong>
+                    Gaibandha
+                </strong>
+
+
+                <small>
+                    Bangladesh
+                </small>
+
+            </div>
+
+
+            <div class="dashboard-card-arrow">
+                <i class="fa-solid fa-location-arrow"></i>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================================
+     SEARCH SECTION
+================================================== -->
+
+<section class="search-card">
+
+
+    <div class="search-card-decoration"></div>
+
+
+    <div class="search-heading">
+
+        <div class="search-heading-icon">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+        </div>
+
+
+        <div>
+
+            <span class="search-label">
+                FIND A MEMBER
+            </span>
+
+
+            <h2>
+                Search {{ title }}
+            </h2>
+
+
+            <p>
+                Find a member by name, department or batch.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <form
+        class="search-box"
+        method="GET"
+        action="{{ url_for('search.search') }}"
+    >
+
+
+        <div class="search-input">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+
+            <input
+                type="text"
+                name="q"
+                placeholder="Search member..."
+                required
+            >
+
+        </div>
+
+
+
+        <button type="submit">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <span>
+                Search Member
+            </span>
+
+        </button>
+
+
+    </form>
+
+
+    <div class="search-hints">
+
+        <span>
+            <i class="fa-solid fa-circle-check"></i>
+            Search by name
+        </span>
+
+
+        <span>
+            <i class="fa-solid fa-circle-check"></i>
+            Search by department
+        </span>
+
+
+        <span>
+            <i class="fa-solid fa-circle-check"></i>
+            Search by batch
+        </span>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =================================================
+     OFFICIAL DIRECTORY
+================================================== -->
+
+<section class="directory-section">
+
+
+    <div class="directory-header">
+
+
+        <div>
+
+            <span class="section-label">
+
+                <i class="fa-solid fa-database"></i>
+
+                OFFICIAL DIRECTORY
+
+            </span>
+
+
+            <h2>
+                {{ title }} Directory
+            </h2>
+
+
+            <p>
+                Verified and approved members
+                of the community.
+            </p>
+
+        </div>
+
+
+
+        <div class="member-count">
+
+            <div class="member-count-icon">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    {{ members|length }}
+                </strong>
+
+                <span>
+                    Members
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="member-grid">
+
+
+        {% if members %}
+
+
+            {% for member in members %}
+
+
+                <article class="member-card">
+
+
+                    <!-- MEMBER PHOTO -->
+
+                    <div class="member-photo-wrapper">
+
+
+                        {% if member.photo
+                              and member.photo != "default.png" %}
+
+
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename='uploads/' + member.photo
+                                ) }}"
+                                class="member-image"
+                                alt="{{ member.full_name }}"
+                            >
+
+
+                        {% else %}
+
+
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename='images/default_user.png'
+                                ) }}"
+                                class="member-image"
+                                alt="Default Profile"
+                            >
+
+
+                        {% endif %}
+
+
+                        <div class="member-photo-overlay">
+
+                            <i class="fa-solid fa-user"></i>
+
+                        </div>
+
+
+                        <span class="verified-mark">
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </span>
+
+
+                    </div>
+
+
+
+                    <!-- MEMBER INFORMATION -->
+
+                    <div class="member-info">
+
+
+                        <div class="member-status">
+
+                            <span class="status-dot"></span>
+
+                            Verified Member
+
+                        </div>
+
+
+
+                        <h3>
+                            {{ member.full_name }}
+                        </h3>
+
+
+
+                        <div class="member-details">
+
+
+                            <!-- Department -->
+
+                            <div class="member-detail-item">
+
+                                <div class="detail-icon">
+
+                                    <i class="fa-solid fa-building-columns"></i>
+
+                                </div>
+
+                                <span>
+                                    {{ member.department or 'Department not provided' }}
+                                </span>
+
+                            </div>
+
+
+
+                            <!-- Batch -->
+
+                            <div class="member-detail-item">
+
+                                <div class="detail-icon">
+
+                                    <i class="fa-solid fa-graduation-cap"></i>
+
+                                </div>
+
+                                <span>
+                                    Batch:
+                                    {{ member.batch or 'Not provided' }}
+                                </span>
+
+                            </div>
+
+
+
+                            <!-- Upazila -->
+
+                            <div class="member-detail-item">
+
+                                <div class="detail-icon">
+
+                                    <i class="fa-solid fa-location-dot"></i>
+
+                                </div>
+
+                                <span>
+                                    Upazila:
+                                    {{ member.upazila or 'Not provided' }}
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- PROFILE BUTTON -->
+
+                        <a
+                            href="{{ url_for(
+                                'member.member_details',
+                                id=member.id
+                            ) }}"
+                            class="view-profile-btn"
+                        >
+
+                            <span>
+
+                                <i class="fa-solid fa-user"></i>
+
+                                View Profile
+
+                            </span>
+
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+
+
+                    </div>
+
+
+                </article>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <!-- EMPTY STATE -->
+
+            <div class="empty-state">
+
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-user-slash"></i>
+
+                </div>
+
+
+                <span class="empty-label">
+                    DIRECTORY EMPTY
+                </span>
+
+
+                <h2>
+                    No Members Found
+                </h2>
+
+
+                <p>
+                    There are currently no approved members
+                    available in this category.
+                </p>
+
+
+                <a
+                    href="{{ url_for('member.submit') }}"
+                    class="empty-action"
+                >
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Submit Your Information
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =================================================
+     OUR PURPOSE
+================================================== -->
+
+<section class="category-section purpose-section">
+
+
+    <div class="category-section-heading">
+
+        <span class="section-label">
+
+            <i class="fa-solid fa-compass"></i>
+
+            OUR PURPOSE
+
+        </span>
+
+
+        <h2>
+            About JUians of Gaibandha
+        </h2>
+
+
+        <p>
+            Building a connected and trusted digital
+            community for JUians of Gaibandha.
+        </p>
+
+
+    </div>
+
+
+
+    <div class="mission-grid">
+
+
+        <!-- MISSION -->
+
+        <article class="mission-card">
+
+
+            <span class="mission-number">
+                01
+            </span>
+
+
+            <div class="mission-icon">
+
+                <i class="fa-solid fa-bullseye"></i>
+
+            </div>
+
+
+            <span class="mission-label">
+                OUR MISSION
+            </span>
+
+
+            <h3>
+                Connecting JUians
+            </h3>
+
+
+            <p>
+                To build a strong network among JUians of
+                Gaibandha through digital communication,
+                collaboration and mutual cooperation.
+            </p>
+
+
+            <div class="mission-line"></div>
+
+
+        </article>
+
+
+
+        <!-- VISION -->
+
+        <article class="mission-card">
+
+
+            <span class="mission-number">
+                02
+            </span>
+
+
+            <div class="mission-icon">
+
+                <i class="fa-solid fa-eye"></i>
+
+            </div>
+
+
+            <span class="mission-label">
+                OUR VISION
+            </span>
+
+
+            <h3>
+                A Modern Digital Directory
+            </h3>
+
+
+            <p>
+                To create a trusted digital platform that
+                preserves academic and professional information
+                while strengthening the JUian community.
+            </p>
+
+
+            <div class="mission-line"></div>
+
+
+        </article>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =================================================
+     QUICK NAVIGATION
+================================================== -->
+
+<section class="category-section">
+
+
+    <div class="category-section-heading">
+
+
+        <span class="section-label">
+
+            <i class="fa-solid fa-compass"></i>
+
+            EXPLORE THE PLATFORM
+
+        </span>
+
+
+        <h2>
+            Quick Navigation
+        </h2>
+
+
+        <p>
+            Access the most important areas of
+            JUians of Gaibandha.
+        </p>
+
+
+    </div>
+
+
+
+    <div class="quick-grid">
+
+
+        <!-- HOME -->
+
+        <a
+            href="{{ url_for('home.home') }}"
+            class="quick-card"
+        >
+
+
+            <div class="quick-icon">
+
+                <i class="fa-solid fa-house"></i>
+
+            </div>
+
+
+            <div class="quick-content">
+
+                <span>
+                    Homepage
+                </span>
+
+
+                <strong>
+                    Explore Community
+                </strong>
+
+            </div>
+
+
+            <div class="quick-arrow">
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </div>
+
+
+        </a>
+
+
+
+        <!-- SUBMIT -->
+
+        <a
+            href="{{ url_for('member.submit') }}"
+            class="quick-card"
+        >
+
+
+            <div class="quick-icon">
+
+                <i class="fa-solid fa-file-circle-plus"></i>
+
+            </div>
+
+
+            <div class="quick-content">
+
+                <span>
+                    Membership
+                </span>
+
+
+                <strong>
+                    Submit Information
+                </strong>
+
+            </div>
+
+
+            <div class="quick-arrow">
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </div>
+
+
+        </a>
+
+
+
+        <!-- ADMIN -->
+
+        <a
+            href="{{ url_for('auth.login') }}"
+            class="quick-card"
+        >
+
+
+            <div class="quick-icon">
+
+                <i class="fa-solid fa-user-shield"></i>
+
+            </div>
+
+
+            <div class="quick-content">
+
+                <span>
+                    Administration
+                </span>
+
+
+                <strong>
+                    Admin Login
+                </strong>
+
+            </div>
+
+
+            <div class="quick-arrow">
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </div>
+
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+{% endblock %}
+
