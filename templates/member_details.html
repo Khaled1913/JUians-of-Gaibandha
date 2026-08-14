@@ -6,6 +6,7 @@
 
 {% endblock %}
 
+
 {% block extra_css %}
 
 <style>
@@ -449,15 +450,13 @@
 
     font-size: 0.75rem;
 
-    transition:
-        transform 0.2s ease;
+    transition: transform 0.2s ease;
 }
 
 
 .admin-edit-button:hover i {
 
-    transform:
-        rotate(-8deg);
+    transform: rotate(-8deg);
 }
 
 
@@ -1014,20 +1013,6 @@
 }
 
 
-.btn-primary i {
-
-    transition:
-        transform 0.2s ease;
-}
-
-
-.btn-primary:hover i {
-
-    transform:
-        translateX(-3px);
-}
-
-
 /* =========================================================
    TABLET
 ========================================================= */
@@ -1036,8 +1021,7 @@
 
     .member-profile-page {
 
-        padding:
-            45px 16px 75px;
+        padding: 45px 16px 75px;
     }
 
 
@@ -1074,26 +1058,7 @@
 
     .member-profile-page {
 
-        padding:
-            35px 12px 60px;
-    }
-
-
-    .profile-page-intro {
-
-        margin-bottom: 19px;
-    }
-
-
-    .profile-page-intro h2 {
-
-        font-size: 1.3rem;
-    }
-
-
-    .profile-page-intro p {
-
-        font-size: 0.8rem;
+        padding: 35px 12px 60px;
     }
 
 
@@ -1105,8 +1070,7 @@
 
         text-align: center;
 
-        padding:
-            30px 20px;
+        padding: 30px 20px;
 
         border-radius: 19px;
     }
@@ -1127,57 +1091,23 @@
     }
 
 
-    .profile-header h1 {
-
-        font-size: 1.75rem;
-
-        letter-spacing: -0.6px;
-    }
-
-
     .profile-header p {
 
         justify-content: center;
-
-        font-size: 0.82rem;
     }
 
 
     .admin-edit-button {
 
         width: 100%;
-
-        margin-top: 14px;
     }
 
 
     .profile-details-card {
 
-        padding:
-            21px 17px;
+        padding: 21px 17px;
 
         border-radius: 17px;
-    }
-
-
-    .details-title {
-
-        font-size: 0.95rem;
-
-        padding-bottom: 16px;
-
-        margin-bottom: 17px;
-    }
-
-
-    .details-title i {
-
-        width: 37px;
-        height: 37px;
-
-        flex-basis: 37px;
-
-        border-radius: 10px;
     }
 
 
@@ -1189,34 +1119,13 @@
     }
 
 
-    .details-grid > div {
-
-        padding: 14px;
-    }
-
-
-    .privacy-card {
-
-        margin-top: 0;
-    }
-
-
     .profile-actions {
 
         flex-direction: column;
 
         align-items: stretch;
 
-        padding:
-            18px;
-
         text-align: center;
-    }
-
-
-    .profile-actions-text {
-
-        margin-bottom: 3px;
     }
 
 
@@ -1236,8 +1145,7 @@
 
     .profile-hero {
 
-        padding:
-            25px 15px;
+        padding: 25px 15px;
     }
 
 
@@ -1250,16 +1158,9 @@
     }
 
 
-    .profile-header h1 {
-
-        font-size: 1.5rem;
-    }
-
-
     .profile-details-card {
 
-        padding:
-            18px 14px;
+        padding: 18px 14px;
     }
 
 }
@@ -1267,6 +1168,7 @@
 </style>
 
 {% endblock %}
+
 
 {% block content %}
 
@@ -1303,7 +1205,7 @@
 
 
     <!-- =================================================
-         PREMIUM PROFILE HERO
+         PROFILE HERO
     ================================================== -->
 
     <div class="profile-hero">
@@ -1395,10 +1297,10 @@
 
 
             <!-- =================================================
-                 ACCESS INFORMATION
+                 ADMIN ACCESS ONLY
             ================================================== -->
 
-            {% if session.get("admin_id") %}
+            {% if admin_view|default(false) %}
 
                 <div class="access-badge">
 
@@ -1408,10 +1310,6 @@
 
                 </div>
 
-
-                <!-- =================================================
-                     ADMIN EDIT BUTTON
-                ================================================== -->
 
                 <a
                     href="{{ url_for(
@@ -1427,17 +1325,6 @@
 
                 </a>
 
-
-            {% elif member.category == "Alumni" and member.status == "Approved" %}
-
-                <div class="access-badge">
-
-                    <i class="fa-solid fa-graduation-cap"></i>
-
-                    Alumni Full Profile
-
-                </div>
-
             {% endif %}
 
         </div>
@@ -1446,7 +1333,7 @@
 
 
     <!-- =================================================
-         BASIC / ACADEMIC INFORMATION
+         PUBLIC / BASIC INFORMATION
     ================================================== -->
 
     <div class="profile-information-grid">
@@ -1593,14 +1480,24 @@
                             Officially approved
                         </span>
 
-                    {% else %}
+                    {% elif member.status == "Pending" %}
 
                         <strong>
-                            Not Publicly Verified
+                            Pending Verification
                         </strong>
 
                         <span>
-                            Verification pending
+                            Awaiting administrator review
+                        </span>
+
+                    {% else %}
+
+                        <strong>
+                            Not Verified
+                        </strong>
+
+                        <span>
+                            Membership is not approved
                         </span>
 
                     {% endif %}
@@ -1630,11 +1527,23 @@
 
                             </span>
 
-                        {% else %}
+                        {% elif member.status == "Pending" %}
 
                             <span class="badge badge-warning">
 
-                                Not Publicly Verified
+                                <i class="fa-solid fa-clock"></i>
+
+                                Pending
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge badge-danger">
+
+                                <i class="fa-solid fa-circle-xmark"></i>
+
+                                Rejected
 
                             </span>
 
@@ -1666,11 +1575,11 @@
 
 
     <!-- =================================================
-         FULL INFORMATION
+         FULL SUBMITTED INFORMATION
+         ADMINISTRATOR ONLY
     ================================================== -->
 
-    {% if session.get("admin_id") or
-          (member.category == "Alumni" and member.status == "Approved") %}
+    {% if admin_view|default(false) %}
 
 
         <!-- =================================================
@@ -1701,6 +1610,19 @@
 
                     <p>
                         {{ member.full_name or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Category
+                    </strong>
+
+                    <p>
+                        {{ member.category or "N/A" }}
                     </p>
 
                 </div>
@@ -1748,14 +1670,115 @@
                 <div>
 
                     <strong>
-                        Mobile Number
+                        Phone Number
                     </strong>
 
                     <p>
-                        {{ member.phone or "N/A" }}
+
+                        {% if member.phone %}
+
+                            <a href="tel:{{ member.phone }}">
+                                {{ member.phone }}
+                            </a>
+
+                        {% else %}
+
+                            N/A
+
+                        {% endif %}
+
                     </p>
 
                 </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ACADEMIC INFORMATION
+        ================================================== -->
+
+        <div class="profile-details-card">
+
+            <div class="details-title">
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+                <span>
+                    Academic Information
+                </span>
+
+            </div>
+
+
+            <div class="details-grid">
+
+
+                <div>
+
+                    <strong>
+                        Department
+                    </strong>
+
+                    <p>
+                        {{ member.department or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Batch
+                    </strong>
+
+                    <p>
+                        {{ member.batch or "N/A" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Session
+                    </strong>
+
+                    <p>
+                        {{ member.session or "N/A" }}
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CONTACT INFORMATION
+        ================================================== -->
+
+        <div class="profile-details-card">
+
+            <div class="details-title">
+
+                <i class="fa-solid fa-address-book"></i>
+
+                <span>
+                    Contact Information
+                </span>
+
+            </div>
+
+
+            <div class="details-grid">
 
 
                 <div>
@@ -1768,9 +1791,7 @@
 
                         {% if member.email %}
 
-                            <a
-                                href="mailto:{{ member.email }}"
-                            >
+                            <a href="mailto:{{ member.email }}">
                                 {{ member.email }}
                             </a>
 
@@ -1780,6 +1801,32 @@
 
                         {% endif %}
 
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        District
+                    </strong>
+
+                    <p>
+                        {{ member.district or "Gaibandha" }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Upazila
+                    </strong>
+
+                    <p>
+                        {{ member.upazila or "N/A" }}
                     </p>
 
                 </div>
@@ -1836,32 +1883,6 @@
                 </div>
 
 
-                <div>
-
-                    <strong>
-                        District
-                    </strong>
-
-                    <p>
-                        {{ member.district or "Gaibandha" }}
-                    </p>
-
-                </div>
-
-
-                <div>
-
-                    <strong>
-                        Upazila
-                    </strong>
-
-                    <p>
-                        {{ member.upazila or "N/A" }}
-                    </p>
-
-                </div>
-
-
             </div>
 
         </div>
@@ -1903,7 +1924,7 @@
                 <div>
 
                     <strong>
-                        Current Workplace
+                        Company / Workplace
                     </strong>
 
                     <p>
@@ -1939,7 +1960,7 @@
 
             <div class="details-title">
 
-                <i class="fa-solid fa-globe"></i>
+                <i class="fa-brands fa-facebook-f"></i>
 
                 <span>
                     Social Media
@@ -2000,13 +2021,9 @@
 
             <span>
 
-                {% if session.get("admin_id") %}
+                {% if admin_view|default(false) %}
 
                     Administrator Access
-
-                {% elif member.category == "Alumni" and member.status == "Approved" %}
-
-                    Alumni Profile Access
 
                 {% else %}
 
@@ -2023,13 +2040,9 @@
 
             <div class="privacy-icon">
 
-                {% if session.get("admin_id") %}
+                {% if admin_view|default(false) %}
 
                     <i class="fa-solid fa-user-shield"></i>
-
-                {% elif member.category == "Alumni" and member.status == "Approved" %}
-
-                    <i class="fa-solid fa-graduation-cap"></i>
 
                 {% else %}
 
@@ -2043,54 +2056,32 @@
             <div class="privacy-text">
 
 
-                {% if session.get("admin_id") %}
+                {% if admin_view|default(false) %}
 
                     <h3>
                         Administrator Full Access
                     </h3>
 
                     <p>
-
-                        You are viewing this member as an
-                        authorized administrator. All available
-                        information submitted through the
-                        Member Registration form is visible
-                        for verification and administrative
-                        purposes.
-
-                    </p>
-
-
-                {% elif member.category == "Alumni" and member.status == "Approved" %}
-
-                    <h3>
-                        Verified Alumni Profile
-                    </h3>
-
-                    <p>
-
-                        This is an officially approved Alumni
-                        profile. Full information submitted
-                        through the Member Registration form
-                        is displayed according to the Alumni
-                        profile access policy.
-
+                        You are viewing this member through the
+                        administration panel. All information submitted
+                        by this member through the Member Registration
+                        form is available for administrative review
+                        and management.
                     </p>
 
 
                 {% else %}
 
                     <h3>
-                        Your Information Is Protected
+                        Member Information Is Protected
                     </h3>
 
                     <p>
-
-                        Personal contact and identity information
-                        of this member is protected for privacy
-                        and security. Only limited public
-                        information is displayed.
-
+                        This public profile displays only limited
+                        member information. Personal contact,
+                        address, professional and social information
+                        is available only to an authorized administrator.
                     </p>
 
                 {% endif %}
@@ -2115,22 +2106,48 @@
                 Community Directory
             </strong>
 
-            Return to the previous page or continue
-            exploring JUians of Gaibandha.
+            {% if admin_view|default(false) %}
+
+                Return to the administration panel or continue
+                managing member information.
+
+            {% else %}
+
+                Return to the previous page or continue
+                exploring JUians of Gaibandha.
+
+            {% endif %}
 
         </div>
 
 
-        <a
-            href="{{ request.referrer or url_for('home.home') }}"
-            class="btn-primary"
-        >
+        {% if admin_view|default(false) %}
 
-            <i class="fa-solid fa-arrow-left"></i>
+            <a
+                href="{{ url_for('admin.members') }}"
+                class="btn-primary"
+            >
 
-            Back
+                <i class="fa-solid fa-arrow-left"></i>
 
-        </a>
+                Back to Members
+
+            </a>
+
+        {% else %}
+
+            <a
+                href="{{ request.referrer or url_for('home.home') }}"
+                class="btn-primary"
+            >
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back
+
+            </a>
+
+        {% endif %}
 
     </div>
 
