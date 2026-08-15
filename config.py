@@ -67,27 +67,62 @@ DATABASE_URL = os.environ.get(
 
 
 
+
+
 # =====================================================
 # NORMALIZE POSTGRES URL
 # =====================================================
+#
+# Render may provide:
+#
+#     postgres://...
+#
+# or
+#
+#     postgresql://...
+#
+# Since this project uses:
+#
+#     psycopg[binary]
+#
+# SQLAlchemy must explicitly use the psycopg
+# version 3 driver:
+#
+#     postgresql+psycopg://...
+#
+# =====================================================
 
-if (
-    DATABASE_URL
-    and
-    DATABASE_URL.startswith(
+if DATABASE_URL:
+
+
+    if DATABASE_URL.startswith(
         "postgres://"
-    )
-):
+    ):
 
-    DATABASE_URL = DATABASE_URL.replace(
+        DATABASE_URL = DATABASE_URL.replace(
 
-        "postgres://",
+            "postgres://",
 
-        "postgresql://",
+            "postgresql+psycopg://",
 
-        1
+            1
 
-    )
+        )
+
+
+    elif DATABASE_URL.startswith(
+        "postgresql://"
+    ):
+
+        DATABASE_URL = DATABASE_URL.replace(
+
+            "postgresql://",
+
+            "postgresql+psycopg://",
+
+            1
+
+        )
 
 
 
@@ -172,6 +207,7 @@ class Config:
         SQLALCHEMY_DATABASE_URI = (
             DATABASE_URL
         )
+
 
     else:
 
