@@ -1,4 +1,3 @@
-
 # ============================================================
 # JUians of Gaibandha
 # Utility Helper Functions
@@ -8,6 +7,8 @@
 from datetime import datetime
 
 from flask import session
+
+from extensions import db
 
 from models import Admin
 
@@ -63,11 +64,32 @@ def current_admin():
 
         return None
 
-    return Admin.query.get(
+
+    admin = db.session.get(
+
+        Admin,
 
         admin_id
 
     )
+
+
+    if not admin:
+
+        return None
+
+
+    if not admin.is_active:
+
+        return None
+
+
+    if not admin.is_current:
+
+        return None
+
+
+    return admin
 
 
 # ============================================================
@@ -81,12 +103,16 @@ def active_admin():
 
     return (
         Admin.query
+
         .filter_by(
-            is_active=True
+            is_active=True,
+            is_current=True
         )
+
         .order_by(
-            Admin.id.asc()
+            Admin.id.desc()
         )
+
         .first()
     )
 
@@ -97,7 +123,11 @@ def active_admin():
 
 def is_logged_in():
 
-    return "admin_id" in session
+    admin = current_admin()
+
+    return (
+        admin is not None
+    )
 
 
 # ============================================================
@@ -108,18 +138,34 @@ def admin_name():
 
     admin = current_admin()
 
+
     if admin:
 
-        return admin.full_name or session.get(
-            "admin_name",
-            ""
+        return (
+
+            admin.full_name
+
+            or session.get(
+                "admin_name",
+                ""
+            )
+
         )
+
 
     admin = active_admin()
 
+
     if admin:
 
-        return admin.full_name or ""
+        return (
+
+            admin.full_name
+
+            or ""
+
+        )
+
 
     return session.get(
 
@@ -138,18 +184,34 @@ def admin_role():
 
     admin = current_admin()
 
+
     if admin:
 
-        return admin.role or session.get(
-            "admin_role",
-            ""
+        return (
+
+            admin.role
+
+            or session.get(
+                "admin_role",
+                ""
+            )
+
         )
+
 
     admin = active_admin()
 
+
     if admin:
 
-        return admin.role or ""
+        return (
+
+            admin.role
+
+            or ""
+
+        )
+
 
     return session.get(
 
@@ -168,9 +230,11 @@ def admin_contact_email():
 
     admin = current_admin()
 
+
     if not admin:
 
         admin = active_admin()
+
 
     if admin:
 
@@ -181,6 +245,7 @@ def admin_contact_email():
             or ""
 
         )
+
 
     return ""
 
@@ -193,9 +258,11 @@ def admin_contact_phone():
 
     admin = current_admin()
 
+
     if not admin:
 
         admin = active_admin()
+
 
     if admin:
 
@@ -206,6 +273,7 @@ def admin_contact_phone():
             or ""
 
         )
+
 
     return ""
 
@@ -218,9 +286,11 @@ def admin_facebook_url():
 
     admin = current_admin()
 
+
     if not admin:
 
         admin = active_admin()
+
 
     if admin:
 
@@ -231,6 +301,7 @@ def admin_facebook_url():
             or ""
 
         )
+
 
     return ""
 
@@ -250,7 +321,7 @@ def admin_contact():
 
     # --------------------------------------------------------
     # If visitor is not logged in,
-    # get the active administrator
+    # get the active current administrator
     # --------------------------------------------------------
 
     if not admin:
@@ -409,7 +480,9 @@ def format_phone(phone):
 
         return ""
 
-    return phone.strip()
+    return str(
+        phone
+    ).strip()
 
 
 # ============================================================
@@ -422,7 +495,9 @@ def clean_text(text):
 
         return ""
 
-    return text.strip()
+    return str(
+        text
+    ).strip()
 
 
 # ============================================================
@@ -432,6 +507,7 @@ def clean_text(text):
 def inject_global_data():
 
     contact = admin_contact()
+
 
     return {
 
@@ -464,6 +540,7 @@ def inject_global_data():
 
         "admin_contact": contact,
 
+
         "admin_contact_name": contact.get(
 
             "name",
@@ -471,6 +548,7 @@ def inject_global_data():
             ""
 
         ),
+
 
         "admin_contact_email": contact.get(
 
@@ -480,6 +558,7 @@ def inject_global_data():
 
         ),
 
+
         "admin_contact_phone": contact.get(
 
             "phone",
@@ -487,6 +566,7 @@ def inject_global_data():
             ""
 
         ),
+
 
         "admin_facebook_url": contact.get(
 
@@ -511,3 +591,7 @@ def inject_global_data():
 
     }
 
+
+# ============================================================
+# END OF FILE
+# ============================================================

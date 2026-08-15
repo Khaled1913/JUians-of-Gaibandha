@@ -19,7 +19,7 @@ from werkzeug.utils import secure_filename
 
 
 # ============================================================
-# UPLOAD CONFIGURATION
+# PROJECT ROOT
 # ============================================================
 
 PROJECT_ROOT = os.path.abspath(
@@ -29,11 +29,39 @@ PROJECT_ROOT = os.path.abspath(
     )
 )
 
-UPLOAD_FOLDER = os.path.join(
+
+# ============================================================
+# UPLOAD CONFIGURATION
+# ============================================================
+#
+# Local:
+#
+#     static/uploads/
+#
+# Render / Production:
+#
+# If UPLOAD_FOLDER environment variable is configured,
+# that location will be used instead.
+#
+# ============================================================
+
+DEFAULT_UPLOAD_FOLDER = os.path.join(
     PROJECT_ROOT,
     "static",
     "uploads",
 )
+
+
+UPLOAD_FOLDER = os.environ.get(
+    "UPLOAD_FOLDER",
+    DEFAULT_UPLOAD_FOLDER,
+)
+
+
+UPLOAD_FOLDER = os.path.abspath(
+    UPLOAD_FOLDER
+)
+
 
 ALLOWED_EXTENSIONS = {
     "png",
@@ -43,7 +71,35 @@ ALLOWED_EXTENSIONS = {
     "webp",
 }
 
-MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
+
+MAX_FILE_SIZE = (
+    5
+    *
+    1024
+    *
+    1024
+)
+
+
+# ============================================================
+# DEFAULT IMAGE NAMES
+# ============================================================
+
+PROTECTED_DEFAULT_IMAGES = {
+
+    "default.png",
+
+    "default_user.png",
+
+    "images/default.png",
+
+    "images/default_user.png",
+
+    "images/ju_campus.jpeg",
+
+    "images/Event_1.1.jpeg",
+
+}
 
 
 # ============================================================
@@ -51,6 +107,7 @@ MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
 # ============================================================
 
 def create_upload_folder():
+
     """
     Create the upload folder if it does not exist.
     """
@@ -66,23 +123,42 @@ def create_upload_folder():
 # ============================================================
 
 def allowed_file(filename):
+
     """
     Check whether the uploaded file has an allowed
     image extension.
     """
 
     if not filename:
+
         return False
 
-    if "." not in filename:
+
+    filename = str(
+        filename
+    ).strip()
+
+
+    if not filename:
+
         return False
+
+
+    if "." not in filename:
+
+        return False
+
 
     extension = filename.rsplit(
         ".",
         1,
     )[1].lower()
 
-    return extension in ALLOWED_EXTENSIONS
+
+    return (
+        extension
+        in ALLOWED_EXTENSIONS
+    )
 
 
 # ============================================================
@@ -90,20 +166,41 @@ def allowed_file(filename):
 # ============================================================
 
 def generate_filename(filename):
+
     """
     Generate a unique filename while preserving
     the original file extension.
     """
 
-    if not filename or "." not in filename:
+    if not filename:
+
         return None
+
+
+    filename = str(
+        filename
+    ).strip()
+
+
+    if "." not in filename:
+
+        return None
+
 
     extension = filename.rsplit(
         ".",
         1,
     )[1].lower()
 
-    return f"{uuid4().hex}.{extension}"
+
+    if extension not in ALLOWED_EXTENSIONS:
+
+        return None
+
+
+    return (
+        f"{uuid4().hex}.{extension}"
+    )
 
 
 # ============================================================
@@ -111,33 +208,131 @@ def generate_filename(filename):
 # ============================================================
 
 def get_file_size(photo):
+
     """
     Safely determine the uploaded file size.
 
     Returns:
+
         int  -> file size in bytes
+
         None -> unable to determine size
     """
 
     try:
-        current_position = photo.stream.tell()
 
-        photo.stream.seek(
+        stream = getattr(
+            photo,
+            "stream",
+            None,
+        )
+
+
+        if stream is None:
+
+            return None
+
+
+        current_position = (
+            stream.tell()
+        )
+
+
+        stream.seek(
             0,
             os.SEEK_END,
         )
 
-        file_size = photo.stream.tell()
 
-        photo.stream.seek(
+        file_size = (
+            stream.tell()
+        )
+
+
+        stream.seek(
             current_position,
             os.SEEK_SET,
         )
 
+
         return file_size
 
+
     except Exception:
+
         return None
+
+
+# ============================================================
+# NORMALIZE STORED IMAGE PATH
+# ============================================================
+
+def normalize_image_path(
+    filename
+):
+
+    """
+    Normalize an image reference.
+
+    Examples:
+
+        static/uploads/test.jpg
+        uploads/test.jpg
+        test.jpg
+
+    Result:
+
+        test.jpg
+    """
+
+    if not filename:
+
+        return None
+
+
+    filename = str(
+        filename
+    ).replace(
+        "\\",
+        "/",
+    ).strip()
+
+
+    if not filename:
+
+        return None
+
+
+    filename = (
+        filename.lstrip("/")
+    )
+
+
+    if filename.startswith(
+        "static/uploads/"
+    ):
+
+        filename = filename[
+            len(
+                "static/uploads/"
+            ):
+        ]
+
+
+    elif filename.startswith(
+        "uploads/"
+    ):
+
+        filename = filename[
+            len(
+                "uploads/"
+            ):
+        ]
+
+
+    return os.path.basename(
+        filename
+    )
 
 
 # ============================================================
@@ -145,82 +340,149 @@ def get_file_size(photo):
 # ============================================================
 
 def upload_photo(photo):
+
     """
     Upload and save an image.
 
     Returns:
-        filename -> successful upload
-        "default.png" -> no photo provided
-        None -> invalid upload
+
+        filename
+
+            Successful upload.
+
+        "default.png"
+
+            No photo provided.
+
+        None
+
+            Invalid upload.
     """
 
     create_upload_folder()
 
+
     # --------------------------------------------------------
-    # No photo supplied
+    # No Photo Supplied
     # --------------------------------------------------------
 
     if photo is None:
+
         return "default.png"
 
+
     # --------------------------------------------------------
-    # Empty file field
+    # Empty File Field
     # --------------------------------------------------------
 
-    if not getattr(
+    original_name = getattr(
         photo,
         "filename",
         "",
-    ):
+    )
+
+
+    if not original_name:
+
         return "default.png"
 
+
+    original_name = (
+        original_name.strip()
+    )
+
+
+    if not original_name:
+
+        return "default.png"
+
+
     # --------------------------------------------------------
-    # Validate extension
+    # Validate Extension
     # --------------------------------------------------------
 
     if not allowed_file(
-        photo.filename
+        original_name
     ):
+
         return None
 
+
     # --------------------------------------------------------
-    # Secure original filename
+    # Secure Original Filename
     # --------------------------------------------------------
 
-    original_filename = secure_filename(
-        photo.filename
+    original_filename = (
+        secure_filename(
+            original_name
+        )
     )
+
 
     if not original_filename:
+
         return None
 
+
     # --------------------------------------------------------
-    # Generate unique filename
+    # Generate Unique Filename
     # --------------------------------------------------------
 
-    filename = generate_filename(
-        original_filename
+    filename = (
+        generate_filename(
+            original_filename
+        )
     )
+
 
     if not filename:
+
         return None
 
+
     # --------------------------------------------------------
-    # File size validation
+    # File Size Validation
     # --------------------------------------------------------
 
-    file_size = get_file_size(
-        photo
+    file_size = (
+        get_file_size(
+            photo
+        )
     )
 
+
     if file_size is None:
+
         return None
+
+
+    if file_size <= 0:
+
+        return None
+
 
     if file_size > MAX_FILE_SIZE:
+
         return None
 
+
     # --------------------------------------------------------
-    # Save file
+    # Reset Stream Before Saving
+    # --------------------------------------------------------
+
+    try:
+
+        photo.stream.seek(
+            0
+        )
+
+    except Exception:
+
+        return None
+
+
+    # --------------------------------------------------------
+    # Save File
     # --------------------------------------------------------
 
     file_path = os.path.join(
@@ -228,22 +490,58 @@ def upload_photo(photo):
         filename,
     )
 
+
     try:
+
         photo.save(
             file_path
         )
 
-    except Exception:
+
+    except Exception as exc:
+
+        print(
+            f"Image upload error: {exc}"
+        )
+
         return None
 
+
     # --------------------------------------------------------
-    # Verify file was actually saved
+    # Verify File Was Saved
     # --------------------------------------------------------
 
     if not os.path.isfile(
         file_path
     ):
+
         return None
+
+
+    # --------------------------------------------------------
+    # Verify Stored File Is Not Empty
+    # --------------------------------------------------------
+
+    try:
+
+        if (
+            os.path.getsize(
+                file_path
+            )
+            <= 0
+        ):
+
+            os.remove(
+                file_path
+            )
+
+            return None
+
+
+    except OSError:
+
+        return None
+
 
     return filename
 
@@ -253,6 +551,7 @@ def upload_photo(photo):
 # ============================================================
 
 def upload_event_image(photo):
+
     """
     Upload an event image.
 
@@ -269,35 +568,42 @@ def upload_event_image(photo):
     """
 
     if photo is None:
+
         return None
+
 
     if not getattr(
         photo,
         "filename",
         "",
     ):
+
         return None
 
-    filename = upload_photo(
-        photo
+
+    filename = (
+        upload_photo(
+            photo
+        )
     )
 
+
     if not filename:
+
         return None
 
-    # upload_photo() can return default.png when
-    # there is no uploaded file. That should not
-    # happen for an event image.
+
+    # --------------------------------------------------------
+    # default.png Is Not A Valid Event Image
+    # --------------------------------------------------------
 
     if filename == "default.png":
+
         return None
 
-    return os.path.join(
-        "uploads",
-        filename,
-    ).replace(
-        "\\",
-        "/",
+
+    return (
+        f"uploads/{filename}"
     )
 
 
@@ -306,69 +612,153 @@ def upload_event_image(photo):
 # ============================================================
 
 def delete_photo(filename):
+
     """
     Delete an uploaded image.
 
-    The default image is never deleted.
+    Default/static images are never deleted.
     """
 
     if not filename:
+
         return
 
+
     # --------------------------------------------------------
-    # Normalize path
+    # Normalize Path
     # --------------------------------------------------------
 
-    filename = str(
+    normalized_value = str(
         filename
     ).replace(
         "\\",
         "/",
+    ).strip()
+
+
+    normalized_value = (
+        normalized_value.lstrip("/")
     )
 
+
     # --------------------------------------------------------
-    # Remove possible static/ prefix
+    # Remove Possible static/ Prefix
     # --------------------------------------------------------
 
-    if filename.startswith(
+    if normalized_value.startswith(
         "static/"
     ):
-        filename = filename[
-            len("static/") :
-        ]
+
+        normalized_value = (
+            normalized_value[
+                len(
+                    "static/"
+                ):
+            ]
+        )
+
 
     # --------------------------------------------------------
-    # Default image protection
+    # Default Image Protection
     # --------------------------------------------------------
 
-    if filename in {
-        "default.png",
-        "images/default.png",
-    }:
+    if (
+        normalized_value
+        in PROTECTED_DEFAULT_IMAGES
+    ):
+
         return
 
+
     # --------------------------------------------------------
-    # Only use the filename itself
+    # Do Not Delete Anything Inside Static Images
     # --------------------------------------------------------
 
-    basename = os.path.basename(
-        filename
+    if normalized_value.startswith(
+        "images/"
+    ):
+
+        return
+
+
+    # --------------------------------------------------------
+    # Only Use Filename
+    # --------------------------------------------------------
+
+    basename = normalize_image_path(
+        normalized_value
     )
+
 
     if not basename:
+
         return
 
+
     # --------------------------------------------------------
-    # Build upload path
+    # Additional Protection
     # --------------------------------------------------------
 
-    path = os.path.join(
-        UPLOAD_FOLDER,
-        basename,
+    if basename in {
+
+        "default.png",
+
+        "default_user.png",
+
+    }:
+
+        return
+
+
+    # --------------------------------------------------------
+    # Build Upload Path
+    # --------------------------------------------------------
+
+    path = os.path.abspath(
+        os.path.join(
+            UPLOAD_FOLDER,
+            basename,
+        )
     )
 
+
     # --------------------------------------------------------
-    # Delete file
+    # Security Check
+    #
+    # Prevent deleting files outside UPLOAD_FOLDER.
+    # --------------------------------------------------------
+
+    upload_root = (
+        os.path.abspath(
+            UPLOAD_FOLDER
+        )
+    )
+
+
+    try:
+
+        common_path = (
+            os.path.commonpath(
+                [
+                    upload_root,
+                    path,
+                ]
+            )
+        )
+
+
+    except ValueError:
+
+        return
+
+
+    if common_path != upload_root:
+
+        return
+
+
+    # --------------------------------------------------------
+    # Delete File
     # --------------------------------------------------------
 
     if os.path.isfile(
@@ -376,12 +766,17 @@ def delete_photo(filename):
     ):
 
         try:
+
             os.remove(
                 path
             )
 
-        except OSError:
-            pass
+
+        except OSError as exc:
+
+            print(
+                f"Image deletion error: {exc}"
+            )
 
 
 # ============================================================
@@ -392,13 +787,16 @@ def replace_photo(
     old_photo,
     new_photo,
 ):
+
     """
     Replace an existing image.
 
     Process:
 
         1. Upload new image.
+
         2. Delete old image.
+
         3. Return new filename.
 
     If no valid new image is supplied,
@@ -406,14 +804,16 @@ def replace_photo(
     """
 
     # --------------------------------------------------------
-    # No new photo selected
+    # No New Photo Selected
     # --------------------------------------------------------
 
     if new_photo is None:
+
         return old_photo
 
+
     # --------------------------------------------------------
-    # Empty file field
+    # Empty File Field
     # --------------------------------------------------------
 
     if not getattr(
@@ -421,42 +821,57 @@ def replace_photo(
         "filename",
         "",
     ):
+
         return old_photo
 
+
     # --------------------------------------------------------
-    # Upload new photo
+    # Upload New Photo
     # --------------------------------------------------------
 
-    filename = upload_photo(
-        new_photo
+    filename = (
+        upload_photo(
+            new_photo
+        )
     )
 
+
     # --------------------------------------------------------
-    # Upload failed
+    # Upload Failed
     # --------------------------------------------------------
 
     if not filename:
+
         return old_photo
 
+
     # --------------------------------------------------------
-    # Do not delete anything when default.png
-    # is returned
+    # default.png Means No Valid Replacement
     # --------------------------------------------------------
 
     if filename == "default.png":
+
         return old_photo
 
+
     # --------------------------------------------------------
-    # Delete previous photo
+    # Delete Previous Photo
     # --------------------------------------------------------
 
     if old_photo:
+
         delete_photo(
             old_photo
         )
 
+
     # --------------------------------------------------------
-    # Return new filename
+    # Return New Filename
     # --------------------------------------------------------
 
     return filename
+
+
+# ============================================================
+# END OF FILE
+# ============================================================

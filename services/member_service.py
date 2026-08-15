@@ -1,4 +1,3 @@
-
 # ============================================================
 # JUians of Gaibandha
 # Member Service
@@ -7,7 +6,10 @@
 
 from datetime import datetime
 
-from sqlalchemy import or_
+from sqlalchemy import (
+    or_,
+    func
+)
 
 from extensions import db
 from models import Information
@@ -18,8 +20,15 @@ from models import Information
 # ============================================================
 
 def get_current_academic_year():
-    current_year = datetime.now().year
-    return f"{current_year}-{current_year + 1}"
+
+    current_year = (
+        datetime.now().year
+    )
+
+    return (
+        f"{current_year}-"
+        f"{current_year + 1}"
+    )
 
 
 # ============================================================
@@ -27,7 +36,10 @@ def get_current_academic_year():
 # ============================================================
 
 def get_current_academic_start_year():
-    return datetime.now().year
+
+    return (
+        datetime.now().year
+    )
 
 
 # ============================================================
@@ -35,55 +47,135 @@ def get_current_academic_start_year():
 # ============================================================
 
 def normalize_session(session):
+
     """
     Normalize supported session formats.
 
     Supported:
+
         2020-2021
         2020 / 2021
         2020_2021
         2020 - 2021
 
     Returns:
+
         (start_year, end_year)
+
         or
+
         (None, None)
     """
 
     if not session:
-        return None, None
 
-    try:
-        value = str(session).strip()
-
-        if not value:
-            return None, None
-
-        value = (
-            value
-            .replace(" ", "")
-            .replace("/", "-")
-            .replace("_", "-")
+        return (
+            None,
+            None
         )
 
-        parts = value.split("-")
+
+    try:
+
+        value = str(
+            session
+        ).strip()
+
+
+        if not value:
+
+            return (
+                None,
+                None
+            )
+
+
+        value = (
+
+            value
+
+            .replace(
+                " ",
+                ""
+            )
+
+            .replace(
+                "/",
+                "-"
+            )
+
+            .replace(
+                "_",
+                "-"
+            )
+
+        )
+
+
+        parts = (
+            value.split(
+                "-"
+            )
+        )
+
 
         if len(parts) != 2:
-            return None, None
 
-        start_year = int(parts[0])
-        end_year = int(parts[1])
+            return (
+                None,
+                None
+            )
 
-        if start_year < 1900:
-            return None, None
 
-        if end_year != start_year + 1:
-            return None, None
+        start_year = int(
+            parts[0]
+        )
 
-        return start_year, end_year
 
-    except (ValueError, TypeError, AttributeError):
-        return None, None
+        end_year = int(
+            parts[1]
+        )
+
+
+        if (
+            start_year < 1900
+            or
+            start_year > 2100
+        ):
+
+            return (
+                None,
+                None
+            )
+
+
+        if (
+            end_year
+            != start_year + 1
+        ):
+
+            return (
+                None,
+                None
+            )
+
+
+        return (
+            start_year,
+            end_year
+        )
+
+
+    except (
+        ValueError,
+        TypeError,
+        AttributeError
+    ):
+
+        return (
+            None,
+            None
+        )
 
 
 # ============================================================
@@ -91,6 +183,7 @@ def normalize_session(session):
 # ============================================================
 
 def should_be_alumni(session):
+
     """
     Automatic Alumni rule:
 
@@ -106,15 +199,31 @@ def should_be_alumni(session):
     Invalid / N/A sessions are ignored.
     """
 
-    start_year, end_year = normalize_session(session)
+    start_year, end_year = (
+        normalize_session(
+            session
+        )
+    )
+
 
     if start_year is None:
+
         return False
 
-    current_start_year = get_current_academic_start_year()
+
+    current_start_year = (
+        get_current_academic_start_year()
+    )
+
 
     return (
-        current_start_year - start_year
+
+        current_start_year
+
+        -
+
+        start_year
+
     ) >= 7
 
 
@@ -123,6 +232,7 @@ def should_be_alumni(session):
 # ============================================================
 
 def update_student_categories():
+
     """
     Convert only APPROVED Running Students to Alumni
     when their academic session is old enough.
@@ -134,32 +244,55 @@ def update_student_categories():
     """
 
     students = (
+
         Information.query
+
         .filter(
-            Information.category == "Running Student",
-            Information.status == "Approved"
+
+            Information.category
+            == "Running Student",
+
+            Information.status
+            == "Approved"
+
         )
+
         .all()
+
     )
+
 
     updated = False
 
+
     for member in students:
 
-        if should_be_alumni(member.session):
+        if should_be_alumni(
+            member.session
+        ):
 
-            member.category = "Alumni"
+            member.category = (
+                "Alumni"
+            )
 
             updated = True
+
 
     if updated:
 
         try:
+
             db.session.commit()
 
+
         except Exception:
+
             db.session.rollback()
+
             raise
+
+
+    return updated
 
 
 # ============================================================
@@ -168,10 +301,27 @@ def update_student_categories():
 
 def create_member(member):
 
-    db.session.add(member)
-    db.session.commit()
+    if member is None:
 
-    return member
+        return None
+
+
+    try:
+
+        db.session.add(
+            member
+        )
+
+        db.session.commit()
+
+        return member
+
+
+    except Exception:
+
+        db.session.rollback()
+
+        raise
 
 
 # ============================================================
@@ -181,15 +331,21 @@ def create_member(member):
 def update_member(member):
 
     if member is None:
+
         return None
 
+
     try:
+
         db.session.commit()
 
         return member
 
+
     except Exception:
+
         db.session.rollback()
+
         raise
 
 
@@ -200,17 +356,25 @@ def update_member(member):
 def delete_member(member):
 
     if member is None:
+
         return False
+
 
     try:
 
-        db.session.delete(member)
+        db.session.delete(
+            member
+        )
+
         db.session.commit()
 
         return True
 
+
     except Exception:
+
         db.session.rollback()
+
         raise
 
 
@@ -222,9 +386,13 @@ def get_member(member_id):
 
     update_student_categories()
 
+
     return db.session.get(
+
         Information,
+
         member_id
+
     )
 
 
@@ -236,12 +404,17 @@ def get_all_members():
 
     update_student_categories()
 
+
     return (
+
         Information.query
+
         .order_by(
             Information.created_at.desc()
         )
+
         .all()
+
     )
 
 
@@ -249,20 +422,51 @@ def get_all_members():
 # GET LATEST APPROVED MEMBERS
 # ============================================================
 
-def get_latest_members(limit=6):
+def get_latest_members(
+    limit=6
+):
 
     update_student_categories()
 
-    return (
-        Information.query
-        .filter(
-            Information.status == "Approved"
+
+    try:
+
+        limit = int(
+            limit
         )
+
+    except (
+        TypeError,
+        ValueError
+    ):
+
+        limit = 6
+
+
+    if limit <= 0:
+
+        limit = 6
+
+
+    return (
+
+        Information.query
+
+        .filter(
+            Information.status
+            == "Approved"
+        )
+
         .order_by(
             Information.created_at.desc()
         )
-        .limit(limit)
+
+        .limit(
+            limit
+        )
+
         .all()
+
     )
 
 
@@ -274,16 +478,37 @@ def get_category_members(category):
 
     update_student_categories()
 
+
+    category = str(
+        category or ""
+    ).strip()
+
+
+    if not category:
+
+        return []
+
+
     return (
+
         Information.query
+
         .filter(
-            Information.category == category,
-            Information.status == "Approved"
+
+            Information.category
+            == category,
+
+            Information.status
+            == "Approved"
+
         )
+
         .order_by(
             Information.created_at.desc()
         )
+
         .all()
+
     )
 
 
@@ -295,34 +520,75 @@ def search_members(keyword):
 
     update_student_categories()
 
-    if not keyword:
-        return []
-
-    keyword = str(keyword).strip()
 
     if not keyword:
+
         return []
 
-    search = f"%{keyword}%"
+
+    keyword = str(
+        keyword
+    ).strip()
+
+
+    if not keyword:
+
+        return []
+
+
+    search = (
+        f"%{keyword}%"
+    )
+
 
     return (
+
         Information.query
+
         .filter(
-            Information.status == "Approved",
+
+            Information.status
+            == "Approved",
+
             or_(
-                Information.full_name.ilike(search),
-                Information.department.ilike(search),
-                Information.category.ilike(search),
-                Information.phone.ilike(search),
-                Information.batch.ilike(search),
-                Information.session.ilike(search),
-                Information.district.ilike(search)
+
+                Information.full_name
+                .ilike(search),
+
+                Information.department
+                .ilike(search),
+
+                Information.category
+                .ilike(search),
+
+                Information.phone
+                .ilike(search),
+
+                Information.email
+                .ilike(search),
+
+                Information.batch
+                .ilike(search),
+
+                Information.session
+                .ilike(search),
+
+                Information.district
+                .ilike(search),
+
+                Information.upazila
+                .ilike(search)
+
             )
+
         )
+
         .order_by(
             Information.created_at.desc()
         )
+
         .all()
+
     )
 
 
@@ -334,50 +600,75 @@ def approve_member(
     member,
     approved_by=None
 ):
+
     """
     Approve a member.
 
     approved_by:
+
         Admin username/name performing approval.
 
     After approval, the automatic Alumni rule is checked.
     """
 
     if member is None:
+
         return None
 
-    member.status = "Approved"
+
+    member.status = (
+        "Approved"
+    )
+
 
     if approved_by:
-        member.approved_by = str(approved_by).strip()
 
-    member.approved_at = datetime.utcnow()
+        member.approved_by = (
+            str(
+                approved_by
+            ).strip()
+            or None
+        )
+
+
+    member.approved_at = (
+        datetime.utcnow()
+    )
+
+
+    # --------------------------------------------------------
+    # Check Alumni Status Before Commit
+    # --------------------------------------------------------
+
+    if (
+
+        member.category
+        == "Running Student"
+
+        and
+
+        should_be_alumni(
+            member.session
+        )
+
+    ):
+
+        member.category = (
+            "Alumni"
+        )
+
 
     try:
 
         db.session.commit()
 
+
     except Exception:
+
         db.session.rollback()
+
         raise
 
-    # --------------------------------------------------------
-    # Immediately check Alumni status.
-    # --------------------------------------------------------
-
-    if (
-        member.category == "Running Student"
-        and should_be_alumni(member.session)
-    ):
-
-        member.category = "Alumni"
-
-        try:
-            db.session.commit()
-
-        except Exception:
-            db.session.rollback()
-            raise
 
     return member
 
@@ -390,6 +681,7 @@ def reject_member(
     member,
     rejected_by=None
 ):
+
     """
     Reject a member.
 
@@ -397,24 +689,35 @@ def reject_member(
     """
 
     if member is None:
+
         return None
 
-    member.status = "Rejected"
+
+    member.status = (
+        "Rejected"
+    )
+
 
     # --------------------------------------------------------
-    # Keep approval metadata clean.
+    # Keep Approval Metadata Clean
     # --------------------------------------------------------
 
     member.approved_by = None
+
     member.approved_at = None
+
 
     try:
 
         db.session.commit()
 
+
     except Exception:
+
         db.session.rollback()
+
         raise
+
 
     return member
 
@@ -423,20 +726,49 @@ def reject_member(
 # PENDING MEMBERS
 # ============================================================
 
-def get_pending_members(limit=None):
+def get_pending_members(
+    limit=None
+):
 
     query = (
+
         Information.query
+
         .filter(
-            Information.status == "Pending"
+            Information.status
+            == "Pending"
         )
+
         .order_by(
             Information.created_at.desc()
         )
+
     )
 
-    if limit:
-        query = query.limit(limit)
+
+    if limit is not None:
+
+        try:
+
+            limit = int(
+                limit
+            )
+
+
+            if limit > 0:
+
+                query = query.limit(
+                    limit
+                )
+
+
+        except (
+            TypeError,
+            ValueError
+        ):
+
+            pass
+
 
     return query.all()
 
@@ -445,22 +777,52 @@ def get_pending_members(limit=None):
 # APPROVED MEMBERS
 # ============================================================
 
-def get_approved_members(limit=None):
+def get_approved_members(
+    limit=None
+):
 
     update_student_categories()
 
+
     query = (
+
         Information.query
+
         .filter(
-            Information.status == "Approved"
+            Information.status
+            == "Approved"
         )
+
         .order_by(
             Information.created_at.desc()
         )
+
     )
 
-    if limit:
-        query = query.limit(limit)
+
+    if limit is not None:
+
+        try:
+
+            limit = int(
+                limit
+            )
+
+
+            if limit > 0:
+
+                query = query.limit(
+                    limit
+                )
+
+
+        except (
+            TypeError,
+            ValueError
+        ):
+
+            pass
+
 
     return query.all()
 
@@ -469,20 +831,49 @@ def get_approved_members(limit=None):
 # REJECTED MEMBERS
 # ============================================================
 
-def get_rejected_members(limit=None):
+def get_rejected_members(
+    limit=None
+):
 
     query = (
+
         Information.query
+
         .filter(
-            Information.status == "Rejected"
+            Information.status
+            == "Rejected"
         )
+
         .order_by(
             Information.created_at.desc()
         )
+
     )
 
-    if limit:
-        query = query.limit(limit)
+
+    if limit is not None:
+
+        try:
+
+            limit = int(
+                limit
+            )
+
+
+            if limit > 0:
+
+                query = query.limit(
+                    limit
+                )
+
+
+        except (
+            TypeError,
+            ValueError
+        ):
+
+            pass
+
 
     return query.all()
 
@@ -490,50 +881,83 @@ def get_rejected_members(limit=None):
 # ============================================================
 # MEMBER STATISTICS
 # ============================================================
+#
+# These statistics are primarily used by the
+# administrator dashboard.
+#
+# Therefore category counts include members of
+# every status.
+#
+# The public homepage separately counts only
+# Approved members.
+# ============================================================
 
 def get_statistics():
 
     update_student_categories()
+
 
     return {
 
         "total_members":
             Information.query.count(),
 
+
         "total_alumni":
-            Information.query.filter_by(
+            Information.query
+            .filter_by(
                 category="Alumni"
-            ).count(),
+            )
+            .count(),
+
 
         "total_students":
-            Information.query.filter_by(
+            Information.query
+            .filter_by(
                 category="Running Student"
-            ).count(),
+            )
+            .count(),
+
 
         "total_teachers":
-            Information.query.filter_by(
+            Information.query
+            .filter_by(
                 category="Teacher"
-            ).count(),
+            )
+            .count(),
+
 
         "total_employees":
-            Information.query.filter_by(
+            Information.query
+            .filter_by(
                 category="Employee"
-            ).count(),
+            )
+            .count(),
+
 
         "pending":
-            Information.query.filter_by(
+            Information.query
+            .filter_by(
                 status="Pending"
-            ).count(),
+            )
+            .count(),
+
 
         "approved":
-            Information.query.filter_by(
+            Information.query
+            .filter_by(
                 status="Approved"
-            ).count(),
+            )
+            .count(),
+
 
         "rejected":
-            Information.query.filter_by(
+            Information.query
+            .filter_by(
                 status="Rejected"
-            ).count()
+            )
+            .count()
+
     }
 
 
@@ -543,7 +967,9 @@ def get_statistics():
 
 def get_member_statistics():
 
-    return get_statistics()
+    return (
+        get_statistics()
+    )
 
 
 # ============================================================
@@ -553,14 +979,31 @@ def get_member_statistics():
 def phone_exists(phone):
 
     if not phone:
+
         return None
 
+
+    phone = str(
+        phone
+    ).strip()
+
+
+    if not phone:
+
+        return None
+
+
     return (
+
         Information.query
-        .filter_by(
-            phone=phone
+
+        .filter(
+            Information.phone
+            == phone
         )
+
         .first()
+
     )
 
 
@@ -571,12 +1014,38 @@ def phone_exists(phone):
 def email_exists(email):
 
     if not email:
+
         return None
 
+
+    email = str(
+        email
+    ).strip().lower()
+
+
+    if not email:
+
+        return None
+
+
     return (
+
         Information.query
-        .filter_by(
-            email=email
+
+        .filter(
+
+            func.lower(
+                Information.email
+            )
+            == email
+
         )
+
         .first()
+
     )
+
+
+# ============================================================
+# END OF FILE
+# ============================================================

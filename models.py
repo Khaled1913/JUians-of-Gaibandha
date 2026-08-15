@@ -601,6 +601,7 @@ class Event(db.Model):
     is_published = db.Column(
         db.Boolean,
         default=True,
+        nullable=False,
         index=True
     )
 

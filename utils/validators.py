@@ -33,12 +33,33 @@ def required(value):
 
 def valid_email(email):
 
+    # -------------------------------------------------
+    # Email is optional for member registration.
+    # -------------------------------------------------
+
     if not email:
         return True
 
-    pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
 
-    return re.match(pattern, email) is not None
+    email = str(
+        email
+    ).strip()
+
+
+    pattern = (
+        r"^[A-Za-z0-9._%+-]+"
+        r"@[A-Za-z0-9.-]+"
+        r"\.[A-Za-z]{2,}$"
+    )
+
+
+    return (
+        re.fullmatch(
+            pattern,
+            email
+        )
+        is not None
+    )
 
 
 # =====================================================
@@ -50,9 +71,25 @@ def valid_phone(phone):
     if not phone:
         return False
 
-    pattern = r"^(?:\+8801|8801|01)[3-9]\d{8}$"
 
-    return re.match(pattern, phone) is not None
+    phone = str(
+        phone
+    ).strip()
+
+
+    pattern = (
+        r"^(?:\+8801|8801|01)"
+        r"[3-9]\d{8}$"
+    )
+
+
+    return (
+        re.fullmatch(
+            pattern,
+            phone
+        )
+        is not None
+    )
 
 
 # =====================================================
@@ -64,8 +101,13 @@ def valid_password(password):
     if not password:
         return False
 
-    if len(password) < 6:
+
+    if len(
+        str(password)
+    ) < 6:
+
         return False
+
 
     return True
 
@@ -79,12 +121,79 @@ def valid_username(username):
     if not username:
         return False
 
+
+    username = str(
+        username
+    ).strip()
+
+
     if len(username) < 4:
         return False
 
-    pattern = r"^[A-Za-z0-9_]+$"
 
-    return re.match(pattern, username) is not None
+    pattern = (
+        r"^[A-Za-z0-9_]+$"
+    )
+
+
+    return (
+        re.fullmatch(
+            pattern,
+            username
+        )
+        is not None
+    )
+
+
+# =====================================================
+# LOGIN IDENTIFIER VALIDATION
+# =====================================================
+#
+# Administrator login supports:
+#
+# 1. Username
+# 2. Email
+#
+# Therefore this validator must support both.
+# =====================================================
+
+def valid_login_identifier(
+    value
+):
+
+    if not value:
+
+        return False
+
+
+    value = str(
+        value
+    ).strip()
+
+
+    if not value:
+
+        return False
+
+
+    # -------------------------------------------------
+    # Email Login
+    # -------------------------------------------------
+
+    if "@" in value:
+
+        return valid_email(
+            value
+        )
+
+
+    # -------------------------------------------------
+    # Username Login
+    # -------------------------------------------------
+
+    return valid_username(
+        value
+    )
 
 
 # =====================================================
@@ -96,12 +205,30 @@ def valid_image(filename):
     if not filename:
         return False
 
+
+    filename = str(
+        filename
+    ).strip()
+
+
     if "." not in filename:
         return False
 
-    extension = filename.rsplit(".", 1)[1].lower()
 
-    return extension in ALLOWED_EXTENSIONS
+    extension = (
+        filename
+        .rsplit(
+            ".",
+            1
+        )[1]
+        .lower()
+    )
+
+
+    return (
+        extension
+        in ALLOWED_EXTENSIONS
+    )
 
 
 # =====================================================
@@ -122,7 +249,21 @@ def valid_category(category):
 
     ]
 
-    return category in categories
+
+    if not category:
+
+        return False
+
+
+    category = str(
+        category
+    ).strip()
+
+
+    return (
+        category
+        in categories
+    )
 
 
 # =====================================================
@@ -131,20 +272,45 @@ def valid_category(category):
 
 def valid_blood_group(group):
 
+    # -------------------------------------------------
+    # Blood group is optional.
+    # -------------------------------------------------
+
+    if not group:
+
+        return True
+
+
     blood_groups = [
 
         "A+",
+
         "A-",
+
         "B+",
+
         "B-",
+
         "AB+",
+
         "AB-",
+
         "O+",
+
         "O-"
 
     ]
 
-    return group in blood_groups
+
+    group = str(
+        group
+    ).strip()
+
+
+    return (
+        group
+        in blood_groups
+    )
 
 
 # =====================================================
@@ -152,6 +318,15 @@ def valid_blood_group(group):
 # =====================================================
 
 def valid_gender(gender):
+
+    # -------------------------------------------------
+    # Gender is optional.
+    # -------------------------------------------------
+
+    if not gender:
+
+        return True
+
 
     genders = [
 
@@ -163,7 +338,16 @@ def valid_gender(gender):
 
     ]
 
-    return gender in genders
+
+    gender = str(
+        gender
+    ).strip()
+
+
+    return (
+        gender
+        in genders
+    )
 
 
 # =====================================================
@@ -172,10 +356,50 @@ def valid_gender(gender):
 
 def valid_name(name):
 
-    if not required(name):
+    if not required(
+        name
+    ):
+
         return False
 
-    return len(name.strip()) >= 3
+
+    name = str(
+        name
+    ).strip()
+
+
+    if len(name) < 3:
+
+        return False
+
+
+    return True
+
+
+# =====================================================
+# DEPARTMENT VALIDATION
+# =====================================================
+
+def valid_department(
+    department
+):
+
+    if not required(
+        department
+    ):
+
+        return False
+
+
+    department = str(
+        department
+    ).strip()
+
+
+    return (
+        len(department)
+        >= 2
+    )
 
 
 # =====================================================
@@ -184,10 +408,98 @@ def valid_name(name):
 
 def valid_session(session):
 
+    # -------------------------------------------------
+    # Session is optional.
+    # -------------------------------------------------
+
     if not session:
+
         return True
 
-    return len(session.strip()) >= 4
+
+    try:
+
+        value = str(
+            session
+        ).strip()
+
+
+        if not value:
+
+            return True
+
+
+        value = (
+
+            value
+
+            .replace(
+                " ",
+                ""
+            )
+
+            .replace(
+                "/",
+                "-"
+            )
+
+            .replace(
+                "_",
+                "-"
+            )
+
+        )
+
+
+        parts = (
+            value.split(
+                "-"
+            )
+        )
+
+
+        if len(parts) != 2:
+
+            return False
+
+
+        start_year = int(
+            parts[0]
+        )
+
+
+        end_year = int(
+            parts[1]
+        )
+
+
+        if (
+            start_year < 1900
+            or
+            start_year > 2100
+        ):
+
+            return False
+
+
+        if (
+            end_year
+            != start_year + 1
+        ):
+
+            return False
+
+
+        return True
+
+
+    except (
+        ValueError,
+        TypeError,
+        AttributeError
+    ):
+
+        return False
 
 
 # =====================================================
@@ -196,28 +508,87 @@ def valid_session(session):
 
 def valid_batch(batch):
 
+    # -------------------------------------------------
+    # Batch is optional.
+    # -------------------------------------------------
+
     if not batch:
+
         return True
 
-    return len(batch.strip()) >= 2
+
+    batch = str(
+        batch
+    ).strip()
+
+
+    if not batch:
+
+        return True
+
+
+    return (
+        len(batch)
+        >= 1
+    )
 
 
 # =====================================================
 # FILE SIZE VALIDATION
 # =====================================================
 
-def valid_file_size(file, max_size=5 * 1024 * 1024):
+def valid_file_size(
+    file,
+    max_size=5 * 1024 * 1024
+):
 
     if not file:
+
         return True
 
-    file.seek(0, 2)
 
-    size = file.tell()
+    try:
 
-    file.seek(0)
+        # -------------------------------------------------
+        # Werkzeug FileStorage
+        # -------------------------------------------------
 
-    return size <= max_size
+        stream = getattr(
+            file,
+            "stream",
+            file
+        )
+
+
+        current_position = (
+            stream.tell()
+        )
+
+
+        stream.seek(
+            0,
+            2
+        )
+
+
+        size = (
+            stream.tell()
+        )
+
+
+        stream.seek(
+            current_position
+        )
+
+
+        return (
+            0 <= size <= max_size
+        )
+
+
+    except Exception:
+
+        return False
 
 
 # =====================================================
@@ -228,17 +599,168 @@ def validate_member_form(form):
 
     errors = []
 
-    if not valid_name(form.get("full_name")):
-        errors.append("Invalid Full Name")
 
-    if not valid_phone(form.get("phone")):
-        errors.append("Invalid Phone Number")
+    # -------------------------------------------------
+    # FULL NAME
+    # -------------------------------------------------
 
-    if not valid_email(form.get("email")):
-        errors.append("Invalid Email Address")
+    if not valid_name(
+        form.get(
+            "full_name"
+        )
+    ):
 
-    if not valid_category(form.get("category")):
-        errors.append("Invalid Category")
+        errors.append(
+            "Please enter a valid full name."
+        )
+
+
+    # -------------------------------------------------
+    # CATEGORY
+    # -------------------------------------------------
+
+    if not valid_category(
+        form.get(
+            "category"
+        )
+    ):
+
+        errors.append(
+            "Please select a valid member category."
+        )
+
+
+    # -------------------------------------------------
+    # DEPARTMENT
+    # -------------------------------------------------
+
+    if not valid_department(
+        form.get(
+            "department"
+        )
+    ):
+
+        errors.append(
+            "Department is required."
+        )
+
+
+    # -------------------------------------------------
+    # PHONE
+    # -------------------------------------------------
+
+    if not valid_phone(
+        form.get(
+            "phone"
+        )
+    ):
+
+        errors.append(
+            (
+                "Please enter a valid Bangladeshi "
+                "mobile number."
+            )
+        )
+
+
+    # -------------------------------------------------
+    # EMAIL
+    # -------------------------------------------------
+
+    if not valid_email(
+        form.get(
+            "email"
+        )
+    ):
+
+        errors.append(
+            "Please enter a valid email address."
+        )
+
+
+    # -------------------------------------------------
+    # GENDER
+    # -------------------------------------------------
+
+    if not valid_gender(
+        form.get(
+            "gender"
+        )
+    ):
+
+        errors.append(
+            "Please select a valid gender."
+        )
+
+
+    # -------------------------------------------------
+    # BLOOD GROUP
+    # -------------------------------------------------
+
+    if not valid_blood_group(
+        form.get(
+            "blood_group"
+        )
+    ):
+
+        errors.append(
+            "Please select a valid blood group."
+        )
+
+
+    # -------------------------------------------------
+    # BATCH
+    # -------------------------------------------------
+
+    if not valid_batch(
+        form.get(
+            "batch"
+        )
+    ):
+
+        errors.append(
+            "Please enter a valid batch."
+        )
+
+
+    # -------------------------------------------------
+    # SESSION
+    # -------------------------------------------------
+
+    session_value = (
+        form.get(
+            "session"
+        )
+    )
+
+
+    category = (
+        form.get(
+            "category",
+            ""
+        )
+    )
+
+
+    if (
+        category
+        == "Running Student"
+        and
+        session_value
+        and
+        not valid_session(
+            session_value
+        )
+    ):
+
+        errors.append(
+            (
+                "Invalid session format. "
+                "Please use format like "
+                "2020-2021."
+            )
+        )
+
 
     return errors
 
@@ -246,13 +768,79 @@ def validate_member_form(form):
 # =====================================================
 # LOGIN VALIDATION
 # =====================================================
+#
+# IMPORTANT:
+#
+# routes/auth.py expects:
+#
+#     error = validate_login(...)
+#
+#     if error:
+#         flash(error, "danger")
+#
+# Therefore:
+#
+#     None        = valid
+#     string      = validation error
+#
+# Do NOT return True/False here.
+# =====================================================
 
-def validate_login(username, password):
+def validate_login(
+    username,
+    password
+):
 
-    if not valid_username(username):
-        return False
+    username = str(
+        username
+        or ""
+    ).strip()
 
-    if not required(password):
-        return False
 
-    return True
+    # -------------------------------------------------
+    # USERNAME / EMAIL REQUIRED
+    # -------------------------------------------------
+
+    if not username:
+
+        return (
+            "Username or email is required."
+        )
+
+
+    # -------------------------------------------------
+    # USERNAME / EMAIL FORMAT
+    # -------------------------------------------------
+
+    if not valid_login_identifier(
+        username
+    ):
+
+        return (
+            "Please enter a valid username or email address."
+        )
+
+
+    # -------------------------------------------------
+    # PASSWORD REQUIRED
+    # -------------------------------------------------
+
+    if not required(
+        password
+    ):
+
+        return (
+            "Password is required."
+        )
+
+
+    # -------------------------------------------------
+    # VALID
+    # -------------------------------------------------
+
+    return None
+
+
+# =====================================================
+# END OF FILE
+# =====================================================

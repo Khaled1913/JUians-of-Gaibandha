@@ -15,7 +15,7 @@ from flask import (
     request,
 )
 
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 
 from werkzeug.security import generate_password_hash
 
@@ -156,6 +156,17 @@ def _parse_term_year(value):
 
 
 # ============================================================
+# NORMALIZE CASE-INSENSITIVE VALUES
+# ============================================================
+
+def _normalize_identifier(value):
+
+    return str(
+        value or ""
+    ).strip().lower()
+
+
+# ============================================================
 # ADMIN CONTEXT
 # ============================================================
 
@@ -263,6 +274,9 @@ def _get_admin_context():
         Admin.query
         .filter_by(
             is_current=True
+        )
+        .order_by(
+            Admin.id.desc()
         )
         .first()
     )
@@ -831,10 +845,18 @@ def edit_member(id):
 
     if email:
 
+        normalized_email = (
+            _normalize_identifier(
+                email
+            )
+        )
+
         existing_email = (
             Information.query
             .filter(
-                Information.email == email,
+                func.lower(
+                    Information.email
+                ) == normalized_email,
                 Information.id != member.id,
             )
             .first()
@@ -941,7 +963,9 @@ def edit_member(id):
             )
 
         member.email = (
-            email or None
+            _normalize_identifier(email)
+            if email
+            else None
         )
 
         member.district = (
@@ -1075,24 +1099,6 @@ def members():
 
             search_fields.append(
                 Information.session
-            )
-
-        if hasattr(
-            Information,
-            "student_id",
-        ):
-
-            search_fields.append(
-                Information.student_id
-            )
-
-        if hasattr(
-            Information,
-            "registration_no",
-        ):
-
-            search_fields.append(
-                Information.registration_no
             )
 
         query = query.filter(
@@ -1838,6 +1844,14 @@ def update_profile():
         ).strip()
     )
 
+    normalized_contact_email = (
+        _normalize_identifier(
+            contact_email
+        )
+        if contact_email
+        else ""
+    )
+
     if not full_name:
 
         flash(
@@ -1882,7 +1896,7 @@ def update_profile():
         )
 
         admin.contact_email = (
-            contact_email
+            normalized_contact_email
             or None
         )
 
@@ -2079,6 +2093,26 @@ def create_administrator():
         ).strip()
     )
 
+    normalized_username = (
+        _normalize_identifier(
+            username
+        )
+    )
+
+    normalized_email = (
+        _normalize_identifier(
+            email
+        )
+    )
+
+    normalized_contact_email = (
+        _normalize_identifier(
+            contact_email
+        )
+        if contact_email
+        else ""
+    )
+
     # ========================================================
     # REQUIRED VALIDATION
     # ========================================================
@@ -2200,11 +2234,11 @@ def create_administrator():
     existing_username = (
         Admin.query
         .filter(
-            db.func.lower(
+            func.lower(
                 Admin.username
             )
             ==
-            username.lower()
+            normalized_username
         )
         .first()
     )
@@ -2229,11 +2263,11 @@ def create_administrator():
     existing_email = (
         Admin.query
         .filter(
-            db.func.lower(
+            func.lower(
                 Admin.email
             )
             ==
-            email.lower()
+            normalized_email
         )
         .first()
     )
@@ -2261,9 +2295,9 @@ def create_administrator():
 
             full_name=full_name,
 
-            username=username,
+            username=normalized_username,
 
-            email=email,
+            email=normalized_email,
 
             password=(
                 generate_password_hash(
@@ -2272,7 +2306,7 @@ def create_administrator():
             ),
 
             contact_email=(
-                contact_email
+                normalized_contact_email
                 or None
             ),
 
@@ -2413,6 +2447,26 @@ def edit_administrator(id):
         ).strip()
     )
 
+    normalized_username = (
+        _normalize_identifier(
+            username
+        )
+    )
+
+    normalized_email = (
+        _normalize_identifier(
+            email
+        )
+    )
+
+    normalized_contact_email = (
+        _normalize_identifier(
+            contact_email
+        )
+        if contact_email
+        else ""
+    )
+
     if not full_name:
 
         flash(
@@ -2501,11 +2555,11 @@ def edit_administrator(id):
     existing_username = (
         Admin.query
         .filter(
-            db.func.lower(
+            func.lower(
                 Admin.username
             )
             ==
-            username.lower(),
+            normalized_username,
             Admin.id
             != administrator.id,
         )
@@ -2529,11 +2583,11 @@ def edit_administrator(id):
     existing_email = (
         Admin.query
         .filter(
-            db.func.lower(
+            func.lower(
                 Admin.email
             )
             ==
-            email.lower(),
+            normalized_email,
             Admin.id
             != administrator.id,
         )
@@ -2561,15 +2615,15 @@ def edit_administrator(id):
         )
 
         administrator.username = (
-            username
+            normalized_username
         )
 
         administrator.email = (
-            email
+            normalized_email
         )
 
         administrator.contact_email = (
-            contact_email
+            normalized_contact_email
             or None
         )
 

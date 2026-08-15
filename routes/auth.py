@@ -18,7 +18,10 @@ from flask import (
     session
 )
 
-from sqlalchemy import or_
+from sqlalchemy import (
+    or_,
+    func
+)
 
 from werkzeug.security import (
     generate_password_hash,
@@ -75,6 +78,32 @@ def _is_current_active_admin(admin):
         admin.is_active
         and admin.is_current
     )
+
+
+# ============================================================
+# HELPER
+# NORMALIZE LOGIN IDENTIFIER
+# ============================================================
+#
+# PostgreSQL string comparison is case-sensitive.
+#
+# This helper ensures:
+#
+# Khaled
+# khaled
+# KHALED
+#
+# can all refer to the same administrator username.
+#
+# It also applies to email addresses.
+# ============================================================
+
+def _normalize_identifier(value):
+
+    return (
+        value
+        or ""
+    ).strip().lower()
 
 
 # ============================================================
@@ -153,23 +182,44 @@ def login():
                 )
             )
 
+        # ----------------------------------------------------
+        # Normalize Identifier
+        # ----------------------------------------------------
+
+        normalized_identifier = (
+            _normalize_identifier(
+                username_or_email
+            )
+        )
+
         # ====================================================
         # FIND ADMIN
         #
         # Login supported by:
+        #
         # 1. Username
         # 2. Email
+        #
+        # Comparison is case-insensitive.
         # ====================================================
 
-        admin = Admin.query.filter(
-            or_(
-                Admin.username
-                == username_or_email,
+        admin = (
+            Admin.query
+            .filter(
+                or_(
+                    func.lower(
+                        Admin.username
+                    )
+                    == normalized_identifier,
 
-                Admin.email
-                == username_or_email
+                    func.lower(
+                        Admin.email
+                    )
+                    == normalized_identifier
+                )
             )
-        ).first()
+            .first()
+        )
 
         # ----------------------------------------------------
         # Admin Not Found
@@ -275,15 +325,25 @@ def login():
 
             db.session.commit()
 
-        except Exception:
+        except Exception as exc:
 
             db.session.rollback()
+
+            print(
+                f"Last login update error: {exc}"
+            )
 
         # ----------------------------------------------------
         # Clear Previous Session
         # ----------------------------------------------------
 
         session.clear()
+
+        # ----------------------------------------------------
+        # Enable Permanent Session
+        # ----------------------------------------------------
+
+        session.permanent = True
 
         # ----------------------------------------------------
         # Create Admin Session
@@ -330,7 +390,11 @@ def login():
         else:
 
             flash(
-                "Login successful. Welcome back!",
+                (
+                    f"Login successful. "
+                    f"Welcome back, "
+                    f"{admin.full_name}!"
+                ),
                 "success"
             )
 
@@ -382,11 +446,14 @@ def logout():
 #
 # IMPORTANT:
 #
-# This route is now intended primarily for first-time project
-# setup / bootstrap.
+# This route is intended primarily for first-time
+# database setup.
 #
-# Once an administrator already exists, new yearly admins
-# should be created from:
+# If the database contains no administrator,
+# the first administrator can be created here.
+#
+# Once an administrator exists, additional
+# administrators must be managed through:
 #
 #     admin.create_administrator
 #
@@ -441,7 +508,8 @@ def create_admin():
 
             flash(
                 (
-                    "Your administrator session is no longer active."
+                    "Your administrator session "
+                    "is no longer active."
                 ),
                 "danger"
             )
@@ -586,7 +654,10 @@ def create_admin():
         if len(password) < 6:
 
             flash(
-                "Password must be at least 6 characters.",
+                (
+                    "Password must be at least "
+                    "6 characters."
+                ),
                 "danger"
             )
 
@@ -614,13 +685,32 @@ def create_admin():
             )
 
         # ----------------------------------------------------
+        # Normalize Username / Email
+        # ----------------------------------------------------
+
+        normalized_username = (
+            _normalize_identifier(
+                username
+            )
+        )
+
+        normalized_email = (
+            _normalize_identifier(
+                email
+            )
+        )
+
+        # ----------------------------------------------------
         # Duplicate Username
         # ----------------------------------------------------
 
         existing_username = (
             Admin.query
-            .filter_by(
-                username=username
+            .filter(
+                func.lower(
+                    Admin.username
+                )
+                == normalized_username
             )
             .first()
         )
@@ -644,8 +734,11 @@ def create_admin():
 
         existing_email = (
             Admin.query
-            .filter_by(
-                email=email
+            .filter(
+                func.lower(
+                    Admin.email
+                )
+                == normalized_email
             )
             .first()
         )
@@ -675,9 +768,9 @@ def create_admin():
 
             full_name=full_name,
 
-            username=username,
+            username=normalized_username,
 
-            email=email,
+            email=normalized_email,
 
             password=(
                 generate_password_hash(
@@ -732,7 +825,10 @@ def create_admin():
             )
 
             flash(
-                "Failed to create administrator.",
+                (
+                    "Failed to create administrator. "
+                    "Please try again."
+                ),
                 "danger"
             )
 
@@ -831,7 +927,10 @@ def change_password():
         session.clear()
 
         flash(
-            "Your administrator account has been disabled.",
+            (
+                "Your administrator account "
+                "has been disabled."
+            ),
             "danger"
         )
 
@@ -905,7 +1004,10 @@ def change_password():
         if len(new_password) < 6:
 
             flash(
-                "Password must be at least 6 characters.",
+                (
+                    "Password must be at least "
+                    "6 characters."
+                ),
                 "danger"
             )
 
@@ -983,9 +1085,13 @@ def change_password():
 
             db.session.commit()
 
-        except Exception:
+        except Exception as exc:
 
             db.session.rollback()
+
+            print(
+                f"Password change error: {exc}"
+            )
 
             flash(
                 "Failed to change password.",
@@ -1045,7 +1151,10 @@ def forgot_password():
         if not username_or_email:
 
             flash(
-                "Username or email is required.",
+                (
+                    "Username or email "
+                    "is required."
+                ),
                 "danger"
             )
 
@@ -1056,18 +1165,36 @@ def forgot_password():
             )
 
         # ----------------------------------------------------
+        # Normalize Identifier
+        # ----------------------------------------------------
+
+        normalized_identifier = (
+            _normalize_identifier(
+                username_or_email
+            )
+        )
+
+        # ----------------------------------------------------
         # Find Admin
         # ----------------------------------------------------
 
-        admin = Admin.query.filter(
-            or_(
-                Admin.username
-                == username_or_email,
+        admin = (
+            Admin.query
+            .filter(
+                or_(
+                    func.lower(
+                        Admin.username
+                    )
+                    == normalized_identifier,
 
-                Admin.email
-                == username_or_email
+                    func.lower(
+                        Admin.email
+                    )
+                    == normalized_identifier
+                )
             )
-        ).first()
+            .first()
+        )
 
         if admin is None:
 
@@ -1109,7 +1236,10 @@ def forgot_password():
         if not admin.is_active:
 
             flash(
-                "This administrator account is disabled.",
+                (
+                    "This administrator account "
+                    "is disabled."
+                ),
                 "danger"
             )
 
@@ -1139,7 +1269,8 @@ def forgot_password():
 
         flash(
             (
-                "Password reset request created successfully."
+                "Password reset request "
+                "created successfully."
             ),
             "success"
         )
@@ -1188,7 +1319,11 @@ def reset_password(token):
 
     if (
         not saved_token
-        or token != saved_token
+        or
+        not secrets.compare_digest(
+            token,
+            saved_token
+        )
     ):
 
         flash(
@@ -1240,7 +1375,8 @@ def reset_password(token):
 
     if (
         not admin.is_current
-        or not admin.is_active
+        or
+        not admin.is_active
     ):
 
         session.pop(
@@ -1294,7 +1430,10 @@ def reset_password(token):
         if len(password) < 6:
 
             flash(
-                "Password must be at least 6 characters.",
+                (
+                    "Password must be at least "
+                    "6 characters."
+                ),
                 "danger"
             )
 
@@ -1375,9 +1514,13 @@ def reset_password(token):
 
             db.session.commit()
 
-        except Exception:
+        except Exception as exc:
 
             db.session.rollback()
+
+            print(
+                f"Password reset error: {exc}"
+            )
 
             flash(
                 "Failed to reset password.",
@@ -1490,7 +1633,8 @@ def profile():
 
         flash(
             (
-                "Your administrator session is no longer active."
+                "Your administrator session "
+                "is no longer active."
             ),
             "danger"
         )
@@ -1663,7 +1807,8 @@ def check_admin_session():
 
         flash(
             (
-                "Your administrator account has been disabled."
+                "Your administrator account "
+                "has been disabled."
             ),
             "danger"
         )

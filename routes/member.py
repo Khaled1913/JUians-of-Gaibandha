@@ -1,4 +1,3 @@
-
 # =====================================================
 # routes/member.py
 # JUians of Gaibandha Portal
@@ -38,8 +37,8 @@ from services.member_service import (
     phone_exists,
     email_exists,
     get_category_members,
-    get_member,
-    update_student_categories
+    update_student_categories,
+    normalize_session
 )
 
 
@@ -63,10 +62,15 @@ member_bp = Blueprint(
 # =====================================================
 
 PUBLIC_CATEGORIES = {
+
     "Alumni",
+
     "Running Student",
+
     "Teacher",
+
     "Employee"
+
 }
 
 
@@ -76,42 +80,56 @@ PUBLIC_CATEGORIES = {
 #
 # IMPORTANT:
 # -----------------------------------------------------
+#
+# Public visitors can see only these fields.
+#
 # We deliberately do NOT expose:
 #
 # phone
 # email
+# gender
 # date_of_birth
 # blood_group
-# student_id
-# registration_no
 # present_address
 # permanent_address
 # facebook
-# linkedin
-# github
-# website
-# remarks
 #
-# These remain in database but are not sent to public
-# profile templates.
+# Personal/private fields remain protected.
+#
+# Administrator routes access the actual Information
+# model directly and therefore can see full information.
 # =====================================================
 
 PUBLIC_MEMBER_FIELDS = (
+
     "id",
+
     "category",
+
     "full_name",
+
     "department",
+
     "batch",
+
     "session",
+
     "district",
+
     "upazila",
+
     "occupation",
+
     "company",
+
     "designation",
+
     "photo",
+
     "status",
-    "approved_by",
+
     "approved_at"
+
 )
 
 
@@ -120,35 +138,49 @@ PUBLIC_MEMBER_FIELDS = (
 # =====================================================
 
 def get_current_admin_role():
+
     """
-    Read the currently logged-in admin role from session.
+    Read the currently logged-in admin role
+    from the session.
 
     This helper does NOT grant access by itself.
-    It is only used for role-aware checks.
 
     Expected session values:
+
         admin_role
         role
-
-    Compatible with existing login implementations.
     """
 
-    role = session.get("admin_role")
+    role = session.get(
+        "admin_role"
+    )
+
 
     if not role:
-        role = session.get("role")
+
+        role = session.get(
+            "role"
+        )
+
 
     if not role:
+
         return None
 
-    return str(role).strip()
+
+    return str(
+        role
+    ).strip()
 
 
 # =====================================================
 # ROLE CHECK
 # =====================================================
 
-def has_admin_role(*allowed_roles):
+def has_admin_role(
+    *allowed_roles
+):
+
     """
     Check whether current logged-in admin has one
     of the supplied roles.
@@ -161,42 +193,150 @@ def has_admin_role(*allowed_roles):
         )
     """
 
-    current_role = get_current_admin_role()
+    current_role = (
+        get_current_admin_role()
+    )
+
 
     if not current_role:
+
         return False
 
-    normalized_current = current_role.lower()
+
+    normalized_current = (
+        current_role.lower()
+    )
+
 
     normalized_allowed = {
-        str(role).strip().lower()
-        for role in allowed_roles
+
+        str(
+            role
+        ).strip().lower()
+
+        for role
+        in allowed_roles
+
     }
 
-    return normalized_current in normalized_allowed
+
+    return (
+        normalized_current
+        in normalized_allowed
+    )
+
+
+# =====================================================
+# CLEAN FORM VALUE
+# =====================================================
+
+def clean_form_value(
+    field_name,
+    default=None
+):
+
+    """
+    Return stripped form data.
+
+    Empty values become None unless
+    another default value is provided.
+    """
+
+    value = request.form.get(
+        field_name,
+        ""
+    )
+
+
+    if value is None:
+
+        return default
+
+
+    value = str(
+        value
+    ).strip()
+
+
+    if not value:
+
+        return default
+
+
+    return value
+
+
+# =====================================================
+# NORMALIZE EMAIL
+# =====================================================
+
+def normalize_email(
+    email
+):
+
+    if not email:
+
+        return None
+
+
+    email = str(
+        email
+    ).strip().lower()
+
+
+    if not email:
+
+        return None
+
+
+    return email
 
 
 # =====================================================
 # PUBLIC MEMBER SERIALIZATION
 # =====================================================
 
-def serialize_public_member(member):
-    """
-    Convert approved member into a privacy-safe dictionary.
+def serialize_public_member(
+    member
+):
 
-    This prevents sensitive database fields from being
-    accidentally exposed to public templates/API logic.
+    """
+    Convert approved member into a
+    privacy-safe dictionary.
+
+    This prevents sensitive database fields
+    from accidentally being exposed through
+    public templates.
     """
 
     if member is None:
+
         return None
 
-    if str(member.status).strip().lower() != "approved":
+
+    status = str(
+        member.status
+        or ""
+    ).strip().lower()
+
+
+    if status != "approved":
+
         return None
+
 
     return {
-        field: getattr(member, field, None)
-        for field in PUBLIC_MEMBER_FIELDS
+
+        field:
+            getattr(
+                member,
+                field,
+                None
+            )
+
+        for field
+        in PUBLIC_MEMBER_FIELDS
+
     }
 
 
@@ -204,31 +344,52 @@ def serialize_public_member(member):
 # PUBLIC MEMBER ACCESS
 # =====================================================
 
-def get_public_member(member_id):
+def get_public_member(
+    member_id
+):
+
     """
     Return only an approved member.
 
-    Pending and Rejected members are never returned.
+    Pending and Rejected members are never
+    returned publicly.
 
-    Automatic Running Student -> Alumni migration is
-    performed before the lookup.
+    Automatic Running Student -> Alumni
+    conversion is performed before lookup.
     """
 
     update_student_categories()
 
+
     member = (
+
         Information.query
+
         .filter(
-            Information.id == member_id,
-            Information.status == "Approved"
+
+            Information.id
+            == member_id,
+
+            Information.status
+            == "Approved"
+
         )
+
         .first()
+
     )
 
+
     if member is None:
+
         return None
 
-    return serialize_public_member(member)
+
+    return (
+        serialize_public_member(
+            member
+        )
+    )
 
 
 # =====================================================
@@ -237,13 +398,32 @@ def get_public_member(member_id):
 
 @member_bp.route(
     "/submit",
-    methods=["GET", "POST"]
+    methods=[
+        "GET",
+        "POST"
+    ]
 )
 def submit():
 
-    update_student_categories()
+    # -------------------------------------------------
+    # Keep Approved Running Student Categories Updated
+    # -------------------------------------------------
+
+    try:
+
+        update_student_categories()
+
+    except Exception:
+
+        db.session.rollback()
+
+
+    # =================================================
+    # POST REQUEST
+    # =================================================
 
     if request.method == "POST":
+
 
         # =================================================
         # VALIDATION
@@ -252,6 +432,7 @@ def submit():
         errors = validate_member_form(
             request.form
         )
+
 
         if errors:
 
@@ -262,27 +443,6 @@ def submit():
                     "danger"
                 )
 
-            return redirect(
-                url_for(
-                    "member.submit"
-                )
-            )
-
-        # =================================================
-        # PHONE
-        # =================================================
-
-        phone = request.form.get(
-            "phone",
-            ""
-        ).strip()
-
-        if phone_exists(phone):
-
-            flash(
-                "Phone Number Already Registered!",
-                "danger"
-            )
 
             return redirect(
                 url_for(
@@ -290,48 +450,51 @@ def submit():
                 )
             )
 
-        # =================================================
-        # EMAIL
-        # =================================================
-
-        email = request.form.get(
-            "email",
-            ""
-        ).strip()
-
-        if email and email_exists(email):
-
-            flash(
-                "Email Already Registered!",
-                "danger"
-            )
-
-            return redirect(
-                url_for(
-                    "member.submit"
-                )
-            )
 
         # =================================================
-        # PHOTO
+        # BASIC FORM VALUES
         # =================================================
 
-        photo = request.files.get(
-            "photo"
+        full_name = clean_form_value(
+            "full_name"
         )
 
-        photo_filename = upload_photo(
-            photo
+
+        category = clean_form_value(
+            "category"
         )
 
-        if (
-            photo
-            and photo.filename
-            and photo_filename is None
-        ):
+
+        department = clean_form_value(
+            "department"
+        )
+
+
+        phone = clean_form_value(
+            "phone"
+        )
+
+
+        email = normalize_email(
+            clean_form_value(
+                "email"
+            )
+        )
+
+
+        member_session = clean_form_value(
+            "session"
+        )
+
+
+        # =================================================
+        # REQUIRED VALUES
+        # =================================================
+
+        if not full_name:
 
             flash(
-                "Invalid image format.",
+                "Full name is required.",
                 "danger"
             )
 
@@ -341,25 +504,57 @@ def submit():
                 )
             )
 
-        # =================================================
-        # FORM VALUES
-        # =================================================
 
-        category = request.form.get(
-            "category",
-            ""
-        ).strip()
+        if not category:
 
-        member_session = request.form.get(
-            "session",
-            ""
-        ).strip()
+            flash(
+                "Member category is required.",
+                "danger"
+            )
+
+            return redirect(
+                url_for(
+                    "member.submit"
+                )
+            )
+
+
+        if not department:
+
+            flash(
+                "Department is required.",
+                "danger"
+            )
+
+            return redirect(
+                url_for(
+                    "member.submit"
+                )
+            )
+
+
+        if not phone:
+
+            flash(
+                "Phone number is required.",
+                "danger"
+            )
+
+            return redirect(
+                url_for(
+                    "member.submit"
+                )
+            )
+
 
         # =================================================
         # CATEGORY VALIDATION
         # =================================================
 
-        if category not in PUBLIC_CATEGORIES:
+        if (
+            category
+            not in PUBLIC_CATEGORIES
+        ):
 
             flash(
                 "Invalid member category.",
@@ -372,199 +567,20 @@ def submit():
                 )
             )
 
-        # =================================================
-        # RUNNING STUDENT SESSION VALIDATION
-        # =================================================
-
-        if category == "Running Student":
-
-            if member_session:
-
-                try:
-
-                    normalized_session = (
-                        member_session
-                        .replace(
-                            " ",
-                            ""
-                        )
-                        .replace(
-                            "/",
-                            "-"
-                        )
-                        .replace(
-                            "_",
-                            "-"
-                        )
-                    )
-
-                    session_parts = (
-                        normalized_session.split("-")
-                    )
-
-                    if len(session_parts) != 2:
-                        raise ValueError
-
-                    start_year = int(
-                        session_parts[0]
-                    )
-
-                    end_year = int(
-                        session_parts[1]
-                    )
-
-                    if (
-                        end_year
-                        != start_year + 1
-                    ):
-                        raise ValueError
-
-                    if start_year < 1900:
-                        raise ValueError
-
-                except (
-                    ValueError,
-                    TypeError
-                ):
-
-                    flash(
-                        "Invalid session format. Please use format like 2020-2021.",
-                        "danger"
-                    )
-
-                    return redirect(
-                        url_for(
-                            "member.submit"
-                        )
-                    )
 
         # =================================================
-        # CREATE MEMBER
+        # PHONE DUPLICATE CHECK
         # =================================================
 
-        member = Information(
-
-            category=category,
-
-            full_name=request.form.get(
-                "full_name"
-            ),
-
-            department=request.form.get(
-                "department"
-            ),
-
-            batch=request.form.get(
-                "batch"
-            ),
-
-            session=member_session,
-
-            student_id=request.form.get(
-                "student_id"
-            ),
-
-            registration_no=request.form.get(
-                "registration_no"
-            ),
-
-            phone=phone,
-
-            email=email,
-
-            gender=request.form.get(
-                "gender"
-            ),
-
-            date_of_birth=request.form.get(
-                "date_of_birth"
-            ),
-
-            blood_group=request.form.get(
-                "blood_group"
-            ),
-
-            present_address=request.form.get(
-                "present_address"
-            ),
-
-            permanent_address=request.form.get(
-                "permanent_address"
-            ),
-
-            district=request.form.get(
-                "district"
-            ),
-
-            upazila=request.form.get(
-                "upazila"
-            ),
-
-            occupation=request.form.get(
-                "occupation"
-            ),
-
-            company=request.form.get(
-                "company"
-            ),
-
-            designation=request.form.get(
-                "designation"
-            ),
-
-            facebook=request.form.get(
-                "facebook"
-            ),
-
-            linkedin=request.form.get(
-                "linkedin"
-            ),
-
-            github=request.form.get(
-                "github"
-            ),
-
-            website=request.form.get(
-                "website"
-            ),
-
-            remarks=request.form.get(
-                "remarks"
-            ),
-
-            photo=photo_filename,
-
-            status="Pending"
-
-        )
-
-        # =================================================
-        # SAVE
-        # =================================================
-
-        try:
-
-            create_member(
-                member
-            )
+        if phone_exists(
+            phone
+        ):
 
             flash(
-                "Information Submitted Successfully. Waiting For Admin Approval.",
-                "success"
-            )
-
-            return redirect(
-                url_for(
-                    "member.submit"
-                )
-            )
-
-        except Exception:
-
-            db.session.rollback()
-
-            flash(
-                "Something went wrong. Please try again.",
+                (
+                    "This phone number is already "
+                    "registered."
+                ),
                 "danger"
             )
 
@@ -573,6 +589,349 @@ def submit():
                     "member.submit"
                 )
             )
+
+
+        # =================================================
+        # EMAIL DUPLICATE CHECK
+        # =================================================
+
+        if (
+
+            email
+
+            and
+
+            email_exists(
+                email
+            )
+
+        ):
+
+            flash(
+                (
+                    "This email address is already "
+                    "registered."
+                ),
+                "danger"
+            )
+
+            return redirect(
+                url_for(
+                    "member.submit"
+                )
+            )
+
+
+        # =================================================
+        # RUNNING STUDENT SESSION VALIDATION
+        # =================================================
+
+        if (
+
+            category
+            == "Running Student"
+
+            and
+
+            member_session
+
+        ):
+
+            start_year, end_year = (
+                normalize_session(
+                    member_session
+                )
+            )
+
+
+            if (
+                start_year is None
+                or
+                end_year is None
+            ):
+
+                flash(
+                    (
+                        "Invalid session format. "
+                        "Please use format like "
+                        "2020-2021."
+                    ),
+                    "danger"
+                )
+
+                return redirect(
+                    url_for(
+                        "member.submit"
+                    )
+                )
+
+
+            # ---------------------------------------------
+            # Store Standard Session Format
+            # ---------------------------------------------
+
+            member_session = (
+                f"{start_year}-"
+                f"{end_year}"
+            )
+
+
+        # =================================================
+        # PHOTO
+        # =================================================
+
+        photo = request.files.get(
+            "photo"
+        )
+
+
+        photo_filename = (
+            upload_photo(
+                photo
+            )
+        )
+
+
+        if (
+
+            photo
+
+            and
+
+            getattr(
+                photo,
+                "filename",
+                ""
+            )
+
+            and
+
+            photo_filename is None
+
+        ):
+
+            flash(
+                (
+                    "Invalid image. Please upload "
+                    "a valid JPG, JPEG, PNG, GIF "
+                    "or WEBP image under 5 MB."
+                ),
+                "danger"
+            )
+
+            return redirect(
+                url_for(
+                    "member.submit"
+                )
+            )
+
+
+        # =================================================
+        # CREATE MEMBER
+        # =================================================
+        #
+        # IMPORTANT:
+        #
+        # Only fields that actually exist in the
+        # Member Registration / Submit Information
+        # form are saved here.
+        #
+        # student_id
+        # registration_no
+        # linkedin
+        # github
+        # website
+        # remarks
+        #
+        # are intentionally NOT collected here.
+        # =================================================
+
+        member = Information(
+
+
+            # ---------------------------------------------
+            # PERSONAL INFORMATION
+            # ---------------------------------------------
+
+            full_name=full_name,
+
+
+            category=category,
+
+
+            gender=clean_form_value(
+                "gender"
+            ),
+
+
+            date_of_birth=clean_form_value(
+                "date_of_birth"
+            ),
+
+
+            blood_group=clean_form_value(
+                "blood_group"
+            ),
+
+
+            phone=phone,
+
+
+            # ---------------------------------------------
+            # ACADEMIC INFORMATION
+            # ---------------------------------------------
+
+            department=department,
+
+
+            batch=clean_form_value(
+                "batch"
+            ),
+
+
+            session=member_session,
+
+
+            # ---------------------------------------------
+            # CONTACT INFORMATION
+            # ---------------------------------------------
+
+            email=email,
+
+
+            district=clean_form_value(
+                "district",
+                "Gaibandha"
+            ),
+
+
+            upazila=clean_form_value(
+                "upazila"
+            ),
+
+
+            # ---------------------------------------------
+            # ADDRESS INFORMATION
+            # ---------------------------------------------
+
+            present_address=(
+                clean_form_value(
+                    "present_address"
+                )
+            ),
+
+
+            permanent_address=(
+                clean_form_value(
+                    "permanent_address"
+                )
+            ),
+
+
+            # ---------------------------------------------
+            # PROFESSIONAL INFORMATION
+            # ---------------------------------------------
+
+            occupation=clean_form_value(
+                "occupation"
+            ),
+
+
+            company=clean_form_value(
+                "company"
+            ),
+
+
+            designation=clean_form_value(
+                "designation"
+            ),
+
+
+            # ---------------------------------------------
+            # SOCIAL MEDIA
+            # ---------------------------------------------
+
+            facebook=clean_form_value(
+                "facebook"
+            ),
+
+
+            # ---------------------------------------------
+            # PROFILE PHOTO
+            # ---------------------------------------------
+
+            photo=(
+                photo_filename
+                or "default.png"
+            ),
+
+
+            # ---------------------------------------------
+            # APPROVAL STATUS
+            # ---------------------------------------------
+
+            status="Pending"
+
+        )
+
+
+        # =================================================
+        # SAVE MEMBER
+        # =================================================
+
+        try:
+
+            create_member(
+                member
+            )
+
+
+            flash(
+                (
+                    "Information submitted successfully. "
+                    "Your submission is waiting for "
+                    "administrator approval."
+                ),
+                "success"
+            )
+
+
+            return redirect(
+                url_for(
+                    "member.submit"
+                )
+            )
+
+
+        except Exception as exc:
+
+            db.session.rollback()
+
+
+            print(
+                f"Member submission error: {exc}"
+            )
+
+
+            flash(
+                (
+                    "Something went wrong while submitting "
+                    "your information. Please try again."
+                ),
+                "danger"
+            )
+
+
+            return redirect(
+                url_for(
+                    "member.submit"
+                )
+            )
+
+
+    # =================================================
+    # GET REQUEST
+    # =================================================
 
     return render_template(
         "submit.html"
@@ -590,14 +949,22 @@ def alumni():
 
     update_student_categories()
 
-    members = get_category_members(
-        "Alumni"
+
+    members = (
+        get_category_members(
+            "Alumni"
+        )
     )
 
+
     return render_template(
+
         "category.html",
+
         title="Alumni",
+
         members=members
+
     )
 
 
@@ -612,14 +979,22 @@ def students():
 
     update_student_categories()
 
-    members = get_category_members(
-        "Running Student"
+
+    members = (
+        get_category_members(
+            "Running Student"
+        )
     )
 
+
     return render_template(
+
         "category.html",
+
         title="Running Students",
+
         members=members
+
     )
 
 
@@ -634,14 +1009,22 @@ def teachers():
 
     update_student_categories()
 
-    members = get_category_members(
-        "Teacher"
+
+    members = (
+        get_category_members(
+            "Teacher"
+        )
     )
 
+
     return render_template(
+
         "category.html",
+
         title="Teachers",
+
         members=members
+
     )
 
 
@@ -656,14 +1039,22 @@ def employees():
 
     update_student_categories()
 
-    members = get_category_members(
-        "Employee"
+
+    members = (
+        get_category_members(
+            "Employee"
+        )
     )
 
+
     return render_template(
+
         "category.html",
+
         title="Employees",
+
         members=members
+
     )
 
 
@@ -678,18 +1069,38 @@ def category(category):
 
     update_student_categories()
 
-    if category not in PUBLIC_CATEGORIES:
 
-        abort(404)
-
-    members = get_category_members(
+    category = str(
         category
+        or ""
+    ).strip()
+
+
+    if (
+        category
+        not in PUBLIC_CATEGORIES
+    ):
+
+        abort(
+            404
+        )
+
+
+    members = (
+        get_category_members(
+            category
+        )
     )
 
+
     return render_template(
+
         "category.html",
+
         title=category,
+
         members=members
+
     )
 
 
@@ -702,16 +1113,23 @@ def category(category):
 )
 def member_details(id):
 
-    member = get_public_member(
-        id
+    member = (
+        get_public_member(
+            id
+        )
     )
+
 
     if member is None:
 
         flash(
-            "Member not found or not publicly available.",
+            (
+                "Member not found or not "
+                "publicly available."
+            ),
             "warning"
         )
+
 
         return redirect(
             url_for(
@@ -719,9 +1137,15 @@ def member_details(id):
             )
         )
 
+
     return render_template(
+
         "member_details.html",
-        member=member
+
+        member=member,
+
+        admin_view=False
+
     )
 
 
@@ -734,16 +1158,23 @@ def member_details(id):
 )
 def member_profile(id):
 
-    member = get_public_member(
-        id
+    member = (
+        get_public_member(
+            id
+        )
     )
+
 
     if member is None:
 
         flash(
-            "Member not found or not publicly available.",
+            (
+                "Member not found or not "
+                "publicly available."
+            ),
             "warning"
         )
+
 
         return redirect(
             url_for(
@@ -751,9 +1182,15 @@ def member_profile(id):
             )
         )
 
+
     return render_template(
+
         "member_details.html",
-        member=member
+
+        member=member,
+
+        admin_view=False
+
     )
 
 
@@ -766,16 +1203,23 @@ def member_profile(id):
 )
 def view_member(id):
 
-    member = get_public_member(
-        id
+    member = (
+        get_public_member(
+            id
+        )
     )
+
 
     if member is None:
 
         flash(
-            "Member not found or not publicly available.",
+            (
+                "Member not found or not "
+                "publicly available."
+            ),
             "warning"
         )
+
 
         return redirect(
             url_for(
@@ -783,9 +1227,15 @@ def view_member(id):
             )
         )
 
+
     return render_template(
+
         "member_details.html",
-        member=member
+
+        member=member,
+
+        admin_view=False
+
     )
 
 
@@ -802,24 +1252,113 @@ def view_member(id):
 def member_photo(id):
 
     member = (
+
         Information.query
+
         .filter(
-            Information.id == id,
-            Information.status == "Approved"
+
+            Information.id
+            == id,
+
+            Information.status
+            == "Approved"
+
         )
+
         .first()
+
     )
+
 
     if member is None:
-        abort(404)
+
+        abort(
+            404
+        )
+
 
     if not member.photo:
-        abort(404)
+
+        abort(
+            404
+        )
+
+
+    photo_name = str(
+        member.photo
+    ).replace(
+        "\\",
+        "/"
+    ).strip()
+
+
+    # -------------------------------------------------
+    # Existing uploads/... Path
+    # -------------------------------------------------
+
+    if photo_name.startswith(
+        "uploads/"
+    ):
+
+        static_path = (
+            photo_name
+        )
+
+
+    # -------------------------------------------------
+    # Existing static/uploads/... Path
+    # -------------------------------------------------
+
+    elif photo_name.startswith(
+        "static/uploads/"
+    ):
+
+        static_path = (
+            photo_name.replace(
+                "static/",
+                "",
+                1
+            )
+        )
+
+
+    # -------------------------------------------------
+    # Default Static Image
+    # -------------------------------------------------
+
+    elif photo_name.startswith(
+        "images/"
+    ):
+
+        static_path = (
+            photo_name
+        )
+
+
+    # -------------------------------------------------
+    # Standard Uploaded Filename
+    # -------------------------------------------------
+
+    else:
+
+        static_path = (
+            f"uploads/{photo_name}"
+        )
+
 
     return redirect(
+
         url_for(
+
             "static",
-            filename=f"uploads/{member.photo}"
+
+            filename=static_path
+
         )
+
     )
 
+
+# =====================================================
+# END OF FILE
+# =====================================================
