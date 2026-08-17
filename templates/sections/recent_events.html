@@ -1,10 +1,12 @@
-
 <!-- ==========================================
      RECENT EVENTS
 ========================================== -->
 
 
-<section class="recent-events" id="recent-events">
+<section
+    class="recent-events"
+    id="recent-events"
+>
 
 
     <div class="container">
@@ -13,7 +15,6 @@
         <!-- ==========================================
              SECTION HEADER
         =========================================== -->
-
 
         <div class="section-header">
 
@@ -44,7 +45,6 @@
              EVENTS GRID
         =========================================== -->
 
-
         <div class="events-grid">
 
 
@@ -58,7 +58,6 @@
                          EVENT CARD
                     =================================== -->
 
-
                     <article class="event-card">
 
 
@@ -66,7 +65,6 @@
                         <!-- ==================================
                              EVENT IMAGE
                         =================================== -->
-
 
                         <div class="event-image">
 
@@ -78,7 +76,10 @@
 
 
                                     <img
-                                        src="{{ url_for('static', filename=event.image) }}"
+                                        src="{{ url_for(
+                                            'static',
+                                            filename=event.image
+                                        ) }}"
                                         alt="{{ event.title }}"
                                         loading="lazy"
                                     >
@@ -88,7 +89,10 @@
 
 
                                     <img
-                                        src="{{ url_for('static', filename=event.image) }}"
+                                        src="{{ url_for(
+                                            'static',
+                                            filename=event.image
+                                        ) }}"
                                         alt="{{ event.title }}"
                                         loading="lazy"
                                     >
@@ -98,7 +102,10 @@
 
 
                                     <img
-                                        src="{{ url_for('static', filename='uploads/' ~ event.image) }}"
+                                        src="{{ url_for(
+                                            'static',
+                                            filename='uploads/' ~ event.image
+                                        ) }}"
                                         alt="{{ event.title }}"
                                         loading="lazy"
                                     >
@@ -111,7 +118,10 @@
 
 
                                 <img
-                                    src="{{ url_for('static', filename='images/Event_1.1.jpeg') }}"
+                                    src="{{ url_for(
+                                        'static',
+                                        filename='images/Event_1.1.jpeg'
+                                    ) }}"
                                     alt="JUians of Gaibandha Event"
                                     loading="lazy"
                                 >
@@ -128,13 +138,11 @@
                              EVENT BODY
                         =================================== -->
 
-
                         <div class="event-body">
 
 
 
                             <!-- EVENT TITLE -->
-
 
                             <h3>
                                 {{ event.title }}
@@ -145,7 +153,6 @@
                             <!-- ==================================
                                  EVENT META
                             =================================== -->
-
 
                             <div class="event-meta">
 
@@ -159,7 +166,9 @@
                                         <i class="fa-solid fa-calendar-days"></i>
 
 
-                                        {{ event.event_date }}
+                                        <span class="event-meta-text">
+                                            {{ event.event_date }}
+                                        </span>
 
 
                                     </span>
@@ -178,7 +187,9 @@
                                         <i class="fa-solid fa-location-dot"></i>
 
 
-                                        {{ event.location }}
+                                        <span class="event-meta-text">
+                                            {{ event.location }}
+                                        </span>
 
 
                                     </span>
@@ -194,7 +205,6 @@
                             <!-- ==================================
                                  EVENT DESCRIPTION
                             =================================== -->
-
 
                             <p>
 
@@ -223,7 +233,6 @@
                                  EVENT LINK
                             =================================== -->
 
-
                             {% if event.event_link %}
 
 
@@ -235,7 +244,9 @@
                                 >
 
 
-                                    Read More
+                                    <span>
+                                        Read More
+                                    </span>
 
 
                                     <i class="fa-solid fa-arrow-right"></i>
@@ -265,19 +276,20 @@
                      NO EVENTS
                 =================================== -->
 
-
                 <article class="event-card">
 
 
 
                     <!-- DEFAULT IMAGE -->
 
-
                     <div class="event-image">
 
 
                         <img
-                            src="{{ url_for('static', filename='images/Event_1.1.jpeg') }}"
+                            src="{{ url_for(
+                                'static',
+                                filename='images/Event_1.1.jpeg'
+                            ) }}"
                             alt="JUians of Gaibandha Event"
                             loading="lazy"
                         >
@@ -288,7 +300,6 @@
 
 
                     <!-- MESSAGE -->
-
 
                     <div class="event-body">
 
@@ -308,7 +319,9 @@
                                 <i class="fa-solid fa-calendar-days"></i>
 
 
-                                JUians of Gaibandha
+                                <span class="event-meta-text">
+                                    JUians of Gaibandha
+                                </span>
 
 
                             </span>
@@ -352,4 +365,3 @@
 <!-- ==========================================
      RECENT EVENTS END
 ========================================== -->
-

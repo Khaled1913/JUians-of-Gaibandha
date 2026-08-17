@@ -1,0 +1,631 @@
+/* =========================================================
+   RESPONSIVE.CSS
+   JUians of Gaibandha
+   Global Responsive Safety Layer
+========================================================= */
+
+
+/* =========================================================
+   GLOBAL BOX SIZING
+========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DOCUMENT SAFETY
+========================================================= */
+
+html {
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: hidden;
+
+    scroll-behavior: smooth;
+}
+
+
+body {
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   GLOBAL MEDIA SAFETY
+========================================================= */
+
+img,
+picture,
+video,
+canvas,
+svg,
+iframe {
+    max-width: 100%;
+}
+
+
+img {
+    height: auto;
+}
+
+
+/* =========================================================
+   TEXT WRAPPING SAFETY
+========================================================= */
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+strong,
+small,
+a,
+button,
+label {
+    overflow-wrap: break-word;
+}
+
+
+/* =========================================================
+   FORM SAFETY
+========================================================= */
+
+input,
+select,
+textarea,
+button {
+    max-width: 100%;
+}
+
+
+input,
+select,
+textarea {
+    width: 100%;
+}
+
+
+/* =========================================================
+   TABLE SAFETY
+========================================================= */
+
+table {
+    max-width: 100%;
+}
+
+
+.table-responsive,
+.table-wrapper,
+.admin-table-wrapper,
+.member-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* =========================================================
+   FLEX / GRID SAFETY
+========================================================= */
+
+[class*="grid"],
+[class*="flex"] {
+    min-width: 0;
+}
+
+
+[class*="card"] {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   CONTAINER SAFETY
+========================================================= */
+
+.container {
+    width: 100%;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* =========================================================
+   BUTTON SAFETY
+========================================================= */
+
+button,
+.btn,
+[class*="-btn"],
+[class*="button"] {
+    touch-action: manipulation;
+}
+
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+a {
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   LARGE TABLET
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .container {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+
+    /* -----------------------------------------
+       General section spacing
+    ----------------------------------------- */
+
+    section {
+        max-width: 100%;
+    }
+
+
+    /* -----------------------------------------
+       Prevent oversized headings
+    ----------------------------------------- */
+
+    h1 {
+        line-height: 1.2;
+    }
+
+
+    h2 {
+        line-height: 1.25;
+    }
+
+
+    h3 {
+        line-height: 1.35;
+    }
+
+
+    /* -----------------------------------------
+       Forms
+    ----------------------------------------- */
+
+    form {
+        max-width: 100%;
+    }
+
+
+    /* -----------------------------------------
+       Input font-size
+       Prevents iOS auto zoom
+    ----------------------------------------- */
+
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+
+    /* =====================================================
+       GLOBAL SECTION SAFETY
+    ===================================================== */
+
+    section {
+        width: 100%;
+    }
+
+
+    /* =====================================================
+       SECTION HEADER
+    ===================================================== */
+
+    .section-header {
+        width: 100%;
+
+        max-width: 100%;
+
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+
+    .section-header h1,
+    .section-header h2 {
+        max-width: 100%;
+
+        overflow-wrap: break-word;
+    }
+
+
+    .section-header p {
+        max-width: 100%;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        overflow-wrap: break-word;
+    }
+
+
+    /* =====================================================
+       CARDS
+    ===================================================== */
+
+    .card,
+    [class*="-card"] {
+        max-width: 100%;
+    }
+
+
+    /* =====================================================
+       BUTTONS
+    ===================================================== */
+
+    button,
+    .btn,
+    [class*="-btn"],
+    [class*="button"] {
+        min-height: 42px;
+    }
+
+
+    /* =====================================================
+       FORMS
+    ===================================================== */
+
+    input,
+    select,
+    textarea {
+        min-height: 44px;
+    }
+
+
+    textarea {
+        min-height: 120px;
+    }
+
+
+    /* =====================================================
+       IMAGES
+    ===================================================== */
+
+    img {
+        max-width: 100%;
+    }
+
+
+    /* =====================================================
+       TABLES
+    ===================================================== */
+
+    table {
+        white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       ADMIN / MEMBER COMMON WRAPPERS
+    ===================================================== */
+
+    .admin-container,
+    .dashboard-container,
+    .member-container,
+    .profile-container,
+    .submit-container,
+    .search-results-container {
+        width: 100%;
+
+        max-width: 100%;
+
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+
+    /* =====================================================
+       FORM GRID
+    ===================================================== */
+
+    .form-grid,
+    .admin-form-grid,
+    .profile-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+
+    /* =====================================================
+       ACTION ROW
+    ===================================================== */
+
+    .form-actions,
+    .admin-actions,
+    .profile-actions {
+        flex-wrap: wrap;
+    }
+
+
+    /* =====================================================
+       MODALS
+    ===================================================== */
+
+    .modal,
+    .modal-content {
+        max-width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 520px) {
+
+    .container {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+
+    /* =====================================================
+       HEADINGS
+    ===================================================== */
+
+    h1 {
+        font-size: clamp(
+            1.8rem,
+            8vw,
+            2.2rem
+        );
+    }
+
+
+    h2 {
+        font-size: clamp(
+            1.45rem,
+            7vw,
+            1.8rem
+        );
+    }
+
+
+    h3 {
+        font-size: clamp(
+            1rem,
+            5vw,
+            1.25rem
+        );
+    }
+
+
+    /* =====================================================
+       PARAGRAPHS
+    ===================================================== */
+
+    p {
+        line-height: 1.65;
+    }
+
+
+    /* =====================================================
+       BUTTONS
+    ===================================================== */
+
+    button,
+    .btn,
+    [class*="-btn"],
+    [class*="button"] {
+        max-width: 100%;
+    }
+
+
+    /* =====================================================
+       INPUTS
+    ===================================================== */
+
+    input,
+    select,
+    textarea {
+        border-radius: 10px;
+    }
+
+
+    /* =====================================================
+       FORM ACTIONS
+    ===================================================== */
+
+    .form-actions,
+    .admin-actions,
+    .profile-actions {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        width: 100%;
+    }
+
+
+    .form-actions > *,
+    .admin-actions > *,
+    .profile-actions > * {
+        width: 100%;
+    }
+
+
+    /* =====================================================
+       FLASH / ALERTS
+    ===================================================== */
+
+    .alert,
+    .flash-message,
+    .message {
+        max-width: 100%;
+
+        overflow-wrap: anywhere;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+
+    body {
+        font-size: 14px;
+    }
+
+
+    /* =====================================================
+       BUTTONS
+    ===================================================== */
+
+    button,
+    .btn,
+    [class*="-btn"],
+    [class*="button"] {
+        font-size: 0.85rem;
+    }
+
+
+    /* =====================================================
+       INPUT
+    ===================================================== */
+
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+    }
+
+
+    /* =====================================================
+       SMALL TEXT
+    ===================================================== */
+
+    small {
+        font-size: 0.72rem;
+    }
+
+}
+
+
+/* =========================================================
+   LANDSCAPE MOBILE
+========================================================= */
+
+@media (
+    max-width: 900px
+)
+and
+(
+    orientation: landscape
+) {
+
+    .hero {
+        min-height: auto;
+    }
+
+
+    .nav-menu {
+        max-height: calc(100vh - 100px);
+
+        overflow-y: auto;
+
+        overscroll-behavior: contain;
+    }
+
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) {
+
+    a:hover,
+    button:hover {
+        transform: none;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+    }
+
+}

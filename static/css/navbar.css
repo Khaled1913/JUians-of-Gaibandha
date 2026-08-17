@@ -3,6 +3,7 @@
    JUians of Gaibandha
 ===================================================== */
 
+
 /* ==========================
         NAVBAR
 ========================== */
@@ -10,30 +11,49 @@
 .navbar{
     position: sticky;
     top: 0;
+
     width: 100%;
+
     background: rgba(255,255,255,.95);
+
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
+
     border-bottom: 1px solid rgba(0,0,0,.05);
+
     z-index: var(--z-navbar);
+
     transition: var(--transition);
 }
+
 
 .navbar.scrolled{
     box-shadow: var(--shadow-md);
 }
+
 
 /* ==========================
     NAV CONTAINER
 ========================== */
 
 .nav-container{
+    position: relative;
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
+
     min-height: 82px;
+
     gap: 25px;
+
+    width: 100%;
+
+    box-sizing: border-box;
 }
+
 
 /* ==========================
         LOGO
@@ -41,31 +61,63 @@
 
 .logo{
     display: flex;
+
     align-items: center;
+
     gap: 14px;
+
     flex-shrink: 0;
+
+    min-width: 0;
 }
+
 
 .logo img{
     width: 56px;
     height: 56px;
+
     object-fit: cover;
+
     border-radius: 50%;
+
+    flex-shrink: 0;
 }
+
+
+.logo-text{
+    min-width: 0;
+}
+
 
 .logo-text h2{
     margin: 0;
+
     color: var(--primary-color);
+
     font-size: 1.35rem;
+
     font-weight: 700;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
 }
+
 
 .logo-text span{
     display: block;
+
     margin-top: 2px;
+
     color: var(--text-light);
+
     font-size: .82rem;
+
+    line-height: 1.3;
+
+    white-space: nowrap;
 }
+
 
 /* ==========================
         MENU
@@ -73,48 +125,79 @@
 
 .nav-menu{
     display: flex;
+
     align-items: center;
+
     gap: 8px;
+
+    margin: 0;
+
+    padding: 0;
 }
+
 
 .nav-menu li{
     list-style: none;
 }
 
+
 .nav-menu a{
     display: flex;
+
     align-items: center;
+
     gap: 8px;
+
     padding: 12px 18px;
+
     border-radius: var(--radius-full);
+
     color: var(--text-dark);
+
     font-weight: 500;
+
+    text-decoration: none;
+
     transition: var(--transition);
+
+    white-space: nowrap;
 }
+
 
 .nav-menu a i{
     font-size: .95rem;
+
     color: var(--primary-color);
+
     transition: var(--transition);
+
+    flex-shrink: 0;
 }
+
 
 .nav-menu a:hover{
     background: rgba(0,106,78,.08);
+
     color: var(--primary-color);
 }
+
 
 .nav-menu a:hover i{
     transform: rotate(-10deg);
 }
 
+
 .nav-menu a.active{
     background: var(--primary-color);
+
     color: #fff;
 }
+
 
 .nav-menu a.active i{
     color: #fff;
 }
+
 
 /* ==========================
         RIGHT SIDE
@@ -122,37 +205,14 @@
 
 .nav-actions{
     display: flex;
+
     align-items: center;
+
     gap: 12px;
+
     flex-shrink: 0;
 }
 
-/* ==========================
-      SUBMIT BUTTON
-========================== */
-
-.submit-btn{
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-
-    padding: 12px 22px;
-
-    background: var(--primary-color);
-    color: #fff;
-
-    border-radius: var(--radius-full);
-
-    font-weight: 600;
-
-    transition: var(--transition);
-}
-
-.submit-btn:hover{
-    background: var(--primary-dark);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
-}
 
 /* ==========================
       LOGIN BUTTON
@@ -160,7 +220,11 @@
 
 .login-btn{
     display: inline-flex;
+
     align-items: center;
+
+    justify-content: center;
+
     gap: 8px;
 
     padding: 12px 22px;
@@ -173,17 +237,25 @@
 
     font-weight: 600;
 
+    text-decoration: none;
+
+    white-space: nowrap;
+
     transition: var(--transition);
 }
 
+
 .login-btn:hover{
     background: var(--primary-color);
+
     color: #fff;
 }
+
 
 .login-btn:hover i{
     color: #fff;
 }
+
 
 /* ==========================
       MOBILE TOGGLE
@@ -194,6 +266,8 @@
 
     width: 46px;
     height: 46px;
+
+    border: none;
 
     border-radius: 10px;
 
@@ -209,16 +283,409 @@
     cursor: pointer;
 
     transition: var(--transition);
+
+    flex-shrink: 0;
 }
+
 
 .menu-toggle:hover{
     background: var(--primary-dark);
 }
 
-/* ==========================
-        ICON
-========================== */
 
 .menu-toggle i{
     pointer-events: none;
+}
+
+
+/* =====================================================
+   LARGE TABLET / SMALL DESKTOP
+===================================================== */
+
+@media (max-width: 1200px){
+
+    .nav-container{
+        gap: 16px;
+    }
+
+
+    .nav-menu{
+        gap: 4px;
+    }
+
+
+    .nav-menu a{
+        padding: 10px 12px;
+
+        font-size: .9rem;
+    }
+
+
+    .login-btn{
+        padding: 10px 15px;
+
+        font-size: .9rem;
+    }
+
+}
+
+
+/* =====================================================
+   TABLET / MOBILE NAVIGATION
+===================================================== */
+
+@media (max-width: 992px){
+
+    .navbar{
+        overflow: visible;
+    }
+
+
+    .nav-container{
+        min-height: 74px;
+
+        gap: 14px;
+    }
+
+
+    .logo{
+        gap: 11px;
+    }
+
+
+    .logo img{
+        width: 50px;
+        height: 50px;
+    }
+
+
+    .logo-text h2{
+        font-size: 1.15rem;
+    }
+
+
+    .logo-text span{
+        font-size: .74rem;
+    }
+
+
+    /* ==========================
+          SHOW TOGGLE
+    ========================== */
+
+    .menu-toggle{
+        display: inline-flex;
+
+        margin-left: auto;
+    }
+
+
+    /* ==========================
+          MOBILE MENU
+    ========================== */
+
+    .nav-menu{
+        position: absolute;
+
+        top: calc(100% + 8px);
+
+        left: 0;
+        right: 0;
+
+        display: none;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 5px;
+
+        width: 100%;
+
+        padding: 12px;
+
+        box-sizing: border-box;
+
+        background: rgba(255,255,255,.99);
+
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+
+        border: 1px solid rgba(0,106,78,.10);
+
+        border-radius: 14px 14px 0 0;
+
+        box-shadow: 0 18px 40px rgba(20,65,52,.12);
+
+        z-index: calc(var(--z-navbar) + 5);
+    }
+
+
+    .nav-menu.active{
+        display: flex;
+    }
+
+
+    .nav-menu li{
+        width: 100%;
+    }
+
+
+    .nav-menu a{
+        width: 100%;
+
+        justify-content: flex-start;
+
+        padding: 12px 14px;
+
+        box-sizing: border-box;
+
+        border-radius: 10px;
+
+        font-size: .91rem;
+    }
+
+
+    .nav-menu a:hover{
+        transform: none;
+    }
+
+
+    /* ==========================
+          MOBILE ACTION
+    ========================== */
+
+    .nav-actions{
+        position: absolute;
+
+        top: calc(100% + 324px);
+
+        left: 0;
+        right: 0;
+
+        display: none;
+
+        width: 100%;
+
+        padding: 0 12px 12px;
+
+        box-sizing: border-box;
+
+        background: rgba(255,255,255,.99);
+
+        border-left: 1px solid rgba(0,106,78,.10);
+        border-right: 1px solid rgba(0,106,78,.10);
+        border-bottom: 1px solid rgba(0,106,78,.10);
+
+        border-radius: 0 0 14px 14px;
+
+        box-shadow: 0 18px 40px rgba(20,65,52,.12);
+
+        z-index: calc(var(--z-navbar) + 5);
+    }
+
+
+    .nav-actions.active{
+        display: flex;
+    }
+
+
+    .login-btn{
+        width: 100%;
+
+        min-height: 44px;
+
+        justify-content: center;
+
+        box-sizing: border-box;
+
+        border-radius: 10px;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px){
+
+    .nav-container{
+        min-height: 70px;
+
+        gap: 10px;
+    }
+
+
+    .logo{
+        gap: 9px;
+    }
+
+
+    .logo img{
+        width: 46px;
+        height: 46px;
+    }
+
+
+    .logo-text h2{
+        font-size: 1.05rem;
+    }
+
+
+    .logo-text span{
+        font-size: .7rem;
+    }
+
+
+    .menu-toggle{
+        width: 43px;
+        height: 43px;
+
+        font-size: 1.1rem;
+
+        border-radius: 9px;
+    }
+
+
+    .nav-menu{
+        top: calc(100% + 7px);
+
+        padding: 10px;
+    }
+
+
+    .nav-menu a{
+        padding: 11px 12px;
+
+        font-size: .88rem;
+    }
+
+
+    .nav-actions{
+        top: calc(100% + 301px);
+
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+    }
+
+
+    .login-btn{
+        min-height: 42px;
+
+        padding: 10px 14px;
+
+        font-size: .87rem;
+    }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 480px){
+
+    .nav-container{
+        min-height: 66px;
+    }
+
+
+    .logo{
+        gap: 8px;
+
+        max-width: calc(100% - 56px);
+    }
+
+
+    .logo img{
+        width: 42px;
+        height: 42px;
+    }
+
+
+    .logo-text{
+        overflow: hidden;
+    }
+
+
+    .logo-text h2{
+        font-size: .96rem;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+    }
+
+
+    .logo-text span{
+        font-size: .65rem;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+    }
+
+
+    .menu-toggle{
+        width: 40px;
+        height: 40px;
+
+        font-size: 1rem;
+    }
+
+
+    .nav-menu{
+        padding: 9px;
+    }
+
+
+    .nav-menu a{
+        padding: 10px 11px;
+
+        font-size: .84rem;
+    }
+
+
+    .nav-actions{
+        top: calc(100% + 286px);
+
+        padding-left: 9px;
+        padding-right: 9px;
+        padding-bottom: 9px;
+    }
+
+}
+
+
+/* =====================================================
+   VERY SMALL MOBILE
+===================================================== */
+
+@media (max-width: 360px){
+
+    .logo img{
+        width: 38px;
+        height: 38px;
+    }
+
+
+    .logo-text h2{
+        font-size: .88rem;
+    }
+
+
+    .logo-text span{
+        font-size: .6rem;
+    }
+
+
+    .menu-toggle{
+        width: 38px;
+        height: 38px;
+    }
+
 }

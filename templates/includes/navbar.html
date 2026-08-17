@@ -4,12 +4,18 @@
                 LOGO
     =============================== -->
 
-    <a href="{{ url_for('home.home') }}"
-       class="logo">
+    <a
+        href="{{ url_for('home.home') }}"
+        class="logo"
+    >
 
         <img
-            src="{{ url_for('static', filename='images/association_logo.jpeg') }}"
-            alt="JUians of Gaibandha Logo">
+            src="{{ url_for(
+                'static',
+                filename='images/association_logo.jpeg'
+            ) }}"
+            alt="JUians of Gaibandha Logo"
+        >
 
         <div class="logo-text">
 
@@ -35,7 +41,9 @@
         id="menu-toggle"
         type="button"
         aria-label="Toggle navigation menu"
-        aria-expanded="false">
+        aria-expanded="false"
+        aria-controls="nav-menu"
+    >
 
         <i class="fa-solid fa-bars"></i>
 
@@ -46,7 +54,10 @@
             NAVIGATION MENU
     =============================== -->
 
-    <ul class="nav-menu" id="nav-menu">
+    <ul
+        class="nav-menu"
+        id="nav-menu"
+    >
 
         <!-- ==============================
                 HOME
@@ -56,7 +67,8 @@
 
             <a
                 href="{{ url_for('home.home') }}"
-                class="nav-link">
+                class="nav-link"
+            >
 
                 <i class="fa-solid fa-house"></i>
 
@@ -77,7 +89,8 @@
 
             <a
                 href="{{ url_for('member.submit') }}"
-                class="nav-link">
+                class="nav-link"
+            >
 
                 <i class="fa-solid fa-user-plus"></i>
 
@@ -98,7 +111,8 @@
 
             <a
                 href="{{ url_for('home.home') }}#statistics"
-                class="nav-link">
+                class="nav-link"
+            >
 
                 <i class="fa-solid fa-chart-column"></i>
 
@@ -119,7 +133,8 @@
 
             <a
                 href="{{ url_for('home.home') }}#categories"
-                class="nav-link">
+                class="nav-link"
+            >
 
                 <i class="fa-solid fa-layer-group"></i>
 
@@ -140,7 +155,8 @@
 
             <a
                 href="{{ url_for('home.home') }}#about"
-                class="nav-link">
+                class="nav-link"
+            >
 
                 <i class="fa-solid fa-circle-info"></i>
 
@@ -161,7 +177,8 @@
 
             <a
                 href="{{ url_for('home.home') }}#contact"
-                class="nav-link">
+                class="nav-link"
+            >
 
                 <i class="fa-solid fa-envelope"></i>
 
@@ -180,11 +197,15 @@
             RIGHT SIDE ACTION
     =============================== -->
 
-    <div class="nav-actions">
+    <div
+        class="nav-actions"
+        id="nav-actions"
+    >
 
         <a
             href="{{ url_for('auth.login') }}"
-            class="login-btn">
+            class="login-btn"
+        >
 
             <i class="fa-solid fa-lock"></i>
 

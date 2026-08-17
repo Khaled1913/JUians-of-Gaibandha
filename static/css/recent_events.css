@@ -1,7 +1,9 @@
 /* =====================================================
    RECENT_EVENTS.CSS
    JUians of Gaibandha
+   Responsive Event Section
 ===================================================== */
+
 
 /* ==========================
         SECTION
@@ -9,11 +11,18 @@
 
 .recent-events{
 
+    position:relative;
+
+    width:100%;
+
     padding:100px 0;
 
     background:var(--section-bg);
 
+    overflow:hidden;
+
 }
+
 
 /* ==========================
         HEADER
@@ -21,9 +30,18 @@
 
 .recent-events .section-header{
 
+    width:100%;
+
+    max-width:760px;
+
+    margin-left:auto;
+
+    margin-right:auto;
+
     margin-bottom:60px;
 
 }
+
 
 /* ==========================
         GRID
@@ -33,17 +51,37 @@
 
     display:grid;
 
-    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                min(340px, 100%),
+                1fr
+            )
+        );
 
     gap:35px;
 
+    width:100%;
+
 }
+
 
 /* ==========================
         CARD
 ========================== */
 
 .event-card{
+
+    position:relative;
+
+    display:flex;
+
+    flex-direction:column;
+
+    width:100%;
+
+    min-width:0;
 
     background:var(--surface-color);
 
@@ -55,9 +93,10 @@
 
     transition:var(--transition);
 
-    position:relative;
-
 }
+
+
+/* CARD HOVER */
 
 .event-card:hover{
 
@@ -67,6 +106,7 @@
 
 }
 
+
 /* ==========================
         IMAGE
 ========================== */
@@ -75,27 +115,45 @@
 
     position:relative;
 
+    width:100%;
+
     overflow:hidden;
+
+    background:#eef3f1;
 
 }
 
+
+/* EVENT IMAGE */
+
 .event-image img{
+
+    display:block;
 
     width:100%;
 
     height:240px;
 
+    max-width:100%;
+
     object-fit:cover;
 
-    transition:.5s;
+    object-position:center;
+
+    transition:
+        transform .5s ease;
 
 }
+
+
+/* IMAGE HOVER */
 
 .event-card:hover .event-image img{
 
     transform:scale(1.08);
 
 }
+
 
 /* ==========================
         DATE
@@ -109,11 +167,13 @@
 
     left:18px;
 
+    z-index:2;
+
+    padding:12px 18px;
+
     background:var(--primary-color);
 
     color:#fff;
-
-    padding:12px 18px;
 
     border-radius:12px;
 
@@ -123,15 +183,23 @@
 
 }
 
+
+/* DATE NUMBER */
+
 .event-date h3{
 
     margin:0;
 
-    font-size:1.5rem;
-
     color:#fff;
 
+    font-size:1.5rem;
+
+    line-height:1.1;
+
 }
+
+
+/* DATE MONTH */
 
 .event-date span{
 
@@ -139,9 +207,12 @@
 
     margin-top:2px;
 
+    color:#fff;
+
     font-size:.85rem;
 
 }
+
 
 /* ==========================
         BODY
@@ -149,9 +220,18 @@
 
 .event-body{
 
+    display:flex;
+
+    flex:1;
+
+    flex-direction:column;
+
+    min-width:0;
+
     padding:30px;
 
 }
+
 
 /* ==========================
         TITLE
@@ -159,9 +239,22 @@
 
 .event-body h3{
 
-    margin-bottom:15px;
+    margin:0 0 15px;
+
+    color:var(--text-dark);
+
+    font-size:1.25rem;
+
+    font-weight:700;
+
+    line-height:1.45;
+
+    overflow-wrap:anywhere;
+
+    word-break:normal;
 
 }
+
 
 /* ==========================
         META
@@ -171,9 +264,13 @@
 
     display:flex;
 
+    align-items:flex-start;
+
     flex-wrap:wrap;
 
-    gap:18px;
+    gap:12px 18px;
+
+    width:100%;
 
     margin-bottom:18px;
 
@@ -183,21 +280,49 @@
 
 }
 
-.event-meta span{
+
+/* META ITEM */
+
+.event-meta > span{
 
     display:flex;
 
-    align-items:center;
+    align-items:flex-start;
 
     gap:8px;
 
+    min-width:0;
+
+    max-width:100%;
+
 }
 
+
+/* META ICON */
+
 .event-meta i{
+
+    flex-shrink:0;
+
+    margin-top:3px;
 
     color:var(--primary-color);
 
 }
+
+
+/* META TEXT */
+
+.event-meta-text{
+
+    min-width:0;
+
+    line-height:1.5;
+
+    overflow-wrap:anywhere;
+
+}
+
 
 /* ==========================
         DESCRIPTION
@@ -205,9 +330,20 @@
 
 .event-body p{
 
-    margin-bottom:25px;
+    width:100%;
+
+    margin:0 0 25px;
+
+    color:var(--text-light);
+
+    line-height:1.75;
+
+    overflow-wrap:anywhere;
+
+    word-break:normal;
 
 }
+
 
 /* ==========================
         BUTTON
@@ -219,7 +355,15 @@
 
     align-items:center;
 
+    justify-content:center;
+
+    align-self:flex-start;
+
     gap:8px;
+
+    max-width:100%;
+
+    margin-top:auto;
 
     padding:13px 24px;
 
@@ -231,23 +375,40 @@
 
     font-weight:600;
 
+    text-decoration:none;
+
+    white-space:nowrap;
+
     transition:var(--transition);
 
 }
+
+
+/* BUTTON HOVER */
 
 .event-btn:hover{
 
     background:var(--primary-dark);
 
+    color:#fff;
+
     transform:translateY(-3px);
 
 }
 
+
+/* BUTTON ICON */
+
 .event-btn i{
+
+    flex-shrink:0;
 
     transition:var(--transition);
 
 }
+
+
+/* BUTTON ICON HOVER */
 
 .event-btn:hover i{
 
@@ -255,13 +416,14 @@
 
 }
 
+
 /* ==========================
         EMPTY STATE
 ========================== */
 
 .no-event{
 
-    text-align:center;
+    width:100%;
 
     padding:70px 40px;
 
@@ -269,19 +431,27 @@
 
     border-radius:var(--radius-lg);
 
+    text-align:center;
+
     box-shadow:var(--shadow-sm);
 
 }
 
+
+/* EMPTY ICON */
+
 .no-event i{
-
-    font-size:60px;
-
-    color:var(--primary-color);
 
     margin-bottom:20px;
 
+    color:var(--primary-color);
+
+    font-size:60px;
+
 }
+
+
+/* EMPTY TITLE */
 
 .no-event h3{
 
@@ -289,8 +459,554 @@
 
 }
 
+
+/* EMPTY DESCRIPTION */
+
 .no-event p{
 
     color:var(--text-light);
+
+}
+
+
+/* =====================================================
+        LARGE TABLET
+===================================================== */
+
+@media (max-width:1100px){
+
+    .recent-events{
+
+        padding:90px 0;
+
+    }
+
+
+    .events-grid{
+
+        gap:28px;
+
+    }
+
+
+    .event-body{
+
+        padding:26px;
+
+    }
+
+
+    .event-image img{
+
+        height:225px;
+
+    }
+
+}
+
+
+/* =====================================================
+        TABLET
+===================================================== */
+
+@media (max-width:991px){
+
+    .recent-events{
+
+        padding:80px 0;
+
+    }
+
+
+    .recent-events .section-header{
+
+        margin-bottom:48px;
+
+    }
+
+
+    .events-grid{
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+        gap:25px;
+
+    }
+
+
+    .event-image img{
+
+        height:220px;
+
+    }
+
+
+    .event-body{
+
+        padding:24px;
+
+    }
+
+
+    .event-body h3{
+
+        font-size:1.15rem;
+
+    }
+
+
+    .event-meta{
+
+        font-size:.88rem;
+
+    }
+
+}
+
+
+/* =====================================================
+        MOBILE
+===================================================== */
+
+@media (max-width:768px){
+
+    .recent-events{
+
+        padding:68px 0;
+
+    }
+
+
+    .recent-events .section-header{
+
+        max-width:100%;
+
+        margin-bottom:38px;
+
+    }
+
+
+    /* ONE CARD PER ROW */
+
+    .events-grid{
+
+        grid-template-columns:1fr;
+
+        gap:24px;
+
+        width:100%;
+
+    }
+
+
+    .event-card{
+
+        width:100%;
+
+        max-width:620px;
+
+        margin:0 auto;
+
+        border-radius:18px;
+
+    }
+
+
+    /* Disable strong desktop movement */
+
+    .event-card:hover{
+
+        transform:translateY(-4px);
+
+    }
+
+
+    /* IMAGE */
+
+    .event-image img{
+
+        width:100%;
+
+        height:auto;
+
+        aspect-ratio:16 / 9;
+
+        object-fit:cover;
+
+    }
+
+
+    .event-card:hover .event-image img{
+
+        transform:scale(1.03);
+
+    }
+
+
+    /* DATE */
+
+    .event-date{
+
+        top:14px;
+
+        left:14px;
+
+        padding:10px 14px;
+
+        border-radius:10px;
+
+    }
+
+
+    .event-date h3{
+
+        font-size:1.25rem;
+
+    }
+
+
+    .event-date span{
+
+        font-size:.78rem;
+
+    }
+
+
+    /* BODY */
+
+    .event-body{
+
+        padding:22px;
+
+    }
+
+
+    /* TITLE */
+
+    .event-body h3{
+
+        margin-bottom:13px;
+
+        font-size:1.1rem;
+
+        line-height:1.5;
+
+    }
+
+
+    /* META */
+
+    .event-meta{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:9px;
+
+        margin-bottom:15px;
+
+        font-size:.86rem;
+
+    }
+
+
+    .event-meta > span{
+
+        width:100%;
+
+    }
+
+
+    /* DESCRIPTION */
+
+    .event-body p{
+
+        margin-bottom:22px;
+
+        font-size:.9rem;
+
+        line-height:1.7;
+
+    }
+
+
+    /* BUTTON */
+
+    .event-btn{
+
+        min-height:45px;
+
+        padding:11px 20px;
+
+        font-size:.88rem;
+
+    }
+
+
+    /* EMPTY STATE */
+
+    .no-event{
+
+        padding:50px 25px;
+
+    }
+
+
+    .no-event i{
+
+        font-size:50px;
+
+    }
+
+}
+
+
+/* =====================================================
+        SMALL MOBILE
+===================================================== */
+
+@media (max-width:520px){
+
+    .recent-events{
+
+        padding:55px 0;
+
+    }
+
+
+    .recent-events .section-header{
+
+        margin-bottom:32px;
+
+    }
+
+
+    .events-grid{
+
+        gap:20px;
+
+    }
+
+
+    /* CARD */
+
+    .event-card{
+
+        border-radius:16px;
+
+    }
+
+
+    /* IMAGE */
+
+    .event-image img{
+
+        aspect-ratio:16 / 10;
+
+    }
+
+
+    /* BODY */
+
+    .event-body{
+
+        padding:18px;
+
+    }
+
+
+    /* TITLE */
+
+    .event-body h3{
+
+        margin-bottom:12px;
+
+        font-size:1rem;
+
+        line-height:1.5;
+
+    }
+
+
+    /* META */
+
+    .event-meta{
+
+        gap:8px;
+
+        margin-bottom:14px;
+
+        font-size:.80rem;
+
+    }
+
+
+    .event-meta i{
+
+        margin-top:2px;
+
+        font-size:.85rem;
+
+    }
+
+
+    .event-meta-text{
+
+        line-height:1.45;
+
+    }
+
+
+    /* DESCRIPTION */
+
+    .event-body p{
+
+        margin-bottom:19px;
+
+        font-size:.84rem;
+
+        line-height:1.65;
+
+    }
+
+
+    /* BUTTON */
+
+    .event-btn{
+
+        padding:10px 17px;
+
+        font-size:.82rem;
+
+    }
+
+
+    /* DATE */
+
+    .event-date{
+
+        top:11px;
+
+        left:11px;
+
+        padding:8px 11px;
+
+    }
+
+
+    .event-date h3{
+
+        font-size:1.1rem;
+
+    }
+
+
+    .event-date span{
+
+        font-size:.7rem;
+
+    }
+
+
+    /* EMPTY STATE */
+
+    .no-event{
+
+        padding:40px 18px;
+
+        border-radius:16px;
+
+    }
+
+
+    .no-event i{
+
+        margin-bottom:15px;
+
+        font-size:42px;
+
+    }
+
+}
+
+
+/* =====================================================
+        VERY SMALL MOBILE
+===================================================== */
+
+@media (max-width:360px){
+
+    .recent-events{
+
+        padding:48px 0;
+
+    }
+
+
+    .events-grid{
+
+        gap:18px;
+
+    }
+
+
+    .event-card{
+
+        border-radius:14px;
+
+    }
+
+
+    .event-body{
+
+        padding:15px;
+
+    }
+
+
+    .event-body h3{
+
+        font-size:.94rem;
+
+    }
+
+
+    .event-meta{
+
+        font-size:.76rem;
+
+    }
+
+
+    .event-body p{
+
+        font-size:.80rem;
+
+    }
+
+
+    .event-btn{
+
+        width:100%;
+
+        min-height:43px;
+
+        padding:10px 14px;
+
+    }
+
+
+    .event-date{
+
+        top:9px;
+
+        left:9px;
+
+    }
 
 }
