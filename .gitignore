@@ -55,3 +55,11 @@ Thumbs.db
 # User Uploaded Files
 # ==============================
 static/uploads/
+# =====================================================
+# LOCAL HELPER / MIGRATION FILES
+# =====================================================
+
+check_render_member.py
+migrate_address_columns.py
+migrate_address_columns_postgres.py
+migrate_to_postgres.py
