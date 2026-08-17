@@ -7,7 +7,11 @@
 # Role-aware Security
 # Public Privacy Protection
 # Structured Address Support
+# Reliable Member Photo Serving
 # =====================================================
+
+
+import os
 
 
 from flask import (
@@ -18,7 +22,9 @@ from flask import (
     url_for,
     flash,
     abort,
-    session
+    session,
+    current_app,
+    send_from_directory
 )
 
 
@@ -29,7 +35,8 @@ from extensions import db
 
 
 from services.upload_service import (
-    upload_photo
+    upload_photo,
+    UPLOAD_FOLDER
 )
 
 
@@ -103,31 +110,10 @@ GAIBANDHA_UPAZILAS = {
 # =====================================================
 #
 # IMPORTANT:
-# -----------------------------------------------------
 #
 # Public visitors can see only these fields.
 #
-# We deliberately do NOT expose:
-#
-# phone
-# email
-# gender
-# date_of_birth
-# blood_group
-# present_village
-# present_union
-# present_upazila
-# present_address
-# permanent_village
-# permanent_union
-# permanent_upazila
-# permanent_address
-# facebook
-#
-# Personal/private fields remain protected.
-#
-# Administrator routes access the actual Information
-# model directly and therefore can see full information.
+# Sensitive information is intentionally protected.
 # =====================================================
 
 PUBLIC_MEMBER_FIELDS = (
@@ -172,13 +158,6 @@ def get_current_admin_role():
     """
     Read the currently logged-in admin role
     from the session.
-
-    This helper does NOT grant access by itself.
-
-    Expected session values:
-
-        admin_role
-        role
     """
 
     role = session.get(
@@ -212,15 +191,8 @@ def has_admin_role(
 ):
 
     """
-    Check whether current logged-in admin has one
-    of the supplied roles.
-
-    Example:
-
-        has_admin_role(
-            "Admin",
-            "Super Admin"
-        )
+    Check whether current logged-in admin has
+    one of the supplied roles.
     """
 
     current_role = (
@@ -332,12 +304,6 @@ def validate_gaibandha_upazila(
 
     """
     Validate an optional Gaibandha upazila.
-
-    Empty value is allowed.
-
-    Returns:
-        True  -> empty or valid
-        False -> invalid value
     """
 
     if not upazila:
@@ -362,10 +328,6 @@ def serialize_public_member(
     """
     Convert approved member into a
     privacy-safe dictionary.
-
-    This prevents sensitive database fields
-    from accidentally being exposed through
-    public templates.
     """
 
     if member is None:
@@ -409,12 +371,6 @@ def get_public_member(
 
     """
     Return only an approved member.
-
-    Pending and Rejected members are never
-    returned publicly.
-
-    Automatic Running Student -> Alumni
-    conversion is performed before lookup.
     """
 
     update_student_categories()
@@ -465,7 +421,7 @@ def get_public_member(
 def submit():
 
     # -------------------------------------------------
-    # Keep Approved Running Student Categories Updated
+    # Keep Running Student Categories Updated
     # -------------------------------------------------
 
     try:
@@ -809,10 +765,6 @@ def submit():
                 )
 
 
-            # ---------------------------------------------
-            # Store Standard Session Format
-            # ---------------------------------------------
-
             member_session = (
                 f"{start_year}-"
                 f"{end_year}"
@@ -872,20 +824,6 @@ def submit():
         # =================================================
         # LEGACY UPAZILA COMPATIBILITY
         # =================================================
-        #
-        # Older parts of the project currently use:
-        #
-        #     member.upazila
-        #
-        # Therefore we keep that field populated.
-        #
-        # Permanent upazila is preferred because the
-        # community directory is normally based on a
-        # member's permanent Gaibandha address.
-        #
-        # If permanent upazila is empty, present upazila
-        # is used instead.
-        # =================================================
 
         legacy_upazila = (
             permanent_upazila
@@ -896,22 +834,6 @@ def submit():
 
         # =================================================
         # CREATE MEMBER
-        # =================================================
-        #
-        # IMPORTANT:
-        #
-        # Only fields that actually exist in the
-        # Member Registration / Submit Information
-        # form are saved here.
-        #
-        # student_id
-        # registration_no
-        # linkedin
-        # github
-        # website
-        # remarks
-        #
-        # are intentionally NOT collected here.
         # =================================================
 
         member = Information(
@@ -1439,13 +1361,28 @@ def view_member(id):
 # MEMBER PHOTO
 # =====================================================
 #
-# Only APPROVED members can expose photos.
+# This route serves profile photos only for
+# APPROVED members.
+#
+# Supported database values:
+#
+#     abc123.jpg
+#     uploads/abc123.jpg
+#     static/uploads/abc123.jpg
+#     images/default_user.png
+#
+# If the image no longer exists, the default
+# profile image is returned instead.
 # =====================================================
 
 @member_bp.route(
     "/photo/<int:id>"
 )
 def member_photo(id):
+
+    # -------------------------------------------------
+    # APPROVED MEMBER ONLY
+    # -------------------------------------------------
 
     member = (
 
@@ -1473,12 +1410,52 @@ def member_photo(id):
         )
 
 
+    # -------------------------------------------------
+    # DEFAULT IMAGE HELPER
+    # -------------------------------------------------
+
+    default_image = os.path.join(
+
+        current_app.static_folder,
+
+        "images",
+
+        "default_user.png"
+
+    )
+
+
+    # -------------------------------------------------
+    # NO PHOTO
+    # -------------------------------------------------
+
     if not member.photo:
+
+        if os.path.isfile(
+            default_image
+        ):
+
+            return send_from_directory(
+
+                os.path.dirname(
+                    default_image
+                ),
+
+                os.path.basename(
+                    default_image
+                )
+
+            )
+
 
         abort(
             404
         )
 
+
+    # -------------------------------------------------
+    # NORMALIZE STORED PHOTO VALUE
+    # -------------------------------------------------
 
     photo_name = str(
         member.photo
@@ -1488,70 +1465,303 @@ def member_photo(id):
     ).strip()
 
 
+    photo_name = (
+        photo_name.lstrip("/")
+    )
+
+
     # -------------------------------------------------
-    # Existing uploads/... Path
+    # DEFAULT DATABASE VALUES
+    # -------------------------------------------------
+
+    if photo_name in {
+
+        "default.png",
+
+        "default_user.png",
+
+        "images/default.png",
+
+        "images/default_user.png"
+
+    }:
+
+        if os.path.isfile(
+            default_image
+        ):
+
+            return send_from_directory(
+
+                os.path.dirname(
+                    default_image
+                ),
+
+                os.path.basename(
+                    default_image
+                )
+
+            )
+
+
+        abort(
+            404
+        )
+
+
+    # -------------------------------------------------
+    # STATIC IMAGE
+    # -------------------------------------------------
+    #
+    # Example:
+    #
+    # images/member.jpg
     # -------------------------------------------------
 
     if photo_name.startswith(
-        "uploads/"
-    ):
-
-        static_path = (
-            photo_name
-        )
-
-
-    # -------------------------------------------------
-    # Existing static/uploads/... Path
-    # -------------------------------------------------
-
-    elif photo_name.startswith(
-        "static/uploads/"
-    ):
-
-        static_path = (
-            photo_name.replace(
-                "static/",
-                "",
-                1
-            )
-        )
-
-
-    # -------------------------------------------------
-    # Default Static Image
-    # -------------------------------------------------
-
-    elif photo_name.startswith(
         "images/"
     ):
 
-        static_path = (
+        static_image_path = os.path.abspath(
+
+            os.path.join(
+
+                current_app.static_folder,
+
+                photo_name
+
+            )
+
+        )
+
+
+        if os.path.isfile(
+            static_image_path
+        ):
+
+            return send_from_directory(
+
+                os.path.dirname(
+                    static_image_path
+                ),
+
+                os.path.basename(
+                    static_image_path
+                )
+
+            )
+
+
+    # -------------------------------------------------
+    # NORMALIZE UPLOAD FILE NAME
+    # -------------------------------------------------
+
+    if photo_name.startswith(
+        "static/uploads/"
+    ):
+
+        photo_name = photo_name.replace(
+
+            "static/uploads/",
+
+            "",
+
+            1
+
+        )
+
+
+    elif photo_name.startswith(
+        "uploads/"
+    ):
+
+        photo_name = photo_name.replace(
+
+            "uploads/",
+
+            "",
+
+            1
+
+        )
+
+
+    # -------------------------------------------------
+    # SECURITY
+    #
+    # Only use basename.
+    # Prevent path traversal.
+    # -------------------------------------------------
+
+    photo_name = os.path.basename(
+        photo_name
+    )
+
+
+    if not photo_name:
+
+        if os.path.isfile(
+            default_image
+        ):
+
+            return send_from_directory(
+
+                os.path.dirname(
+                    default_image
+                ),
+
+                os.path.basename(
+                    default_image
+                )
+
+            )
+
+
+        abort(
+            404
+        )
+
+
+    # -------------------------------------------------
+    # BUILD ACTUAL UPLOAD PATH
+    # -------------------------------------------------
+
+    actual_upload_folder = os.path.abspath(
+        UPLOAD_FOLDER
+    )
+
+
+    photo_path = os.path.abspath(
+
+        os.path.join(
+
+            actual_upload_folder,
+
             photo_name
+
+        )
+
+    )
+
+
+    # -------------------------------------------------
+    # SECURITY CHECK
+    # -------------------------------------------------
+
+    try:
+
+        common_path = os.path.commonpath(
+
+            [
+
+                actual_upload_folder,
+
+                photo_path
+
+            ]
+
+        )
+
+
+    except ValueError:
+
+        common_path = None
+
+
+    if (
+        common_path
+        ==
+        actual_upload_folder
+        and
+        os.path.isfile(
+            photo_path
+        )
+    ):
+
+        return send_from_directory(
+
+            actual_upload_folder,
+
+            photo_name
+
         )
 
 
     # -------------------------------------------------
-    # Standard Uploaded Filename
+    # FALLBACK:
+    # STANDARD STATIC/UPLOADS DIRECTORY
+    # -------------------------------------------------
+    #
+    # Useful when UPLOAD_FOLDER was changed by
+    # environment configuration but older files are
+    # still inside static/uploads.
     # -------------------------------------------------
 
-    else:
+    static_upload_folder = os.path.abspath(
 
-        static_path = (
-            f"uploads/{photo_name}"
-        )
+        os.path.join(
 
+            current_app.static_folder,
 
-    return redirect(
-
-        url_for(
-
-            "static",
-
-            filename=static_path
+            "uploads"
 
         )
 
+    )
+
+
+    static_photo_path = os.path.abspath(
+
+        os.path.join(
+
+            static_upload_folder,
+
+            photo_name
+
+        )
+
+    )
+
+
+    if os.path.isfile(
+        static_photo_path
+    ):
+
+        return send_from_directory(
+
+            static_upload_folder,
+
+            photo_name
+
+        )
+
+
+    # -------------------------------------------------
+    # IMAGE FILE NOT FOUND
+    # -------------------------------------------------
+    #
+    # Do not show broken image.
+    # Return default profile image.
+    # -------------------------------------------------
+
+    if os.path.isfile(
+        default_image
+    ):
+
+        return send_from_directory(
+
+            os.path.dirname(
+                default_image
+            ),
+
+            os.path.basename(
+                default_image
+            )
+
+        )
+
+
+    abort(
+        404
     )
 
 

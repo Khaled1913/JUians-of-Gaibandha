@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}
@@ -236,22 +235,94 @@ Search Results | JUians of Gaibandha
                         <div class="member-card-top">
 
 
-                            <!-- MEMBER PHOTO -->
+                            <!-- =================================================
+                                 MEMBER PHOTO
+                            ================================================== -->
 
                             <div class="member-avatar">
 
 
                                 {% if member.photo
-                                      and member.photo != "default.png" %}
+                                      and member.photo != "default.png"
+                                      and member.photo != "default_user.png" %}
 
 
-                                    <img
-                                        src="{{ url_for(
-                                            'static',
-                                            filename='uploads/' + member.photo
-                                        ) }}"
-                                        alt="{{ member.full_name }}"
+                                    {% set photo_path = member.photo|string %}
+
+
+                                    {% if photo_path.startswith('static/uploads/') %}
+
+
+                                        <img
+                                            src="{{ url_for(
+                                                'static',
+                                                filename=photo_path.replace(
+                                                    'static/',
+                                                    '',
+                                                    1
+                                                )
+                                            ) }}"
+                                            alt="{{ member.full_name }}"
+                                            loading="lazy"
+                                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                        >
+
+
+                                    {% elif photo_path.startswith('uploads/') %}
+
+
+                                        <img
+                                            src="{{ url_for(
+                                                'static',
+                                                filename=photo_path
+                                            ) }}"
+                                            alt="{{ member.full_name }}"
+                                            loading="lazy"
+                                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                        >
+
+
+                                    {% elif photo_path.startswith('images/') %}
+
+
+                                        <img
+                                            src="{{ url_for(
+                                                'static',
+                                                filename=photo_path
+                                            ) }}"
+                                            alt="{{ member.full_name }}"
+                                            loading="lazy"
+                                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                        >
+
+
+                                    {% else %}
+
+
+                                        <img
+                                            src="{{ url_for(
+                                                'static',
+                                                filename='uploads/' ~ photo_path
+                                            ) }}"
+                                            alt="{{ member.full_name }}"
+                                            loading="lazy"
+                                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                        >
+
+
+                                    {% endif %}
+
+
+                                    <!-- FALLBACK AVATAR IF IMAGE FILE IS MISSING -->
+
+                                    <div
+                                        class="default-member-avatar"
+                                        style="display: none;"
                                     >
+
+                                        <i class="fa-solid fa-user"></i>
+
+                                    </div>
 
 
                                 {% else %}
@@ -359,10 +430,10 @@ Search Results | JUians of Gaibandha
 
                             <!-- =================================================
                                  PRIVACY PROTECTION
-                                 
+
                                  The following private fields are intentionally
                                  NOT displayed on public search results:
-                                 
+
                                  Phone
                                  Email
                                  Student ID
@@ -544,4 +615,3 @@ Search Results | JUians of Gaibandha
 </div>
 
 {% endblock %}
-

@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}
@@ -30,10 +29,7 @@
     <div class="hero-logo-wrapper">
 
         <img
-            src="{{ url_for(
-                'static',
-                filename='images/ju_logo.jpg'
-            ) }}"
+            src="{{ url_for('static', filename='images/ju_logo.jpg') }}"
             class="hero-logo"
             alt="Jahangirnagar University Logo"
         >
@@ -53,15 +49,24 @@
 
 
     <h1>
+
         {{ title }}
-        <span>Directory</span>
+
+        <span>
+            Directory
+        </span>
+
     </h1>
 
 
     <p class="hero-description">
 
         Official verified directory of
-        <strong>{{ title }}</strong>
+
+        <strong>
+            {{ title }}
+        </strong>
+
         from Jahangirnagar University.
 
     </p>
@@ -70,20 +75,29 @@
     <div class="hero-meta">
 
         <span>
+
             <i class="fa-solid fa-location-dot"></i>
+
             Gaibandha
+
         </span>
 
 
         <span>
+
             <i class="fa-solid fa-building-columns"></i>
+
             Jahangirnagar University
+
         </span>
 
 
         <span>
+
             <i class="fa-solid fa-circle-check"></i>
+
             Verified Directory
+
         </span>
 
     </div>
@@ -112,8 +126,11 @@
     <div class="category-section-heading">
 
         <span class="section-label">
+
             <i class="fa-solid fa-chart-simple"></i>
+
             DIRECTORY OVERVIEW
+
         </span>
 
 
@@ -134,7 +151,9 @@
     <div class="dashboard-grid">
 
 
-        <!-- TOTAL MEMBERS -->
+        <!-- =================================================
+             TOTAL MEMBERS
+        ================================================== -->
 
         <div class="dashboard-card">
 
@@ -165,14 +184,18 @@
 
 
             <div class="dashboard-card-arrow">
+
                 <i class="fa-solid fa-arrow-up-right"></i>
+
             </div>
 
         </div>
 
 
 
-        <!-- APPROVED -->
+        <!-- =================================================
+             APPROVED MEMBERS
+        ================================================== -->
 
         <div class="dashboard-card">
 
@@ -203,14 +226,18 @@
 
 
             <div class="dashboard-card-arrow">
+
                 <i class="fa-solid fa-shield-check"></i>
+
             </div>
 
         </div>
 
 
 
-        <!-- UNIVERSITY -->
+        <!-- =================================================
+             UNIVERSITY
+        ================================================== -->
 
         <div class="dashboard-card">
 
@@ -241,14 +268,18 @@
 
 
             <div class="dashboard-card-arrow">
+
                 <i class="fa-solid fa-arrow-up-right"></i>
+
             </div>
 
         </div>
 
 
 
-        <!-- DISTRICT -->
+        <!-- =================================================
+             DISTRICT
+        ================================================== -->
 
         <div class="dashboard-card">
 
@@ -279,7 +310,9 @@
 
 
             <div class="dashboard-card-arrow">
+
                 <i class="fa-solid fa-location-arrow"></i>
+
             </div>
 
         </div>
@@ -296,7 +329,6 @@
 ================================================== -->
 
 <section class="search-card">
-
 
     <div class="search-card-decoration"></div>
 
@@ -338,7 +370,6 @@
         action="{{ url_for('search.search') }}"
     >
 
-
         <div class="search-input">
 
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -348,11 +379,11 @@
                 type="text"
                 name="q"
                 placeholder="Search member..."
+                autocomplete="off"
                 required
             >
 
         </div>
-
 
 
         <button type="submit">
@@ -365,31 +396,39 @@
 
         </button>
 
-
     </form>
+
 
 
     <div class="search-hints">
 
         <span>
+
             <i class="fa-solid fa-circle-check"></i>
+
             Search by name
+
         </span>
 
 
         <span>
+
             <i class="fa-solid fa-circle-check"></i>
+
             Search by department
+
         </span>
 
 
         <span>
+
             <i class="fa-solid fa-circle-check"></i>
+
             Search by batch
+
         </span>
 
     </div>
-
 
 </section>
 
@@ -453,7 +492,6 @@
 
         </div>
 
-
     </div>
 
 
@@ -470,22 +508,24 @@
                 <article class="member-card">
 
 
-                    <!-- MEMBER PHOTO -->
+                    <!-- =================================================
+                         MEMBER PHOTO
+                    ================================================== -->
 
                     <div class="member-photo-wrapper">
 
 
                         {% if member.photo
-                              and member.photo != "default.png" %}
+                              and member.photo != "default.png"
+                              and member.photo != "default_user.png" %}
 
 
                             <img
-                                src="{{ url_for(
-                                    'static',
-                                    filename='uploads/' + member.photo
-                                ) }}"
+                                src="{{ url_for('member.member_photo', id=member.id) }}"
                                 class="member-image"
                                 alt="{{ member.full_name }}"
+                                loading="lazy"
+                                onerror="this.onerror=null; this.src='/static/images/default_user.png';"
                             >
 
 
@@ -493,16 +533,15 @@
 
 
                             <img
-                                src="{{ url_for(
-                                    'static',
-                                    filename='images/default_user.png'
-                                ) }}"
+                                src="{{ url_for('static', filename='images/default_user.png') }}"
                                 class="member-image"
                                 alt="Default Profile"
+                                loading="lazy"
                             >
 
 
                         {% endif %}
+
 
 
                         <div class="member-photo-overlay">
@@ -518,12 +557,13 @@
 
                         </span>
 
-
                     </div>
 
 
 
-                    <!-- MEMBER INFORMATION -->
+                    <!-- =================================================
+                         MEMBER INFORMATION
+                    ================================================== -->
 
                     <div class="member-info">
 
@@ -547,7 +587,7 @@
                         <div class="member-details">
 
 
-                            <!-- Department -->
+                            <!-- DEPARTMENT -->
 
                             <div class="member-detail-item">
 
@@ -557,15 +597,18 @@
 
                                 </div>
 
+
                                 <span>
+
                                     {{ member.department or 'Department not provided' }}
+
                                 </span>
 
                             </div>
 
 
 
-                            <!-- Batch -->
+                            <!-- BATCH -->
 
                             <div class="member-detail-item">
 
@@ -575,16 +618,20 @@
 
                                 </div>
 
+
                                 <span>
+
                                     Batch:
+
                                     {{ member.batch or 'Not provided' }}
+
                                 </span>
 
                             </div>
 
 
 
-                            <!-- Upazila -->
+                            <!-- UPAZILA -->
 
                             <div class="member-detail-item">
 
@@ -594,9 +641,13 @@
 
                                 </div>
 
+
                                 <span>
+
                                     Upazila:
+
                                     {{ member.upazila or 'Not provided' }}
+
                                 </span>
 
                             </div>
@@ -606,13 +657,12 @@
 
 
 
-                        <!-- PROFILE BUTTON -->
+                        <!-- =================================================
+                             PROFILE BUTTON
+                        ================================================== -->
 
                         <a
-                            href="{{ url_for(
-                                'member.member_details',
-                                id=member.id
-                            ) }}"
+                            href="{{ url_for('member.member_details', id=member.id) }}"
                             class="view-profile-btn"
                         >
 
@@ -642,7 +692,9 @@
         {% else %}
 
 
-            <!-- EMPTY STATE -->
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
 
             <div class="empty-state">
 
@@ -692,7 +744,6 @@
 
     </div>
 
-
 </section>
 
 
@@ -725,7 +776,6 @@
             community for JUians of Gaibandha.
         </p>
 
-
     </div>
 
 
@@ -733,7 +783,9 @@
     <div class="mission-grid">
 
 
-        <!-- MISSION -->
+        <!-- =================================================
+             MISSION
+        ================================================== -->
 
         <article class="mission-card">
 
@@ -769,12 +821,13 @@
 
             <div class="mission-line"></div>
 
-
         </article>
 
 
 
-        <!-- VISION -->
+        <!-- =================================================
+             VISION
+        ================================================== -->
 
         <article class="mission-card">
 
@@ -810,12 +863,10 @@
 
             <div class="mission-line"></div>
 
-
         </article>
 
 
     </div>
-
 
 </section>
 
@@ -850,7 +901,6 @@
             JUians of Gaibandha.
         </p>
 
-
     </div>
 
 
@@ -858,13 +908,14 @@
     <div class="quick-grid">
 
 
-        <!-- HOME -->
+        <!-- =================================================
+             HOME
+        ================================================== -->
 
         <a
             href="{{ url_for('home.home') }}"
             class="quick-card"
         >
-
 
             <div class="quick-icon">
 
@@ -893,18 +944,18 @@
 
             </div>
 
-
         </a>
 
 
 
-        <!-- SUBMIT -->
+        <!-- =================================================
+             SUBMIT
+        ================================================== -->
 
         <a
             href="{{ url_for('member.submit') }}"
             class="quick-card"
         >
-
 
             <div class="quick-icon">
 
@@ -933,18 +984,18 @@
 
             </div>
 
-
         </a>
 
 
 
-        <!-- ADMIN -->
+        <!-- =================================================
+             ADMIN
+        ================================================== -->
 
         <a
             href="{{ url_for('auth.login') }}"
             class="quick-card"
         >
-
 
             <div class="quick-icon">
 
@@ -973,15 +1024,12 @@
 
             </div>
 
-
         </a>
 
 
     </div>
 
-
 </section>
 
 
 {% endblock %}
-
