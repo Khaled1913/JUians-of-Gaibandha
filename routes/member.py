@@ -6,6 +6,7 @@
 # Member Verification
 # Role-aware Security
 # Public Privacy Protection
+# Structured Address Support
 # =====================================================
 
 
@@ -75,6 +76,29 @@ PUBLIC_CATEGORIES = {
 
 
 # =====================================================
+# GAIBANDHA UPAZILA VALUES
+# =====================================================
+
+GAIBANDHA_UPAZILAS = {
+
+    "Gaibandha Sadar",
+
+    "Sadullapur",
+
+    "Sundarganj",
+
+    "Saghata",
+
+    "Fulchhari",
+
+    "Gobindaganj",
+
+    "Palashbari"
+
+}
+
+
+# =====================================================
 # SAFE PUBLIC MEMBER FIELDS
 # =====================================================
 #
@@ -90,7 +114,13 @@ PUBLIC_CATEGORIES = {
 # gender
 # date_of_birth
 # blood_group
+# present_village
+# present_union
+# present_upazila
 # present_address
+# permanent_village
+# permanent_union
+# permanent_upazila
 # permanent_address
 # facebook
 #
@@ -293,6 +323,35 @@ def normalize_email(
 
 
 # =====================================================
+# VALIDATE UPAZILA
+# =====================================================
+
+def validate_gaibandha_upazila(
+    upazila
+):
+
+    """
+    Validate an optional Gaibandha upazila.
+
+    Empty value is allowed.
+
+    Returns:
+        True  -> empty or valid
+        False -> invalid value
+    """
+
+    if not upazila:
+
+        return True
+
+
+    return (
+        upazila
+        in GAIBANDHA_UPAZILAS
+    )
+
+
+# =====================================================
 # PUBLIC MEMBER SERIALIZATION
 # =====================================================
 
@@ -488,6 +547,50 @@ def submit():
 
 
         # =================================================
+        # ADDRESS FORM VALUES
+        # =================================================
+
+        present_village = clean_form_value(
+            "present_village"
+        )
+
+
+        present_union = clean_form_value(
+            "present_union"
+        )
+
+
+        present_upazila = clean_form_value(
+            "present_upazila"
+        )
+
+
+        present_address = clean_form_value(
+            "present_address"
+        )
+
+
+        permanent_village = clean_form_value(
+            "permanent_village"
+        )
+
+
+        permanent_union = clean_form_value(
+            "permanent_union"
+        )
+
+
+        permanent_upazila = clean_form_value(
+            "permanent_upazila"
+        )
+
+
+        permanent_address = clean_form_value(
+            "permanent_address"
+        )
+
+
+        # =================================================
         # REQUIRED VALUES
         # =================================================
 
@@ -558,6 +661,46 @@ def submit():
 
             flash(
                 "Invalid member category.",
+                "danger"
+            )
+
+            return redirect(
+                url_for(
+                    "member.submit"
+                )
+            )
+
+
+        # =================================================
+        # PRESENT UPAZILA VALIDATION
+        # =================================================
+
+        if not validate_gaibandha_upazila(
+            present_upazila
+        ):
+
+            flash(
+                "Invalid present address upazila.",
+                "danger"
+            )
+
+            return redirect(
+                url_for(
+                    "member.submit"
+                )
+            )
+
+
+        # =================================================
+        # PERMANENT UPAZILA VALIDATION
+        # =================================================
+
+        if not validate_gaibandha_upazila(
+            permanent_upazila
+        ):
+
+            flash(
+                "Invalid permanent address upazila.",
                 "danger"
             )
 
@@ -714,7 +857,7 @@ def submit():
                 (
                     "Invalid image. Please upload "
                     "a valid JPG, JPEG, PNG, GIF "
-                    "or WEBP image under 5 MB."
+                    "or WEBP image under 10 MB."
                 ),
                 "danger"
             )
@@ -724,6 +867,31 @@ def submit():
                     "member.submit"
                 )
             )
+
+
+        # =================================================
+        # LEGACY UPAZILA COMPATIBILITY
+        # =================================================
+        #
+        # Older parts of the project currently use:
+        #
+        #     member.upazila
+        #
+        # Therefore we keep that field populated.
+        #
+        # Permanent upazila is preferred because the
+        # community directory is normally based on a
+        # member's permanent Gaibandha address.
+        #
+        # If permanent upazila is empty, present upazila
+        # is used instead.
+        # =================================================
+
+        legacy_upazila = (
+            permanent_upazila
+            or
+            present_upazila
+        )
 
 
         # =================================================
@@ -805,26 +973,54 @@ def submit():
             ),
 
 
-            upazila=clean_form_value(
-                "upazila"
+            upazila=legacy_upazila,
+
+
+            # ---------------------------------------------
+            # PRESENT ADDRESS
+            # ---------------------------------------------
+
+            present_village=(
+                present_village
+            ),
+
+
+            present_union=(
+                present_union
+            ),
+
+
+            present_upazila=(
+                present_upazila
+            ),
+
+
+            present_address=(
+                present_address
             ),
 
 
             # ---------------------------------------------
-            # ADDRESS INFORMATION
+            # PERMANENT ADDRESS
             # ---------------------------------------------
 
-            present_address=(
-                clean_form_value(
-                    "present_address"
-                )
+            permanent_village=(
+                permanent_village
+            ),
+
+
+            permanent_union=(
+                permanent_union
+            ),
+
+
+            permanent_upazila=(
+                permanent_upazila
             ),
 
 
             permanent_address=(
-                clean_form_value(
-                    "permanent_address"
-                )
+                permanent_address
             ),
 
 

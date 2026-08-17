@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}
@@ -8,14 +7,16 @@ Member Registration | JUians of Gaibandha
 
 {% block extra_css %}
 
-<link rel="stylesheet"
-      href="{{ url_for('static', filename='css/submit.css') }}">
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/submit.css') }}"
+>
 
 <style>
 
     /* =====================================================
        EXTRA PREMIUM SUBMIT PAGE ENHANCEMENTS
-       ===================================================== */
+    ===================================================== */
 
     .registration-topbar {
         display: flex;
@@ -24,10 +25,10 @@ Member Registration | JUians of Gaibandha
         gap: 20px;
         margin-bottom: 18px;
         padding: 14px 18px;
-        background: rgba(255,255,255,.88);
-        border: 1px solid rgba(0,106,78,.10);
+        background: rgba(255, 255, 255, .88);
+        border: 1px solid rgba(0, 106, 78, .10);
         border-radius: 16px;
-        box-shadow: 0 8px 28px rgba(20,65,52,.05);
+        box-shadow: 0 8px 28px rgba(20, 65, 52, .05);
     }
 
     .registration-topbar-left {
@@ -46,7 +47,7 @@ Member Registration | JUians of Gaibandha
         align-items: center;
         justify-content: center;
         border-radius: 10px;
-        background: rgba(0,106,78,.09);
+        background: rgba(0, 106, 78, .09);
         color: #006a4e;
     }
 
@@ -91,13 +92,14 @@ Member Registration | JUians of Gaibandha
         background: linear-gradient(
             90deg,
             transparent,
-            rgba(255,255,255,.55),
+            rgba(255, 255, 255, .55),
             transparent
         );
         animation: progressShine 2s infinite;
     }
 
     @keyframes progressShine {
+
         from {
             transform: translateX(-100%);
         }
@@ -105,6 +107,7 @@ Member Registration | JUians of Gaibandha
         to {
             transform: translateX(100%);
         }
+
     }
 
     .registration-hero {
@@ -133,7 +136,7 @@ Member Registration | JUians of Gaibandha
         justify-content: center;
         margin-left: auto;
         border-radius: 50%;
-        background: rgba(0,106,78,.07);
+        background: rgba(0, 106, 78, .07);
         color: #006a4e;
         font-size: .72rem;
         font-weight: 800;
@@ -168,9 +171,9 @@ Member Registration | JUians of Gaibandha
         margin-top: 16px;
         overflow: hidden;
         border-radius: 18px;
-        border: 3px solid rgba(0,106,78,.12);
+        border: 3px solid rgba(0, 106, 78, .12);
         background: #fff;
-        box-shadow: 0 8px 25px rgba(0,0,0,.08);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, .08);
     }
 
     .photo-preview.show {
@@ -198,6 +201,190 @@ Member Registration | JUians of Gaibandha
         color: #006a4e;
     }
 
+
+
+    /* =====================================================
+       PREMIUM STRUCTURED ADDRESS SECTION
+    ===================================================== */
+
+    .address-section-card {
+        overflow: hidden;
+    }
+
+    .address-section-intro {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin: 0 0 22px;
+        padding: 14px 16px;
+        border: 1px solid rgba(0, 106, 78, .10);
+        border-radius: 14px;
+        background: linear-gradient(135deg, rgba(0, 106, 78, .055), rgba(7, 67, 92, .035));
+    }
+
+    .address-section-intro-left {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 0;
+    }
+
+    .address-section-intro-icon {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11px;
+        background: #ffffff;
+        color: #006a4e;
+        border: 1px solid rgba(0, 106, 78, .10);
+        box-shadow: 0 6px 16px rgba(0, 106, 78, .06);
+    }
+
+    .address-section-intro strong {
+        display: block;
+        margin-bottom: 2px;
+        color: #173f35;
+        font-size: .84rem;
+        font-weight: 800;
+    }
+
+    .address-section-intro p {
+        margin: 0;
+        color: #7b8984;
+        font-size: .73rem;
+        line-height: 1.5;
+    }
+
+    .structured-address-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+    }
+
+    .address-panel {
+        position: relative;
+        min-width: 0;
+        padding: 22px;
+        border: 1px solid rgba(0, 106, 78, .11);
+        border-radius: 18px;
+        background: linear-gradient(145deg, rgba(255, 255, 255, .98), rgba(247, 251, 249, .96));
+        box-shadow: 0 10px 30px rgba(20, 65, 52, .055);
+        overflow: hidden;
+    }
+
+    .address-panel::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #006a4e, #0b8c68, #07506b);
+    }
+
+    .address-panel-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(0, 106, 78, .08);
+    }
+
+    .address-panel-icon {
+        width: 46px;
+        height: 46px;
+        flex: 0 0 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: rgba(0, 106, 78, .09);
+        color: #006a4e;
+        font-size: 1rem;
+    }
+
+    .address-panel-header h3 {
+        margin: 0 0 3px;
+        color: #173f35;
+        font-size: 1rem;
+        font-weight: 800;
+        line-height: 1.3;
+    }
+
+    .address-panel-header p {
+        margin: 0;
+        color: #81908a;
+        font-size: .72rem;
+        line-height: 1.45;
+    }
+
+    .address-fields {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .address-fields .form-field {
+        min-width: 0;
+    }
+
+    .address-fields .address-full-field {
+        grid-column: 1 / -1;
+    }
+
+    .address-fields .input-wrapper,
+    .address-fields .textarea-wrapper {
+        background: #ffffff;
+    }
+
+    .address-fields .textarea-wrapper textarea {
+        min-height: 105px;
+        resize: vertical;
+    }
+
+    .same-address-row {
+        display: flex;
+        justify-content: flex-end;
+        margin: 0 0 16px;
+    }
+
+    .same-address-control {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        cursor: pointer;
+        user-select: none;
+        color: #4f625b;
+        font-size: .78rem;
+        font-weight: 700;
+    }
+
+    .same-address-control input {
+        width: 16px;
+        height: 16px;
+        margin: 0;
+        accent-color: #006a4e;
+        cursor: pointer;
+    }
+
+    .same-address-control i {
+        color: #006a4e;
+    }
+
+    .address-panel.is-synced {
+        border-color: rgba(0, 106, 78, .25);
+        box-shadow: 0 12px 32px rgba(0, 106, 78, .08);
+    }
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
     @media (max-width: 650px) {
 
         .registration-topbar {
@@ -212,6 +399,26 @@ Member Registration | JUians of Gaibandha
 
         .section-number {
             display: none;
+        }
+
+        .structured-address-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .address-fields {
+            grid-template-columns: 1fr;
+        }
+
+        .address-panel {
+            padding: 18px;
+        }
+
+        .same-address-row {
+            justify-content: flex-start;
+        }
+
+        .address-section-intro {
+            align-items: flex-start;
         }
 
     }
@@ -230,7 +437,7 @@ Member Registration | JUians of Gaibandha
 
         <!-- =====================================================
              TOP INFORMATION BAR
-             ===================================================== -->
+        ====================================================== -->
 
         <div class="registration-topbar">
 
@@ -244,6 +451,7 @@ Member Registration | JUians of Gaibandha
 
             </div>
 
+
             <div class="required-note">
 
                 <span>*</span>
@@ -256,10 +464,12 @@ Member Registration | JUians of Gaibandha
 
         <!-- =====================================================
              PROGRESS INDICATOR
-             ===================================================== -->
+        ====================================================== -->
 
-        <div class="registration-progress"
-             aria-label="Registration progress">
+        <div
+            class="registration-progress"
+            aria-label="Registration progress"
+        >
 
             <div class="progress-step active"></div>
             <div class="progress-step active"></div>
@@ -273,7 +483,7 @@ Member Registration | JUians of Gaibandha
 
         <!-- =====================================================
              PREMIUM HEADER
-             ===================================================== -->
+        ====================================================== -->
 
         <div class="registration-hero">
 
@@ -291,7 +501,10 @@ Member Registration | JUians of Gaibandha
             <h1>
 
                 Join
-                <span>JUians of Gaibandha</span>
+
+                <span>
+                    JUians of Gaibandha
+                </span>
 
             </h1>
 
@@ -323,7 +536,7 @@ Member Registration | JUians of Gaibandha
 
         <!-- =====================================================
              REGISTRATION FORM
-             ===================================================== -->
+        ====================================================== -->
 
         <form
             action="{{ url_for('member.submit') }}"
@@ -336,15 +549,18 @@ Member Registration | JUians of Gaibandha
 
             <!-- =================================================
                  01 PERSONAL INFORMATION
-                 ================================================= -->
+            ================================================== -->
 
             <section class="form-card">
 
                 <div class="section-heading">
 
                     <div class="section-icon">
+
                         <i class="fa-solid fa-user"></i>
+
                     </div>
+
 
                     <div class="section-title">
 
@@ -357,6 +573,7 @@ Member Registration | JUians of Gaibandha
                         </p>
 
                     </div>
+
 
                     <div class="section-number">
                         01
@@ -379,6 +596,7 @@ Member Registration | JUians of Gaibandha
                             <span>*</span>
 
                         </label>
+
 
                         <div class="input-wrapper">
 
@@ -409,6 +627,7 @@ Member Registration | JUians of Gaibandha
                             <span>*</span>
 
                         </label>
+
 
                         <div class="input-wrapper">
 
@@ -455,6 +674,7 @@ Member Registration | JUians of Gaibandha
                             Gender
                         </label>
 
+
                         <div class="input-wrapper">
 
                             <i class="fa-solid fa-venus-mars"></i>
@@ -495,6 +715,7 @@ Member Registration | JUians of Gaibandha
                             Date of Birth
                         </label>
 
+
                         <div class="input-wrapper">
 
                             <i class="fa-regular fa-calendar"></i>
@@ -517,6 +738,7 @@ Member Registration | JUians of Gaibandha
                         <label for="blood_group">
                             Blood Group
                         </label>
+
 
                         <div class="input-wrapper">
 
@@ -562,6 +784,7 @@ Member Registration | JUians of Gaibandha
 
                         </label>
 
+
                         <div class="input-wrapper">
 
                             <i class="fa-solid fa-phone"></i>
@@ -578,6 +801,7 @@ Member Registration | JUians of Gaibandha
 
                         </div>
 
+
                         <small class="field-hint">
                             Use a valid Bangladesh mobile number.
                         </small>
@@ -591,7 +815,7 @@ Member Registration | JUians of Gaibandha
 
             <!-- =================================================
                  02 ACADEMIC INFORMATION
-                 ================================================= -->
+            ================================================== -->
 
             <section class="form-card">
 
@@ -603,6 +827,7 @@ Member Registration | JUians of Gaibandha
 
                     </div>
 
+
                     <div class="section-title">
 
                         <h2>
@@ -610,10 +835,12 @@ Member Registration | JUians of Gaibandha
                         </h2>
 
                         <p>
-                            Add your academic background at Jahangirnagar University.
+                            Add your academic background at
+                            Jahangirnagar University.
                         </p>
 
                     </div>
+
 
                     <div class="section-number">
                         02
@@ -636,6 +863,7 @@ Member Registration | JUians of Gaibandha
                             <span>*</span>
 
                         </label>
+
 
                         <div class="input-wrapper">
 
@@ -684,6 +912,7 @@ Member Registration | JUians of Gaibandha
                             Batch
                         </label>
 
+
                         <div class="input-wrapper">
 
                             <i class="fa-solid fa-layer-group"></i>
@@ -710,10 +939,11 @@ Member Registration | JUians of Gaibandha
 
                             <span
                                 id="session-required-mark"
-                                style="display:none;"
+                                style="display: none;"
                             >*</span>
 
                         </label>
+
 
                         <div class="input-wrapper">
 
@@ -731,6 +961,7 @@ Member Registration | JUians of Gaibandha
 
                         </div>
 
+
                         <small
                             class="field-hint"
                             id="session-hint"
@@ -747,7 +978,7 @@ Member Registration | JUians of Gaibandha
 
             <!-- =================================================
                  03 CONTACT INFORMATION
-                 ================================================= -->
+            ================================================== -->
 
             <section class="form-card">
 
@@ -766,7 +997,7 @@ Member Registration | JUians of Gaibandha
                         </h2>
 
                         <p>
-                            Add your email and current location.
+                            Add your email and district information.
                         </p>
 
                     </div>
@@ -777,9 +1008,7 @@ Member Registration | JUians of Gaibandha
 
                 </div>
 
-
                 <div class="form-grid">
-
 
                     <!-- EMAIL -->
 
@@ -805,7 +1034,6 @@ Member Registration | JUians of Gaibandha
 
                     </div>
 
-
                     <!-- DISTRICT -->
 
                     <div class="form-field">
@@ -823,33 +1051,14 @@ Member Registration | JUians of Gaibandha
                                 id="district"
                                 name="district"
                                 value="Gaibandha"
+                                readonly
                             >
 
                         </div>
 
-                    </div>
-
-
-                    <!-- UPAZILA -->
-
-                    <div class="form-field">
-
-                        <label for="upazila">
-                            Upazila
-                        </label>
-
-                        <div class="input-wrapper">
-
-                            <i class="fa-solid fa-location-dot"></i>
-
-                            <input
-                                type="text"
-                                id="upazila"
-                                name="upazila"
-                                placeholder="Enter your upazila"
-                            >
-
-                        </div>
+                        <small class="field-hint">
+                            This community portal is for JUians connected with Gaibandha District.
+                        </small>
 
                     </div>
 
@@ -859,86 +1068,222 @@ Member Registration | JUians of Gaibandha
 
 
             <!-- =================================================
-                 04 ADDRESS
-                 ================================================= -->
+                 04 ADDRESS INFORMATION
+            ================================================== -->
 
-            <section class="form-card">
+            <section class="form-card address-section-card">
 
                 <div class="section-heading">
 
                     <div class="section-icon">
-
-                        <i class="fa-solid fa-location-dot"></i>
-
+                        <i class="fa-solid fa-map-location-dot"></i>
                     </div>
 
                     <div class="section-title">
-
-                        <h2>
-                            Address Information
-                        </h2>
-
-                        <p>
-                            Provide your present and permanent address.
-                        </p>
-
+                        <h2>Address Information</h2>
+                        <p>Provide your present and permanent address details.</p>
                     </div>
 
-                    <div class="section-number">
-                        04
-                    </div>
+                    <div class="section-number">04</div>
 
                 </div>
 
+                <div class="address-section-intro">
+                    <div class="address-section-intro-left">
+                        <div class="address-section-intro-icon">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                        </div>
+                        <div>
+                            <strong>Structured Address Details</strong>
+                            <p>Add village, union, upazila and additional address details.</p>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="form-grid address-grid">
+                <div class="same-address-row">
+                    <label class="same-address-control" for="sameAsPresent">
+                        <input type="checkbox" id="sameAsPresent">
+                        <i class="fa-solid fa-copy"></i>
+                        <span>Permanent address is same as present address</span>
+                    </label>
+                </div>
 
+                <div class="structured-address-grid">
 
                     <!-- PRESENT ADDRESS -->
-
-                    <div class="form-field">
-
-                        <label for="present_address">
-                            Present Address
-                        </label>
-
-                        <div class="textarea-wrapper">
-
-                            <i class="fa-solid fa-house"></i>
-
-                            <textarea
-                                id="present_address"
-                                name="present_address"
-                                rows="4"
-                                placeholder="Enter your present address"
-                            ></textarea>
-
+                    <div class="address-panel">
+                        <div class="address-panel-header">
+                            <div class="address-panel-icon">
+                                <i class="fa-solid fa-house"></i>
+                            </div>
+                            <div>
+                                <h3>Present Address</h3>
+                                <p>Where you are currently living.</p>
+                            </div>
                         </div>
 
+                        <div class="address-fields">
+                            <div class="form-field">
+                                <label for="present_village">Village</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-house-chimney"></i>
+                                    <input type="text" id="present_village" name="present_village" placeholder="Enter village">
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="present_union">Union</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-landmark"></i>
+                                    <input type="text" id="present_union" name="present_union" placeholder="Enter union">
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="present_upazila">Upazila</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <select id="present_upazila" name="present_upazila">
+                                <option value="">
+                                    Select upazila
+                                </option>
+
+                                <option value="Gaibandha Sadar">
+                                    Gaibandha Sadar
+                                </option>
+
+                                <option value="Sadullapur">
+                                    Sadullapur
+                                </option>
+
+                                <option value="Sundarganj">
+                                    Sundarganj
+                                </option>
+
+                                <option value="Saghata">
+                                    Saghata
+                                </option>
+
+                                <option value="Fulchhari">
+                                    Fulchhari
+                                </option>
+
+                                <option value="Gobindaganj">
+                                    Gobindaganj
+                                </option>
+
+                                <option value="Palashbari">
+                                    Palashbari
+                                </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="present_district">District</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-map"></i>
+                                    <input type="text" id="present_district" value="Gaibandha" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-field address-full-field">
+                                <label for="present_address">Additional Address Details</label>
+                                <div class="textarea-wrapper">
+                                    <i class="fa-solid fa-location-crosshairs"></i>
+                                    <textarea id="present_address" name="present_address" rows="4" placeholder="House, road, area, post office or other address details"></textarea>
+                                </div>
+                                <small class="field-hint">Optional — add any extra information needed to identify your present address.</small>
+                            </div>
+                        </div>
                     </div>
 
-
                     <!-- PERMANENT ADDRESS -->
-
-                    <div class="form-field">
-
-                        <label for="permanent_address">
-                            Permanent Address
-                        </label>
-
-                        <div class="textarea-wrapper">
-
-                            <i class="fa-solid fa-map-location-dot"></i>
-
-                            <textarea
-                                id="permanent_address"
-                                name="permanent_address"
-                                rows="4"
-                                placeholder="Enter your permanent address"
-                            ></textarea>
-
+                    <div class="address-panel" id="permanentAddressPanel">
+                        <div class="address-panel-header">
+                            <div class="address-panel-icon">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                            </div>
+                            <div>
+                                <h3>Permanent Address</h3>
+                                <p>Your permanent home address in Gaibandha.</p>
+                            </div>
                         </div>
 
+                        <div class="address-fields">
+                            <div class="form-field">
+                                <label for="permanent_village">Village</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-house-chimney"></i>
+                                    <input type="text" id="permanent_village" name="permanent_village" placeholder="Enter village">
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="permanent_union">Union</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-landmark"></i>
+                                    <input type="text" id="permanent_union" name="permanent_union" placeholder="Enter union">
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="permanent_upazila">Upazila</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <select id="permanent_upazila" name="permanent_upazila">
+                                <option value="">
+                                    Select upazila
+                                </option>
+
+                                <option value="Gaibandha Sadar">
+                                    Gaibandha Sadar
+                                </option>
+
+                                <option value="Sadullapur">
+                                    Sadullapur
+                                </option>
+
+                                <option value="Sundarganj">
+                                    Sundarganj
+                                </option>
+
+                                <option value="Saghata">
+                                    Saghata
+                                </option>
+
+                                <option value="Fulchhari">
+                                    Fulchhari
+                                </option>
+
+                                <option value="Gobindaganj">
+                                    Gobindaganj
+                                </option>
+
+                                <option value="Palashbari">
+                                    Palashbari
+                                </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="permanent_district">District</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-map"></i>
+                                    <input type="text" id="permanent_district" value="Gaibandha" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-field address-full-field">
+                                <label for="permanent_address">Additional Address Details</label>
+                                <div class="textarea-wrapper">
+                                    <i class="fa-solid fa-location-crosshairs"></i>
+                                    <textarea id="permanent_address" name="permanent_address" rows="4" placeholder="House, road, area, post office or other address details"></textarea>
+                                </div>
+                                <small class="field-hint">Optional — add any extra information needed to identify your permanent address.</small>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -948,7 +1293,7 @@ Member Registration | JUians of Gaibandha
 
             <!-- =================================================
                  05 PROFESSIONAL INFORMATION
-                 ================================================= -->
+            ================================================== -->
 
             <section
                 class="form-card professional-card"
@@ -963,6 +1308,7 @@ Member Registration | JUians of Gaibandha
 
                     </div>
 
+
                     <div class="section-title">
 
                         <h2>
@@ -974,6 +1320,7 @@ Member Registration | JUians of Gaibandha
                         </p>
 
                     </div>
+
 
                     <div class="section-number">
                         05
@@ -992,6 +1339,7 @@ Member Registration | JUians of Gaibandha
                         <label for="occupation">
                             Occupation
                         </label>
+
 
                         <div class="input-wrapper">
 
@@ -1017,6 +1365,7 @@ Member Registration | JUians of Gaibandha
                             Current Workplace
                         </label>
 
+
                         <div class="input-wrapper">
 
                             <i class="fa-solid fa-building"></i>
@@ -1041,6 +1390,7 @@ Member Registration | JUians of Gaibandha
                             Designation
                         </label>
 
+
                         <div class="input-wrapper">
 
                             <i class="fa-solid fa-id-badge"></i>
@@ -1063,7 +1413,7 @@ Member Registration | JUians of Gaibandha
 
             <!-- =================================================
                  06 SOCIAL MEDIA
-                 ================================================= -->
+            ================================================== -->
 
             <section class="form-card">
 
@@ -1074,6 +1424,7 @@ Member Registration | JUians of Gaibandha
                         <i class="fa-brands fa-facebook-f"></i>
 
                     </div>
+
 
                     <div class="section-title">
 
@@ -1086,6 +1437,7 @@ Member Registration | JUians of Gaibandha
                         </p>
 
                     </div>
+
 
                     <div class="section-number">
                         06
@@ -1100,6 +1452,7 @@ Member Registration | JUians of Gaibandha
                         Facebook Profile
                     </label>
 
+
                     <div class="input-wrapper">
 
                         <i class="fa-brands fa-facebook"></i>
@@ -1113,8 +1466,10 @@ Member Registration | JUians of Gaibandha
 
                     </div>
 
+
                     <small class="field-hint">
-                        Optional — this helps other verified members connect with you.
+                        Optional — this helps other verified members
+                        connect with you.
                     </small>
 
                 </div>
@@ -1124,7 +1479,7 @@ Member Registration | JUians of Gaibandha
 
             <!-- =================================================
                  PROFILE PHOTO
-                 ================================================= -->
+            ================================================== -->
 
             <section class="form-card">
 
@@ -1135,6 +1490,7 @@ Member Registration | JUians of Gaibandha
                         <i class="fa-solid fa-camera"></i>
 
                     </div>
+
 
                     <div class="section-title">
 
@@ -1167,6 +1523,7 @@ Member Registration | JUians of Gaibandha
                             Upload Your Photo
                         </h3>
 
+
                         <p>
                             Use a clear and recent profile photo.
                         </p>
@@ -1188,7 +1545,7 @@ Member Registration | JUians of Gaibandha
                             type="file"
                             id="photo"
                             name="photo"
-                            accept=".jpg,.jpeg,.png"
+                            accept=".jpg,.jpeg,.png,.gif,.webp"
                         >
 
 
@@ -1215,7 +1572,7 @@ Member Registration | JUians of Gaibandha
 
 
                         <small>
-                            JPG, JPEG or PNG · Recommended square profile photo
+                            JPG, JPEG, PNG, GIF or WEBP · Maximum file size 10 MB · Recommended square profile photo
                         </small>
 
                     </div>
@@ -1227,7 +1584,7 @@ Member Registration | JUians of Gaibandha
 
             <!-- =================================================
                  FINAL SUBMISSION
-                 ================================================= -->
+            ================================================== -->
 
             <section class="submission-card">
 
@@ -1243,6 +1600,7 @@ Member Registration | JUians of Gaibandha
                     >
 
                     <span class="custom-checkbox"></span>
+
 
                     <span class="agreement-text">
 
@@ -1328,249 +1686,418 @@ Member Registration | JUians of Gaibandha
 
 <!-- =========================================================
      PAGE JAVASCRIPT
-     ========================================================= -->
+========================================================= -->
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
 
-    /* =====================================================
-       ELEMENTS
-       ===================================================== */
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
 
-    const form =
-        document.getElementById("registrationForm");
-
-    const category =
-        document.getElementById("category");
-
-    const professionalSection =
-        document.getElementById("professional-section");
-
-    const occupation =
-        document.getElementById("occupation");
-
-    const company =
-        document.getElementById("company");
-
-    const designation =
-        document.getElementById("designation");
-
-    const photo =
-        document.getElementById("photo");
-
-    const fileName =
-        document.getElementById("file-name");
-
-    const photoPreview =
-        document.getElementById("photo-preview");
-
-    const previewImage =
-        document.getElementById("preview-image");
-
-    const submitButton =
-        document.getElementById("submitButton");
-
-    const sessionInput =
-        document.getElementById("session");
-
-    const sessionRequiredMark =
-        document.getElementById("session-required-mark");
-
-    const sessionHint =
-        document.getElementById("session-hint");
-
-
-    /* =====================================================
-       PROFESSIONAL SECTION
-       ===================================================== */
-
-    function updateProfessionalSection() {
-
-        if (!category || !professionalSection) {
-            return;
-        }
-
-
-        if (category.value === "Running Student") {
-
-            professionalSection.classList.add(
-                "professional-hidden"
+        const form =
+            document.getElementById(
+                "registrationForm"
             );
 
 
-            if (occupation) {
-                occupation.value = "";
-            }
-
-            if (company) {
-                company.value = "";
-            }
-
-            if (designation) {
-                designation.value = "";
-            }
-
-        } else {
-
-            professionalSection.classList.remove(
-                "professional-hidden"
+        const category =
+            document.getElementById(
+                "category"
             );
 
+
+        const professionalSection =
+            document.getElementById(
+                "professional-section"
+            );
+
+
+        const occupation =
+            document.getElementById(
+                "occupation"
+            );
+
+
+        const company =
+            document.getElementById(
+                "company"
+            );
+
+
+        const designation =
+            document.getElementById(
+                "designation"
+            );
+
+
+        const photo =
+            document.getElementById(
+                "photo"
+            );
+
+
+        const fileName =
+            document.getElementById(
+                "file-name"
+            );
+
+
+        const photoPreview =
+            document.getElementById(
+                "photo-preview"
+            );
+
+
+        const previewImage =
+            document.getElementById(
+                "preview-image"
+            );
+
+
+        const submitButton =
+            document.getElementById(
+                "submitButton"
+            );
+
+
+        const sessionInput =
+            document.getElementById(
+                "session"
+            );
+
+
+        const sessionRequiredMark =
+            document.getElementById(
+                "session-required-mark"
+            );
+
+
+        const sessionHint =
+            document.getElementById(
+                "session-hint"
+            );
+
+
+        const sameAsPresent =
+            document.getElementById(
+                "sameAsPresent"
+            );
+
+        const permanentAddressPanel =
+            document.getElementById(
+                "permanentAddressPanel"
+            );
+
+        const presentVillage = document.getElementById("present_village");
+        const presentUnion = document.getElementById("present_union");
+        const presentUpazila = document.getElementById("present_upazila");
+        const presentAddress = document.getElementById("present_address");
+
+        const permanentVillage = document.getElementById("permanent_village");
+        const permanentUnion = document.getElementById("permanent_union");
+        const permanentUpazila = document.getElementById("permanent_upazila");
+        const permanentAddress = document.getElementById("permanent_address");
+
+
+        /* =====================================================
+           PRESENT / PERMANENT ADDRESS SYNC
+        ===================================================== */
+
+        function copyPresentAddressToPermanent() {
+
+            if (presentVillage && permanentVillage) {
+                permanentVillage.value = presentVillage.value;
+            }
+
+            if (presentUnion && permanentUnion) {
+                permanentUnion.value = presentUnion.value;
+            }
+
+            if (presentUpazila && permanentUpazila) {
+                permanentUpazila.value = presentUpazila.value;
+            }
+
+            if (presentAddress && permanentAddress) {
+                permanentAddress.value = presentAddress.value;
+            }
         }
 
-    }
+        function updatePermanentAddressState() {
 
+            if (!sameAsPresent) {
+                return;
+            }
 
-    /* =====================================================
-       SESSION REQUIREMENT
-       ===================================================== */
+            if (sameAsPresent.checked) {
+                copyPresentAddressToPermanent();
 
-    function updateSessionRequirement() {
-
-        if (!category || !sessionInput) {
-            return;
+                if (permanentAddressPanel) {
+                    permanentAddressPanel.classList.add("is-synced");
+                }
+            }
+            else {
+                if (permanentAddressPanel) {
+                    permanentAddressPanel.classList.remove("is-synced");
+                }
+            }
         }
 
-
-        if (category.value === "Running Student") {
-
-            sessionInput.required = true;
-
-
-            if (sessionRequiredMark) {
-
-                sessionRequiredMark.style.display =
-                    "inline";
-
-            }
-
-
-            if (sessionHint) {
-
-                sessionHint.textContent =
-                    "Required for Running Students. Example: 2020-2021";
-
-            }
-
-        } else {
-
-            sessionInput.required = false;
-
-
-            if (sessionRequiredMark) {
-
-                sessionRequiredMark.style.display =
-                    "none";
-
-            }
-
-
-            if (sessionHint) {
-
-                sessionHint.textContent =
-                    "Example: 2020-2021";
-
-            }
-
+        if (sameAsPresent) {
+            sameAsPresent.addEventListener("change", updatePermanentAddressState);
         }
 
-    }
+        [presentVillage, presentUnion, presentUpazila, presentAddress].forEach(
+            function (field) {
+                if (!field) {
+                    return;
+                }
 
+                field.addEventListener("input", function () {
+                    if (sameAsPresent && sameAsPresent.checked) {
+                        copyPresentAddressToPermanent();
+                    }
+                });
 
-    if (category) {
-
-        category.addEventListener(
-            "change",
-            function () {
-
-                updateProfessionalSection();
-
-                updateSessionRequirement();
-
+                field.addEventListener("change", function () {
+                    if (sameAsPresent && sameAsPresent.checked) {
+                        copyPresentAddressToPermanent();
+                    }
+                });
             }
         );
 
-    }
+
+        /* =====================================================
+           PROFESSIONAL SECTION
+        ===================================================== */
+
+        function updateProfessionalSection() {
+
+            if (
+                !category
+                ||
+                !professionalSection
+            ) {
+
+                return;
+
+            }
 
 
-    updateProfessionalSection();
+            if (
+                category.value
+                ===
+                "Running Student"
+            ) {
 
-    updateSessionRequirement();
-
-
-    /* =====================================================
-       SESSION FORMAT VALIDATION
-       ===================================================== */
-
-    if (sessionInput) {
-
-        sessionInput.addEventListener(
-            "input",
-            function () {
-
-                /*
-                 * Keep only numbers and one hyphen.
-                 *
-                 * Example:
-                 * 2020-2021
-                 */
-
-                this.value =
-                    this.value.replace(
-                        /[^0-9-]/g,
-                        ""
-                    );
+                professionalSection.classList.add(
+                    "professional-hidden"
+                );
 
 
-                /*
-                 * Prevent more than one hyphen.
-                 */
-
-                const parts =
-                    this.value.split("-");
+                if (occupation) {
+                    occupation.value = "";
+                }
 
 
-                if (parts.length > 2) {
+                if (company) {
+                    company.value = "";
+                }
+
+
+                if (designation) {
+                    designation.value = "";
+                }
+
+            }
+
+            else {
+
+                professionalSection.classList.remove(
+                    "professional-hidden"
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SESSION REQUIREMENT
+        ===================================================== */
+
+        function updateSessionRequirement() {
+
+            if (
+                !category
+                ||
+                !sessionInput
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                category.value
+                ===
+                "Running Student"
+            ) {
+
+                sessionInput.required = true;
+
+
+                if (sessionRequiredMark) {
+
+                    sessionRequiredMark.style.display =
+                        "inline";
+
+                }
+
+
+                if (sessionHint) {
+
+                    sessionHint.textContent =
+                        "Required for Running Students. Example: 2020-2021";
+
+                }
+
+            }
+
+            else {
+
+                sessionInput.required = false;
+
+
+                if (sessionRequiredMark) {
+
+                    sessionRequiredMark.style.display =
+                        "none";
+
+                }
+
+
+                if (sessionHint) {
+
+                    sessionHint.textContent =
+                        "Example: 2020-2021";
+
+                }
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CATEGORY CHANGE
+        ===================================================== */
+
+        if (category) {
+
+            category.addEventListener(
+                "change",
+                function () {
+
+                    updateProfessionalSection();
+
+                    updateSessionRequirement();
+
+                }
+            );
+
+        }
+
+
+        updateProfessionalSection();
+
+        updateSessionRequirement();
+
+
+        /* =====================================================
+           SESSION FORMAT VALIDATION
+        ===================================================== */
+
+        if (sessionInput) {
+
+            sessionInput.addEventListener(
+                "input",
+                function () {
 
                     this.value =
-                        parts[0] +
-                        "-" +
-                        parts.slice(1).join("");
+                        this.value.replace(
+                            /[^0-9-]/g,
+                            ""
+                        );
+
+
+                    const parts =
+                        this.value.split("-");
+
+
+                    if (
+                        parts.length
+                        >
+                        2
+                    ) {
+
+                        this.value =
+                            parts[0]
+                            +
+                            "-"
+                            +
+                            parts.slice(1).join("");
+
+                    }
+
+
+                    this.setCustomValidity("");
 
                 }
-
-            }
-        );
+            );
 
 
-        sessionInput.addEventListener(
-            "blur",
-            function () {
+            sessionInput.addEventListener(
+                "blur",
+                function () {
 
-                const value =
-                    this.value.trim();
-
-
-                if (!value) {
-
-                    return;
-
-                }
+                    const value =
+                        this.value.trim();
 
 
-                const sessionPattern =
-                    /^[0-9]{4}-[0-9]{4}$/;
+                    if (!value) {
+
+                        this.setCustomValidity("");
+
+                        return;
+
+                    }
 
 
-                if (!sessionPattern.test(value)) {
+                    const sessionPattern =
+                        /^[0-9]{4}-[0-9]{4}$/;
 
-                    this.setCustomValidity(
-                        "Please enter session in this format: 2020-2021"
-                    );
 
-                } else {
+                    if (
+                        !sessionPattern.test(
+                            value
+                        )
+                    ) {
+
+                        this.setCustomValidity(
+                            "Please enter session in this format: 2020-2021"
+                        );
+
+                        return;
+
+                    }
+
 
                     const years =
                         value.split("-");
@@ -1591,7 +2118,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                     if (
-                        endYear !==
+                        endYear
+                        !==
                         startYear + 1
                     ) {
 
@@ -1599,135 +2127,44 @@ document.addEventListener("DOMContentLoaded", function () {
                             "Session should be like 2020-2021."
                         );
 
-                    } else {
+                    }
+
+                    else {
 
                         this.setCustomValidity("");
 
                     }
 
                 }
+            );
 
-            }
-        );
-
-
-        sessionInput.addEventListener(
-            "input",
-            function () {
-
-                this.setCustomValidity("");
-
-            }
-        );
-
-    }
+        }
 
 
-    /* =====================================================
-       PHOTO PREVIEW
-       ===================================================== */
+        /* =====================================================
+           PHOTO PREVIEW
+        ===================================================== */
 
-    if (photo) {
+        if (photo) {
 
-        photo.addEventListener(
-            "change",
-            function () {
-
-
-                if (
-                    !photo.files ||
-                    photo.files.length === 0
-                ) {
-
-                    fileName.textContent =
-                        "No file chosen";
-
-                    fileName.classList.remove(
-                        "file-selected"
-                    );
-
-                    photoPreview.classList.remove(
-                        "show"
-                    );
-
-                    previewImage.src = "";
-
-                    return;
-
-                }
+            photo.addEventListener(
+                "change",
+                function () {
 
 
-                const selectedFile =
-                    photo.files[0];
-
-
-                fileName.textContent =
-                    selectedFile.name;
-
-                fileName.classList.add(
-                    "file-selected"
-                );
-
-
-                if (
-                    selectedFile.type ===
-                        "image/jpeg" ||
-
-                    selectedFile.type ===
-                        "image/png"
-                ) {
-
-                    const reader =
-                        new FileReader();
-
-
-                    reader.onload =
-                        function (event) {
-
-                            previewImage.src =
-                                event.target.result;
-
-                            photoPreview.classList.add(
-                                "show"
-                            );
-
-                        };
-
-
-                    reader.readAsDataURL(
-                        selectedFile
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       FORM RESET
-       ===================================================== */
-
-    if (form) {
-
-        form.addEventListener(
-            "reset",
-            function () {
-
-                setTimeout(
-                    function () {
-
-                        updateProfessionalSection();
-
-                        updateSessionRequirement();
-
+                    if (
+                        !photo.files
+                        ||
+                        photo.files.length
+                        ===
+                        0
+                    ) {
 
                         if (fileName) {
 
                             fileName.textContent =
                                 "No file chosen";
+
 
                             fileName.classList.remove(
                                 "file-selected"
@@ -1751,92 +2188,333 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         }
 
-                    },
-                    20
-                );
 
-            }
-        );
+                        return;
 
-    }
+                    }
 
 
-    /* =====================================================
-       SUBMIT LOADING STATE
-       ===================================================== */
+                    const selectedFile =
+                        photo.files[0];
 
-    if (form && submitButton) {
 
-        form.addEventListener(
-            "submit",
-            function () {
+                    if (fileName) {
 
-                /*
-                 * Browser validation will run first.
-                 */
+                        fileName.textContent =
+                            selectedFile.name;
 
-                if (!form.checkValidity()) {
 
-                    return;
+                        fileName.classList.add(
+                            "file-selected"
+                        );
+
+                    }
+
+
+                    const maxFileSize =
+                        10 * 1024 * 1024;
+
+
+                    if (
+                        selectedFile.size
+                        >
+                        maxFileSize
+                    ) {
+
+                        alert(
+                            "Image size must be 10 MB or less."
+                        );
+
+
+                        photo.value = "";
+
+
+                        if (fileName) {
+
+                            fileName.textContent =
+                                "No file chosen";
+
+
+                            fileName.classList.remove(
+                                "file-selected"
+                            );
+
+                        }
+
+
+                        if (photoPreview) {
+
+                            photoPreview.classList.remove(
+                                "show"
+                            );
+
+                        }
+
+
+                        if (previewImage) {
+
+                            previewImage.src = "";
+
+                        }
+
+
+                        return;
+
+                    }
+
+
+                    const allowedImageTypes = [
+
+                        "image/jpeg",
+
+                        "image/png",
+
+                        "image/gif",
+
+                        "image/webp"
+
+                    ];
+
+
+                    if (
+                        allowedImageTypes.includes(
+                            selectedFile.type
+                        )
+                    ) {
+
+                        const reader =
+                            new FileReader();
+
+
+                        reader.onload =
+                            function (event) {
+
+                                if (previewImage) {
+
+                                    previewImage.src =
+                                        event.target.result;
+
+                                }
+
+
+                                if (photoPreview) {
+
+                                    photoPreview.classList.add(
+                                        "show"
+                                    );
+
+                                }
+
+                            };
+
+
+                        reader.readAsDataURL(
+                            selectedFile
+                        );
+
+                    }
+
+                    else {
+
+                        alert(
+                            "Please choose a JPG, JPEG, PNG, GIF or WEBP image."
+                        );
+
+
+                        photo.value = "";
+
+
+                        if (fileName) {
+
+                            fileName.textContent =
+                                "No file chosen";
+
+
+                            fileName.classList.remove(
+                                "file-selected"
+                            );
+
+                        }
+
+
+                        if (photoPreview) {
+
+                            photoPreview.classList.remove(
+                                "show"
+                            );
+
+                        }
+
+
+                        if (previewImage) {
+
+                            previewImage.src = "";
+
+                        }
+
+                    }
 
                 }
+            );
+
+        }
 
 
-                submitButton.disabled = true;
+        /* =====================================================
+           FORM RESET
+        ===================================================== */
+
+        if (form) {
+
+            form.addEventListener(
+                "reset",
+                function () {
+
+                    setTimeout(
+                        function () {
+
+                            updateProfessionalSection();
+
+                            updateSessionRequirement();
 
 
-                submitButton.querySelector(
-                    "span"
-                ).textContent =
-                    "Submitting...";
+                            if (sameAsPresent) {
+                                sameAsPresent.checked = false;
+                            }
+
+                            if (permanentAddressPanel) {
+                                permanentAddressPanel.classList.remove("is-synced");
+                            }
 
 
-                const icon =
-                    submitButton.querySelector(
-                        "i"
+                            if (fileName) {
+
+                                fileName.textContent =
+                                    "No file chosen";
+
+
+                                fileName.classList.remove(
+                                    "file-selected"
+                                );
+
+                            }
+
+
+                            if (photoPreview) {
+
+                                photoPreview.classList.remove(
+                                    "show"
+                                );
+
+                            }
+
+
+                            if (previewImage) {
+
+                                previewImage.src = "";
+
+                            }
+
+                        },
+                        20
                     );
-
-
-                if (icon) {
-
-                    icon.className =
-                        "fa-solid fa-spinner fa-spin";
 
                 }
+            );
 
-            }
-        );
+        }
+
+
+        /* =====================================================
+           SUBMIT LOADING STATE
+        ===================================================== */
+
+        if (
+            form
+            &&
+            submitButton
+        ) {
+
+            form.addEventListener(
+                "submit",
+                function () {
+
+                    if (
+                        !form.checkValidity()
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    submitButton.disabled =
+                        true;
+
+
+                    const buttonText =
+                        submitButton.querySelector(
+                            "span"
+                        );
+
+
+                    if (buttonText) {
+
+                        buttonText.textContent =
+                            "Submitting...";
+
+                    }
+
+
+                    const icon =
+                        submitButton.querySelector(
+                            "i"
+                        );
+
+
+                    if (icon) {
+
+                        icon.className =
+                            "fa-solid fa-spinner fa-spin";
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           PHONE INPUT
+        ===================================================== */
+
+        const phone =
+            document.getElementById(
+                "phone"
+            );
+
+
+        if (phone) {
+
+            phone.addEventListener(
+                "input",
+                function () {
+
+                    this.value =
+                        this.value.replace(
+                            /[^0-9+]/g,
+                            ""
+                        );
+
+                }
+            );
+
+        }
+
 
     }
-
-
-    /* =====================================================
-       PHONE INPUT
-       ===================================================== */
-
-    const phone =
-        document.getElementById("phone");
-
-
-    if (phone) {
-
-        phone.addEventListener(
-            "input",
-            function () {
-
-                this.value =
-                    this.value.replace(
-                        /[^0-9+]/g,
-                        ""
-                    );
-
-            }
-        );
-
-    }
-
-
-});
+);
 
 </script>
 

@@ -72,8 +72,18 @@ ALLOWED_EXTENSIONS = {
 }
 
 
+# ============================================================
+# MAXIMUM FILE SIZE
+# ============================================================
+#
+# Maximum supported image size:
+#
+#     10 MB
+#
+# ============================================================
+
 MAX_FILE_SIZE = (
-    5
+    10
     *
     1024
     *
@@ -344,6 +354,10 @@ def upload_photo(photo):
     """
     Upload and save an image.
 
+    Maximum supported file size:
+
+        10 MB
+
     Returns:
 
         filename
@@ -558,6 +572,10 @@ def upload_event_image(photo):
     Event images are stored inside:
 
         static/uploads/
+
+    Maximum supported file size:
+
+        10 MB
 
     The returned value is a path relative to the
     Flask static directory.
@@ -790,6 +808,10 @@ def replace_photo(
 
     """
     Replace an existing image.
+
+    Maximum supported new image size:
+
+        10 MB
 
     Process:
 

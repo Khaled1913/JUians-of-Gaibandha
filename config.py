@@ -254,13 +254,23 @@ class Config:
     # =================================================
     # FILE UPLOAD
     # =================================================
+    #
+    # Maximum request / upload size:
+    #
+    #     10 MB
+    #
+    # Keep this value aligned with:
+    #
+    #     services/upload_service.py
+    #
+    # =================================================
 
     UPLOAD_FOLDER = UPLOAD_FOLDER
 
 
     MAX_CONTENT_LENGTH = (
 
-        2 *
+        10 *
 
         1024 *
 

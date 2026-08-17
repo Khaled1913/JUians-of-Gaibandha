@@ -95,22 +95,90 @@ class Information(db.Model):
     # =================================================
     # ADDRESS INFORMATION
     # =================================================
+    #
+    # Address data is stored separately for:
+    #
+    # 1. Present Address
+    # 2. Permanent Address
+    #
+    # Each address contains:
+    #
+    # - Village
+    # - Union
+    # - Upazila
+    # - Full / Additional Address
+    #
+    # Existing present_address and permanent_address
+    # fields are preserved for compatibility.
+    # =================================================
+
+    # =================================================
+    # PRESENT ADDRESS
+    # =================================================
+
+    present_village = db.Column(
+        db.String(150)
+    )
+
+    present_union = db.Column(
+        db.String(150)
+    )
+
+    present_upazila = db.Column(
+        db.String(100),
+        index=True
+    )
 
     present_address = db.Column(
         db.Text
+    )
+
+    # =================================================
+    # PERMANENT ADDRESS
+    # =================================================
+
+    permanent_village = db.Column(
+        db.String(150)
+    )
+
+    permanent_union = db.Column(
+        db.String(150)
+    )
+
+    permanent_upazila = db.Column(
+        db.String(100),
+        index=True
     )
 
     permanent_address = db.Column(
         db.Text
     )
 
+    # =================================================
+    # DISTRICT
+    # =================================================
+
     district = db.Column(
         db.String(100),
         default="Gaibandha"
     )
 
+    # =================================================
+    # LEGACY / GENERAL UPAZILA
+    # =================================================
+    #
+    # Kept for compatibility with existing data,
+    # search logic and older member records.
+    #
+    # New registrations should primarily use:
+    #
+    # present_upazila
+    # permanent_upazila
+    # =================================================
+
     upazila = db.Column(
-        db.String(100)
+        db.String(100),
+        index=True
     )
 
     # =================================================
@@ -198,6 +266,45 @@ class Information(db.Model):
         default=datetime.utcnow,
         onupdate=datetime.utcnow
     )
+
+    # =================================================
+    # ADDRESS HELPERS
+    # =================================================
+
+    @property
+    def present_address_label(self):
+
+        parts = [
+            self.present_village,
+            self.present_union,
+            self.present_upazila,
+            self.present_address,
+            self.district
+        ]
+
+        return ", ".join(
+            str(part).strip()
+            for part in parts
+            if part and str(part).strip()
+        )
+
+
+    @property
+    def permanent_address_label(self):
+
+        parts = [
+            self.permanent_village,
+            self.permanent_union,
+            self.permanent_upazila,
+            self.permanent_address,
+            self.district
+        ]
+
+        return ", ".join(
+            str(part).strip()
+            for part in parts
+            if part and str(part).strip()
+        )
 
     # =================================================
     # REPRESENTATION
