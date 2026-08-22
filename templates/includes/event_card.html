@@ -1,0 +1,107 @@
+<article class="event-card">
+
+    {% set image_paths = event.image_paths %}
+    {% set image_count = image_paths|length %}
+
+    <div
+        class="event-image event-gallery event-gallery-{{ image_count if image_count else 1 }}"
+        aria-label="{{ event.title }} image gallery"
+    >
+
+        {% if image_paths %}
+
+            {% for image_path in image_paths %}
+
+                <figure class="event-gallery-item">
+
+                    {% if image_path.startswith('images/') or image_path.startswith('uploads/') %}
+
+                        <img
+                            src="{{ url_for('static', filename=image_path) }}"
+                            alt="{{ event.title }}{% if image_count > 1 %} — image {{ loop.index }}{% endif %}"
+                            loading="lazy"
+                        >
+
+                    {% else %}
+
+                        <img
+                            src="{{ url_for('static', filename='uploads/' ~ image_path) }}"
+                            alt="{{ event.title }}{% if image_count > 1 %} — image {{ loop.index }}{% endif %}"
+                            loading="lazy"
+                        >
+
+                    {% endif %}
+
+                </figure>
+
+            {% endfor %}
+
+        {% else %}
+
+            <figure class="event-gallery-item">
+                <img
+                    src="{{ url_for('static', filename='images/Event_1.1.jpeg') }}"
+                    alt="JUians of Gaibandha Event"
+                    loading="lazy"
+                >
+            </figure>
+
+        {% endif %}
+
+        {% if image_count > 1 %}
+
+            <span class="event-image-count">
+                <i class="fa-regular fa-images"></i>
+                {{ image_count }} Photos
+            </span>
+
+        {% endif %}
+
+    </div>
+
+    <div class="event-body">
+
+        <div class="event-card-label">
+            <i class="fa-regular fa-calendar-check"></i>
+            Association Event
+        </div>
+
+        <h3>{{ event.title }}</h3>
+
+        <div class="event-meta">
+
+            {% if event.event_date %}
+                <span>
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span class="event-meta-text">{{ event.event_date }}</span>
+                </span>
+            {% endif %}
+
+            {% if event.location %}
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span class="event-meta-text">{{ event.location }}</span>
+                </span>
+            {% endif %}
+
+        </div>
+
+        <p>
+            {{ event.description if event.description else 'No description available for this event.' }}
+        </p>
+
+        {% if event.event_link %}
+            <a
+                href="{{ event.event_link }}"
+                class="event-btn"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <span>Read More</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        {% endif %}
+
+    </div>
+
+</article>

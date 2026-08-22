@@ -64,7 +64,8 @@ def create_app():
     from models import (
         Admin,
         Information,
-        Event
+        Event,
+        EventImage,
     )
 
 

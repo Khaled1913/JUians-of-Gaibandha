@@ -10,6 +10,60 @@
 
 {% endblock %}
 
+{% block extra_js %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const imageInput = document.getElementById("images");
+    const previewGrid = document.getElementById("selectedEventImages");
+
+    if (!imageInput || !previewGrid) {
+        return;
+    }
+
+    imageInput.addEventListener("change", function () {
+        const files = Array.from(imageInput.files || []);
+        previewGrid.replaceChildren();
+
+        if (files.length > 4) {
+            imageInput.value = "";
+            previewGrid.hidden = true;
+            window.alert("You can select a maximum of 4 images for one event.");
+            return;
+        }
+
+        if (!files.length) {
+            previewGrid.hidden = true;
+            return;
+        }
+
+        files.forEach(function (file) {
+            const item = document.createElement("div");
+            const image = document.createElement("img");
+            const name = document.createElement("span");
+
+            item.className = "selected-event-image-item";
+            name.className = "selected-event-image-name";
+            name.textContent = file.name;
+            image.alt = file.name;
+
+            const reader = new FileReader();
+            reader.addEventListener("load", function () {
+                image.src = reader.result;
+            });
+            reader.readAsDataURL(file);
+
+            item.append(image, name);
+            previewGrid.appendChild(item);
+        });
+
+        previewGrid.hidden = false;
+    });
+});
+</script>
+
+{% endblock %}
+
 {% block extra_css %}
 
 <style>
@@ -470,6 +524,97 @@
 }
 
 
+.current-event-images-grid,
+.selected-event-images {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
+}
+
+
+.current-event-image-item,
+.selected-event-image-item {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid #dfe9e5;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+
+.current-event-image .current-event-image-item img,
+.selected-event-image-item img {
+    width: 100%;
+    max-width: none;
+    height: 175px;
+    display: block;
+    object-fit: cover;
+    border: 0;
+    border-radius: 0;
+}
+
+
+.current-image-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 6px 9px;
+    border-radius: 999px;
+    background: rgba(0, 106, 78, 0.92);
+    color: #ffffff;
+    font-size: 0.60rem;
+    font-weight: 800;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.14);
+}
+
+
+.remove-event-image {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 11px;
+    color: #7b333a;
+    font-size: 0.66rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+
+.remove-event-image input {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    accent-color: #dc3545;
+}
+
+
+.selected-event-images {
+    margin: -8px 0 23px;
+    padding: 15px;
+    border: 1px dashed rgba(0, 106, 78, 0.25);
+    border-radius: 14px;
+    background: #f7fbf9;
+}
+
+
+.selected-event-images[hidden] {
+    display: none;
+}
+
+
+.selected-event-image-name {
+    display: block;
+    overflow: hidden;
+    padding: 9px 10px;
+    color: #53645d;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
 /* ============================================================
    CHECKBOX
 ============================================================ */
@@ -797,6 +942,12 @@
 
         height: 175px;
     }
+
+
+    .current-event-images-grid,
+    .selected-event-images {
+        grid-template-columns: 1fr;
+    }
 }
 
 </style>
@@ -807,7 +958,6 @@
 
 <section class="admin-event-section">
 
-```
 <div class="admin-event-container">
 
 
@@ -1110,84 +1260,116 @@
 
 
             <!-- ==================================
-                 EVENT IMAGE
+                 EVENT IMAGES
             =================================== -->
 
             <div class="form-group">
 
-                <label for="image">
+                <label for="images">
 
-                    Event Image
+                    Event Images
 
                 </label>
 
 
                 <input
                     type="file"
-                    id="image"
-                    name="image"
+                    id="images"
+                    name="images"
                     accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                    multiple
                 >
 
 
                 <small>
 
-                    Upload JPG, JPEG, PNG, GIF or WebP image.
-                    Maximum file size depends on your application configuration.
+                    Select up to 4 JPG, JPEG, PNG, GIF or WebP images.
+                    Each image can be up to 10 MB. The first image will be the main photo.
 
                 </small>
 
             </div>
+
+            <div
+                class="selected-event-images"
+                id="selectedEventImages"
+                hidden
+            ></div>
 
 
             <!-- ==================================
                  CURRENT IMAGE
             =================================== -->
 
-            {% if event and event.image %}
+            {% if event and event.image_paths %}
 
                 <div class="current-event-image">
 
 
                     <p>
-                        Current Event Image
+                        Current Event Images ({{ event.image_paths|length }}/4)
                     </p>
 
 
-                    {% if event.image.startswith('images/') %}
+                    <div class="current-event-images-grid">
 
-                        <img
-                            src="{{ url_for(
-                                'static',
-                                filename=event.image
-                            ) }}"
-                            alt="{{ event.title }}"
-                            loading="lazy"
-                        >
+                        <label class="current-event-image-item">
 
-                    {% elif event.image.startswith('uploads/') %}
+                            {% if event.image.startswith('images/') or event.image.startswith('uploads/') %}
+                                <img
+                                    src="{{ url_for('static', filename=event.image) }}"
+                                    alt="{{ event.title }} main image"
+                                    loading="lazy"
+                                >
+                            {% else %}
+                                <img
+                                    src="{{ url_for('static', filename='uploads/' ~ event.image) }}"
+                                    alt="{{ event.title }} main image"
+                                    loading="lazy"
+                                >
+                            {% endif %}
 
-                        <img
-                            src="{{ url_for(
-                                'static',
-                                filename=event.image
-                            ) }}"
-                            alt="{{ event.title }}"
-                            loading="lazy"
-                        >
+                            <span class="current-image-badge">Main Photo</span>
 
-                    {% else %}
+                            <span class="remove-event-image">
+                                <input type="checkbox" name="remove_primary_image">
+                                Remove
+                            </span>
 
-                        <img
-                            src="{{ url_for(
-                                'static',
-                                filename='uploads/' ~ event.image
-                            ) }}"
-                            alt="{{ event.title }}"
-                            loading="lazy"
-                        >
+                        </label>
 
-                    {% endif %}
+                        {% for gallery_image in event.gallery_images %}
+
+                            <label class="current-event-image-item">
+
+                                {% if gallery_image.image_path.startswith('images/') or gallery_image.image_path.startswith('uploads/') %}
+                                    <img
+                                        src="{{ url_for('static', filename=gallery_image.image_path) }}"
+                                        alt="{{ event.title }} gallery image {{ loop.index }}"
+                                        loading="lazy"
+                                    >
+                                {% else %}
+                                    <img
+                                        src="{{ url_for('static', filename='uploads/' ~ gallery_image.image_path) }}"
+                                        alt="{{ event.title }} gallery image {{ loop.index }}"
+                                        loading="lazy"
+                                    >
+                                {% endif %}
+
+                                <span class="remove-event-image">
+                                    <input
+                                        type="checkbox"
+                                        name="remove_gallery_images"
+                                        value="{{ gallery_image.id }}"
+                                    >
+                                    Remove
+                                </span>
+
+                            </label>
+
+                        {% endfor %}
+
+                    </div>
 
 
                 </div>

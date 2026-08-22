@@ -1,1012 +1,656 @@
 /* =====================================================
-   RECENT_EVENTS.CSS
+   RECENT EVENTS
    JUians of Gaibandha
-   Responsive Event Section
 ===================================================== */
 
+/* =========================
+   SECTION
+========================= */
 
-/* ==========================
-        SECTION
-========================== */
-
-.recent-events{
-
-    position:relative;
-
-    width:100%;
-
-    padding:100px 0;
-
-    background:var(--section-bg);
-
-    overflow:hidden;
-
+.recent-events {
+    position: relative;
+    width: 100%;
+    padding: 100px 0;
+    overflow: hidden;
+    background: var(--section-bg, #f5f8f7);
 }
 
-
-/* ==========================
-        HEADER
-========================== */
-
-.recent-events .section-header{
-
-    width:100%;
-
-    max-width:760px;
-
-    margin-left:auto;
-
-    margin-right:auto;
-
-    margin-bottom:60px;
-
+.recent-events .section-header {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto 60px;
+    text-align: center;
 }
 
+/* =========================
+   EVENTS GRID
+========================= */
 
-/* ==========================
-        GRID
-========================== */
-
-.events-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(
-                min(340px, 100%),
-                1fr
-            )
-        );
-
-    gap:35px;
-
-    width:100%;
-
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(min(340px, 100%), 1fr)
+    );
+    gap: 35px;
+    width: 100%;
 }
 
+/* =========================
+   EVENT CARD
+========================= */
 
-/* ==========================
-        CARD
-========================== */
-
-.event-card{
-
-    position:relative;
-
-    display:flex;
-
-    flex-direction:column;
-
-    width:100%;
-
-    min-width:0;
-
-    background:var(--surface-color);
-
-    border-radius:var(--radius-lg);
-
-    overflow:hidden;
-
-    box-shadow:var(--shadow-sm);
-
-    transition:var(--transition);
-
-}
-
-
-/* CARD HOVER */
-
-.event-card:hover{
-
-    transform:translateY(-10px);
-
-    box-shadow:var(--shadow-lg);
-
-}
-
-
-/* ==========================
-        IMAGE
-========================== */
-
-.event-image{
-
-    position:relative;
-
-    width:100%;
-
-    overflow:hidden;
-
-    background:#eef3f1;
-
-}
-
-
-/* EVENT IMAGE */
-
-.event-image img{
-
-    display:block;
-
-    width:100%;
-
-    height:240px;
-
-    max-width:100%;
-
-    object-fit:cover;
-
-    object-position:center;
-
+.event-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid rgba(0, 106, 78, 0.09);
+    border-radius: var(--radius-lg, 22px);
+    background: linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #fbfdfc 100%
+    );
+    box-shadow:
+        0 18px 46px rgba(20, 65, 52, 0.09),
+        0 3px 10px rgba(20, 65, 52, 0.04);
     transition:
-        transform .5s ease;
-
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-
-/* IMAGE HOVER */
-
-.event-card:hover .event-image img{
-
-    transform:scale(1.08);
-
+.event-card::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    opacity: 0;
+    background: linear-gradient(
+        90deg,
+        #006a4e,
+        #21a179,
+        #d7a629
+    );
+    transition: opacity 0.3s ease;
 }
 
-
-/* ==========================
-        DATE
-========================== */
-
-.event-date{
-
-    position:absolute;
-
-    top:18px;
-
-    left:18px;
-
-    z-index:2;
-
-    padding:12px 18px;
-
-    background:var(--primary-color);
-
-    color:#fff;
-
-    border-radius:12px;
-
-    text-align:center;
-
-    box-shadow:var(--shadow-md);
-
+.event-card:hover {
+    transform: translateY(-8px);
+    box-shadow:
+        0 24px 55px rgba(20, 65, 52, 0.16);
 }
 
-
-/* DATE NUMBER */
-
-.event-date h3{
-
-    margin:0;
-
-    color:#fff;
-
-    font-size:1.5rem;
-
-    line-height:1.1;
-
+.event-card:hover::after {
+    opacity: 1;
 }
 
+/* =========================
+   EVENT IMAGE GALLERY
+========================= */
 
-/* DATE MONTH */
-
-.event-date span{
-
-    display:block;
-
-    margin-top:2px;
-
-    color:#fff;
-
-    font-size:.85rem;
-
+.event-image,
+.event-gallery {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: #dfe9e5;
 }
 
-
-/* ==========================
-        BODY
-========================== */
-
-.event-body{
-
-    display:flex;
-
-    flex:1;
-
-    flex-direction:column;
-
-    min-width:0;
-
-    padding:30px;
-
+.event-gallery {
+    display: grid;
+    height: 250px;
+    min-height: 250px;
+    gap: 3px;
 }
 
-
-/* ==========================
-        TITLE
-========================== */
-
-.event-body h3{
-
-    margin:0 0 15px;
-
-    color:var(--text-dark);
-
-    font-size:1.25rem;
-
-    font-weight:700;
-
-    line-height:1.45;
-
-    overflow-wrap:anywhere;
-
-    word-break:normal;
-
+.event-gallery-item {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    background: #e8efec;
 }
 
+/* One image */
 
-/* ==========================
-        META
-========================== */
-
-.event-meta{
-
-    display:flex;
-
-    align-items:flex-start;
-
-    flex-wrap:wrap;
-
-    gap:12px 18px;
-
-    width:100%;
-
-    margin-bottom:18px;
-
-    color:var(--text-light);
-
-    font-size:.92rem;
-
+.event-gallery-1 {
+    grid-template-columns: 1fr;
 }
 
+/* Two images */
 
-/* META ITEM */
-
-.event-meta > span{
-
-    display:flex;
-
-    align-items:flex-start;
-
-    gap:8px;
-
-    min-width:0;
-
-    max-width:100%;
-
+.event-gallery-2 {
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 }
 
+/* Three images */
 
-/* META ICON */
-
-.event-meta i{
-
-    flex-shrink:0;
-
-    margin-top:3px;
-
-    color:var(--primary-color);
-
+.event-gallery-3 {
+    grid-template-columns: 1.55fr 1fr;
+    grid-template-rows:
+        repeat(2, minmax(0, 1fr));
 }
 
-
-/* META TEXT */
-
-.event-meta-text{
-
-    min-width:0;
-
-    line-height:1.5;
-
-    overflow-wrap:anywhere;
-
+.event-gallery-3 .event-gallery-item:first-child {
+    grid-row: 1 / 3;
 }
 
+/* Four images */
 
-/* ==========================
-        DESCRIPTION
-========================== */
-
-.event-body p{
-
-    width:100%;
-
-    margin:0 0 25px;
-
-    color:var(--text-light);
-
-    line-height:1.75;
-
-    overflow-wrap:anywhere;
-
-    word-break:normal;
-
+.event-gallery-4 {
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    grid-template-rows:
+        repeat(2, minmax(0, 1fr));
 }
 
-
-/* ==========================
-        BUTTON
-========================== */
-
-.event-btn{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    align-self:flex-start;
-
-    gap:8px;
-
-    max-width:100%;
-
-    margin-top:auto;
-
-    padding:13px 24px;
-
-    background:var(--primary-color);
-
-    color:#fff;
-
-    border-radius:var(--radius-full);
-
-    font-weight:600;
-
-    text-decoration:none;
-
-    white-space:nowrap;
-
-    transition:var(--transition);
-
+.event-gallery-item img,
+.event-image > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease;
 }
 
-
-/* BUTTON HOVER */
-
-.event-btn:hover{
-
-    background:var(--primary-dark);
-
-    color:#fff;
-
-    transform:translateY(-3px);
-
+.event-card:hover .event-gallery-item img,
+.event-card:hover .event-image > img {
+    transform: scale(1.045);
 }
 
+/* Image count badge */
 
-/* BUTTON ICON */
-
-.event-btn i{
-
-    flex-shrink:0;
-
-    transition:var(--transition);
-
+.event-image-count {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    background: rgba(12, 31, 25, 0.78);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.20);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
+/* =========================
+   EVENT BODY
+========================= */
 
-/* BUTTON ICON HOVER */
-
-.event-btn:hover i{
-
-    transform:translateX(5px);
-
+.event-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    padding: 30px;
 }
 
+/* Event label */
 
-/* ==========================
-        EMPTY STATE
-========================== */
-
-.no-event{
-
-    width:100%;
-
-    padding:70px 40px;
-
-    background:#fff;
-
-    border-radius:var(--radius-lg);
-
-    text-align:center;
-
-    box-shadow:var(--shadow-sm);
-
+.event-card-label {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 7px;
+    margin-bottom: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(0, 106, 78, 0.08);
+    color: var(--primary-color, #006a4e);
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
+/* Event title */
 
-/* EMPTY ICON */
-
-.no-event i{
-
-    margin-bottom:20px;
-
-    color:var(--primary-color);
-
-    font-size:60px;
-
+.event-body h3 {
+    margin: 0 0 15px;
+    color: var(--text-dark, #18352c);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
 }
 
+/* =========================
+   EVENT META
+========================= */
 
-/* EMPTY TITLE */
-
-.no-event h3{
-
-    margin-bottom:15px;
-
+.event-meta {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    width: 100%;
+    margin-bottom: 18px;
+    color: var(--text-light, #6f7f79);
+    font-size: 0.92rem;
 }
 
-
-/* EMPTY DESCRIPTION */
-
-.no-event p{
-
-    color:var(--text-light);
-
+.event-meta > span {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 0;
+    max-width: 100%;
 }
 
+.event-meta i {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: var(--primary-color, #006a4e);
+}
+
+.event-meta-text {
+    min-width: 0;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.event-body p {
+    width: 100%;
+    max-height: 7em;
+    margin: 0 0 25px;
+    overflow: hidden;
+    color: var(--text-light, #6f7f79);
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+}
+
+/* =========================
+   EVENT BUTTON
+========================= */
+
+.event-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    gap: 8px;
+    max-width: 100%;
+    margin-top: auto;
+    padding: 13px 24px;
+    border-radius: 999px;
+    background: var(--primary-color, #006a4e);
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease;
+}
+
+.event-btn:hover {
+    background: var(--primary-dark, #00513c);
+    color: #ffffff;
+    transform: translateY(-3px);
+}
+
+.event-btn i {
+    transition: transform 0.3s ease;
+}
+
+.event-btn:hover i {
+    transform: translateX(5px);
+}
+
+/* =========================
+   VIEW ALL EVENTS
+========================= */
+
+.events-view-all {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 48px;
+    text-align: center;
+}
+
+.events-view-all-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
+    padding: 0 24px;
+    border: 1px solid #006a4e;
+    border-radius: 14px;
+    background: linear-gradient(
+        135deg,
+        #006a4e,
+        #004f3a
+    );
+    color: #ffffff;
+    font-size: 0.84rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow:
+        0 12px 28px rgba(0, 106, 78, 0.20);
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.events-view-all-btn:hover {
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow:
+        0 17px 34px rgba(0, 106, 78, 0.27);
+}
+
+.events-view-all-btn i {
+    transition: transform 0.25s ease;
+}
+
+.events-view-all-btn:hover i {
+    transform: translateX(4px);
+}
+
+.events-view-all p {
+    margin: 0;
+    color: var(--text-light, #6f7f79);
+    font-size: 0.75rem;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.no-event {
+    width: 100%;
+    padding: 70px 40px;
+    border-radius: var(--radius-lg, 22px);
+    background: #ffffff;
+    text-align: center;
+    box-shadow:
+        0 14px 35px rgba(20, 65, 52, 0.08);
+}
+
+.no-event-icon {
+    display: grid;
+    width: 64px;
+    height: 64px;
+    place-items: center;
+    margin: 0 auto 17px;
+    border-radius: 18px;
+    background: rgba(0, 106, 78, 0.08);
+    color: var(--primary-color, #006a4e);
+    font-size: 1.35rem;
+}
+
+.no-event-icon i {
+    margin: 0;
+    font-size: inherit;
+}
+
+.no-event h3 {
+    margin: 0 0 12px;
+}
+
+.no-event p {
+    margin: 0;
+    color: var(--text-light, #6f7f79);
+}
 
 /* =====================================================
-        LARGE TABLET
+   ALL EVENTS PAGE
 ===================================================== */
 
-@media (max-width:1100px){
-
-    .recent-events{
-
-        padding:90px 0;
-
-    }
-
-
-    .events-grid{
-
-        gap:28px;
-
-    }
-
-
-    .event-body{
-
-        padding:26px;
-
-    }
-
-
-    .event-image img{
-
-        height:225px;
-
-    }
-
+.all-events-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 92px 0 86px;
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(255, 255, 255, 0.13),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #004d39 0%,
+            #006a4e 54%,
+            #0d7d5e 100%
+        );
 }
 
+.all-events-hero::after {
+    content: "";
+    position: absolute;
+    right: -90px;
+    bottom: -150px;
+    width: 360px;
+    height: 360px;
+    border: 70px solid rgba(255, 255, 255, 0.055);
+    border-radius: 50%;
+}
+
+.all-events-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    text-align: center;
+}
+
+.all-events-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.all-events-back-link:hover {
+    color: #ffffff;
+}
+
+.all-events-hero .section-tag {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+.all-events-hero h1 {
+    margin: 17px 0 14px;
+    color: #ffffff;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.16;
+}
+
+.all-events-hero p {
+    max-width: 680px;
+    margin: 0 auto;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.98rem;
+    line-height: 1.8;
+}
+
+.all-events-summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 27px;
+    padding: 10px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.12);
+    color: #ffffff;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.all-events-list {
+    padding-top: 78px;
+}
+
+.all-events-list .event-body p {
+    display: block;
+    overflow: visible;
+}
 
 /* =====================================================
-        TABLET
+   TABLET
 ===================================================== */
 
-@media (max-width:991px){
+@media (max-width: 991px) {
 
-    .recent-events{
-
-        padding:80px 0;
-
+    .recent-events {
+        padding: 80px 0;
     }
 
-
-    .recent-events .section-header{
-
-        margin-bottom:48px;
-
-    }
-
-
-    .events-grid{
-
+    .events-grid {
         grid-template-columns:
-            repeat(
-                2,
-                minmax(0, 1fr)
-            );
-
-        gap:25px;
-
+            repeat(2, minmax(0, 1fr));
+        gap: 25px;
     }
 
-
-    .event-image img{
-
-        height:220px;
-
+    .event-body {
+        padding: 24px;
     }
-
-
-    .event-body{
-
-        padding:24px;
-
-    }
-
-
-    .event-body h3{
-
-        font-size:1.15rem;
-
-    }
-
-
-    .event-meta{
-
-        font-size:.88rem;
-
-    }
-
 }
 
-
 /* =====================================================
-        MOBILE
+   MOBILE
 ===================================================== */
 
-@media (max-width:768px){
+@media (max-width: 768px) {
 
-    .recent-events{
-
-        padding:68px 0;
-
+    .recent-events {
+        padding: 68px 0;
     }
 
-
-    .recent-events .section-header{
-
-        max-width:100%;
-
-        margin-bottom:38px;
-
+    .recent-events .section-header {
+        margin-bottom: 38px;
     }
 
-
-    /* ONE CARD PER ROW */
-
-    .events-grid{
-
-        grid-template-columns:1fr;
-
-        gap:24px;
-
-        width:100%;
-
+    .events-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
     }
 
-
-    .event-card{
-
-        width:100%;
-
-        max-width:620px;
-
-        margin:0 auto;
-
-        border-radius:18px;
-
+    .event-card {
+        max-width: 620px;
+        margin: 0 auto;
+        border-radius: 18px;
     }
 
-
-    /* Disable strong desktop movement */
-
-    .event-card:hover{
-
-        transform:translateY(-4px);
-
+    .event-card:hover {
+        transform: translateY(-4px);
     }
 
-
-    /* IMAGE */
-
-    .event-image img{
-
-        width:100%;
-
-        height:auto;
-
-        aspect-ratio:16 / 9;
-
-        object-fit:cover;
-
+    .event-gallery {
+        height: 230px;
+        min-height: 230px;
     }
 
-
-    .event-card:hover .event-image img{
-
-        transform:scale(1.03);
-
+    .event-body {
+        padding: 22px;
     }
 
-
-    /* DATE */
-
-    .event-date{
-
-        top:14px;
-
-        left:14px;
-
-        padding:10px 14px;
-
-        border-radius:10px;
-
+    .event-meta {
+        flex-direction: column;
+        gap: 9px;
+        font-size: 0.86rem;
     }
 
-
-    .event-date h3{
-
-        font-size:1.25rem;
-
+    .event-meta > span {
+        width: 100%;
     }
 
-
-    .event-date span{
-
-        font-size:.78rem;
-
+    .events-view-all {
+        margin-top: 38px;
     }
 
-
-    /* BODY */
-
-    .event-body{
-
-        padding:22px;
-
+    .all-events-hero {
+        padding: 70px 0 66px;
     }
 
-
-    /* TITLE */
-
-    .event-body h3{
-
-        margin-bottom:13px;
-
-        font-size:1.1rem;
-
-        line-height:1.5;
-
+    .all-events-hero p {
+        font-size: 0.88rem;
     }
-
-
-    /* META */
-
-    .event-meta{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-        gap:9px;
-
-        margin-bottom:15px;
-
-        font-size:.86rem;
-
-    }
-
-
-    .event-meta > span{
-
-        width:100%;
-
-    }
-
-
-    /* DESCRIPTION */
-
-    .event-body p{
-
-        margin-bottom:22px;
-
-        font-size:.9rem;
-
-        line-height:1.7;
-
-    }
-
-
-    /* BUTTON */
-
-    .event-btn{
-
-        min-height:45px;
-
-        padding:11px 20px;
-
-        font-size:.88rem;
-
-    }
-
-
-    /* EMPTY STATE */
-
-    .no-event{
-
-        padding:50px 25px;
-
-    }
-
-
-    .no-event i{
-
-        font-size:50px;
-
-    }
-
 }
 
-
 /* =====================================================
-        SMALL MOBILE
+   SMALL MOBILE
 ===================================================== */
 
-@media (max-width:520px){
+@media (max-width: 520px) {
 
-    .recent-events{
-
-        padding:55px 0;
-
+    .recent-events {
+        padding: 55px 0;
     }
 
-
-    .recent-events .section-header{
-
-        margin-bottom:32px;
-
+    .events-grid {
+        gap: 20px;
     }
 
-
-    .events-grid{
-
-        gap:20px;
-
+    .event-card {
+        border-radius: 16px;
     }
 
-
-    /* CARD */
-
-    .event-card{
-
-        border-radius:16px;
-
+    .event-gallery {
+        height: 215px;
+        min-height: 215px;
     }
 
-
-    /* IMAGE */
-
-    .event-image img{
-
-        aspect-ratio:16 / 10;
-
+    .event-image-count {
+        right: 10px;
+        bottom: 10px;
+        padding: 7px 9px;
+        font-size: 0.65rem;
     }
 
-
-    /* BODY */
-
-    .event-body{
-
-        padding:18px;
-
+    .event-body {
+        padding: 18px;
     }
 
-
-    /* TITLE */
-
-    .event-body h3{
-
-        margin-bottom:12px;
-
-        font-size:1rem;
-
-        line-height:1.5;
-
+    .event-body h3 {
+        font-size: 1rem;
     }
 
-
-    /* META */
-
-    .event-meta{
-
-        gap:8px;
-
-        margin-bottom:14px;
-
-        font-size:.80rem;
-
+    .event-body p {
+        font-size: 0.84rem;
     }
 
-
-    .event-meta i{
-
-        margin-top:2px;
-
-        font-size:.85rem;
-
+    .event-btn,
+    .events-view-all-btn {
+        width: 100%;
     }
 
-
-    .event-meta-text{
-
-        line-height:1.45;
-
+    .no-event {
+        padding: 40px 18px;
+        border-radius: 16px;
     }
 
-
-    /* DESCRIPTION */
-
-    .event-body p{
-
-        margin-bottom:19px;
-
-        font-size:.84rem;
-
-        line-height:1.65;
-
+    .all-events-hero {
+        padding: 56px 0 54px;
     }
-
-
-    /* BUTTON */
-
-    .event-btn{
-
-        padding:10px 17px;
-
-        font-size:.82rem;
-
-    }
-
-
-    /* DATE */
-
-    .event-date{
-
-        top:11px;
-
-        left:11px;
-
-        padding:8px 11px;
-
-    }
-
-
-    .event-date h3{
-
-        font-size:1.1rem;
-
-    }
-
-
-    .event-date span{
-
-        font-size:.7rem;
-
-    }
-
-
-    /* EMPTY STATE */
-
-    .no-event{
-
-        padding:40px 18px;
-
-        border-radius:16px;
-
-    }
-
-
-    .no-event i{
-
-        margin-bottom:15px;
-
-        font-size:42px;
-
-    }
-
-}
-
-
-/* =====================================================
-        VERY SMALL MOBILE
-===================================================== */
-
-@media (max-width:360px){
-
-    .recent-events{
-
-        padding:48px 0;
-
-    }
-
-
-    .events-grid{
-
-        gap:18px;
-
-    }
-
-
-    .event-card{
-
-        border-radius:14px;
-
-    }
-
-
-    .event-body{
-
-        padding:15px;
-
-    }
-
-
-    .event-body h3{
-
-        font-size:.94rem;
-
-    }
-
-
-    .event-meta{
-
-        font-size:.76rem;
-
-    }
-
-
-    .event-body p{
-
-        font-size:.80rem;
-
-    }
-
-
-    .event-btn{
-
-        width:100%;
-
-        min-height:43px;
-
-        padding:10px 14px;
-
-    }
-
-
-    .event-date{
-
-        top:9px;
-
-        left:9px;
-
-    }
-
 }

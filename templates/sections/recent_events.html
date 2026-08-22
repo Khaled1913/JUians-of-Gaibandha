@@ -2,366 +2,57 @@
      RECENT EVENTS
 ========================================== -->
 
-
-<section
-    class="recent-events"
-    id="recent-events"
->
-
+<section class="recent-events" id="recent-events">
 
     <div class="container">
 
-
-        <!-- ==========================================
-             SECTION HEADER
-        =========================================== -->
-
         <div class="section-header">
 
+            <span class="section-tag">Latest Activities</span>
 
-            <span class="section-tag">
-                Latest Activities
-            </span>
-
-
-            <h2>
-                Recent Events
-            </h2>
-
+            <h2>Recent Events</h2>
 
             <p>
-                Explore the latest programs, seminars,
-                reunions and activities organized by
-                JUians of Gaibandha District Students'
-                Welfare Association.
+                Explore the latest programs, seminars, reunions and activities
+                organized by JUians of Gaibandha District Students' Welfare
+                Association.
             </p>
 
-
         </div>
 
+        {% if events %}
 
-
-        <!-- ==========================================
-             EVENTS GRID
-        =========================================== -->
-
-        <div class="events-grid">
-
-
-            {% if events %}
-
+            <div class="events-grid">
 
                 {% for event in events %}
-
-
-                    <!-- ==================================
-                         EVENT CARD
-                    =================================== -->
-
-                    <article class="event-card">
-
-
-
-                        <!-- ==================================
-                             EVENT IMAGE
-                        =================================== -->
-
-                        <div class="event-image">
-
-
-                            {% if event.image %}
-
-
-                                {% if event.image.startswith('images/') %}
-
-
-                                    <img
-                                        src="{{ url_for(
-                                            'static',
-                                            filename=event.image
-                                        ) }}"
-                                        alt="{{ event.title }}"
-                                        loading="lazy"
-                                    >
-
-
-                                {% elif event.image.startswith('uploads/') %}
-
-
-                                    <img
-                                        src="{{ url_for(
-                                            'static',
-                                            filename=event.image
-                                        ) }}"
-                                        alt="{{ event.title }}"
-                                        loading="lazy"
-                                    >
-
-
-                                {% else %}
-
-
-                                    <img
-                                        src="{{ url_for(
-                                            'static',
-                                            filename='uploads/' ~ event.image
-                                        ) }}"
-                                        alt="{{ event.title }}"
-                                        loading="lazy"
-                                    >
-
-
-                                {% endif %}
-
-
-                            {% else %}
-
-
-                                <img
-                                    src="{{ url_for(
-                                        'static',
-                                        filename='images/Event_1.1.jpeg'
-                                    ) }}"
-                                    alt="JUians of Gaibandha Event"
-                                    loading="lazy"
-                                >
-
-
-                            {% endif %}
-
-
-                        </div>
-
-
-
-                        <!-- ==================================
-                             EVENT BODY
-                        =================================== -->
-
-                        <div class="event-body">
-
-
-
-                            <!-- EVENT TITLE -->
-
-                            <h3>
-                                {{ event.title }}
-                            </h3>
-
-
-
-                            <!-- ==================================
-                                 EVENT META
-                            =================================== -->
-
-                            <div class="event-meta">
-
-
-                                {% if event.event_date %}
-
-
-                                    <span>
-
-
-                                        <i class="fa-solid fa-calendar-days"></i>
-
-
-                                        <span class="event-meta-text">
-                                            {{ event.event_date }}
-                                        </span>
-
-
-                                    </span>
-
-
-                                {% endif %}
-
-
-
-                                {% if event.location %}
-
-
-                                    <span>
-
-
-                                        <i class="fa-solid fa-location-dot"></i>
-
-
-                                        <span class="event-meta-text">
-                                            {{ event.location }}
-                                        </span>
-
-
-                                    </span>
-
-
-                                {% endif %}
-
-
-                            </div>
-
-
-
-                            <!-- ==================================
-                                 EVENT DESCRIPTION
-                            =================================== -->
-
-                            <p>
-
-
-                                {% if event.description %}
-
-
-                                    {{ event.description }}
-
-
-                                {% else %}
-
-
-                                    No description available
-                                    for this event.
-
-
-                                {% endif %}
-
-
-                            </p>
-
-
-
-                            <!-- ==================================
-                                 EVENT LINK
-                            =================================== -->
-
-                            {% if event.event_link %}
-
-
-                                <a
-                                    href="{{ event.event_link }}"
-                                    class="event-btn"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-
-
-                                    <span>
-                                        Read More
-                                    </span>
-
-
-                                    <i class="fa-solid fa-arrow-right"></i>
-
-
-                                </a>
-
-
-                            {% endif %}
-
-
-
-                        </div>
-
-
-                    </article>
-
-
+                    {% include "includes/event_card.html" %}
                 {% endfor %}
 
+            </div>
 
+            <div class="events-view-all">
 
-            {% else %}
+                <a href="{{ url_for('home.all_events') }}" class="events-view-all-btn">
+                    <span>View Recent Events</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
 
+                <p>Browse the complete collection of published association events.</p>
 
-                <!-- ==================================
-                     NO EVENTS
-                =================================== -->
+            </div>
 
-                <article class="event-card">
+        {% else %}
 
+            <div class="no-event">
+                <div class="no-event-icon">
+                    <i class="fa-regular fa-calendar"></i>
+                </div>
+                <h3>No events published yet</h3>
+                <p>New association activities will appear here soon.</p>
+            </div>
 
-
-                    <!-- DEFAULT IMAGE -->
-
-                    <div class="event-image">
-
-
-                        <img
-                            src="{{ url_for(
-                                'static',
-                                filename='images/Event_1.1.jpeg'
-                            ) }}"
-                            alt="JUians of Gaibandha Event"
-                            loading="lazy"
-                        >
-
-
-                    </div>
-
-
-
-                    <!-- MESSAGE -->
-
-                    <div class="event-body">
-
-
-                        <h3>
-                            No Recent Events
-                        </h3>
-
-
-
-                        <div class="event-meta">
-
-
-                            <span>
-
-
-                                <i class="fa-solid fa-calendar-days"></i>
-
-
-                                <span class="event-meta-text">
-                                    JUians of Gaibandha
-                                </span>
-
-
-                            </span>
-
-
-                        </div>
-
-
-
-                        <p>
-
-
-                            There are currently no published events.
-                            New events will appear here when they
-                            are published by the association
-                            administrator.
-
-
-                        </p>
-
-
-                    </div>
-
-
-                </article>
-
-
-            {% endif %}
-
-
-        </div>
-
+        {% endif %}
 
     </div>
 
-
 </section>
-
-
-
-<!-- ==========================================
-     RECENT EVENTS END
-========================================== -->

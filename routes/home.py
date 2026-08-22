@@ -273,7 +273,7 @@ def home():
     #
     # Latest events are shown first.
     #
-    # Maximum 6 events are loaded so the existing
+    # Maximum 5 events are loaded so the existing
     # Recent Events section remains clean.
     # ========================================================
 
@@ -289,13 +289,11 @@ def home():
             Event.created_at.desc()
         )
 
-        .limit(6)
+        .limit(5)
 
         .all()
 
     )
-
-
     # ========================================================
     # NORMALIZE EVENT IMAGE PATHS
     # ========================================================
@@ -399,6 +397,38 @@ def home():
 
         events=recent_events
 
+    )
+
+
+# ============================================================
+# ALL PUBLISHED EVENTS
+# ============================================================
+
+@home_bp.route("/events")
+def all_events():
+
+    events = (
+        Event.query
+        .filter_by(
+            is_published=True
+        )
+        .order_by(
+            Event.created_at.desc()
+        )
+        .all()
+    )
+
+    for event in events:
+
+        event.image = (
+            _normalize_event_image_path(
+                event.image
+            )
+        )
+
+    return render_template(
+        "events.html",
+        events=events,
     )
 
 

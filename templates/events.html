@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}All Events | JUians of Gaibandha{% endblock %}
+
+{% block content %}
+
+<section class="all-events-hero">
+
+    <div class="container all-events-hero-content">
+
+        <a href="{{ url_for('home.home') }}#recent-events" class="all-events-back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Home
+        </a>
+
+        <span class="section-tag">Association Activities</span>
+
+        <h1>All Recent Events</h1>
+
+        <p>
+            Discover every published program, reunion, seminar and community
+            activity organized by JUians of Gaibandha.
+        </p>
+
+        <div class="all-events-summary">
+            <i class="fa-regular fa-calendar-check"></i>
+            <span>{{ events|length }} Published Event{% if events|length != 1 %}s{% endif %}</span>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="recent-events all-events-list" id="all-events">
+
+    <div class="container">
+
+        {% if events %}
+
+            <div class="events-grid">
+                {% for event in events %}
+                    {% include "includes/event_card.html" %}
+                {% endfor %}
+            </div>
+
+        {% else %}
+
+            <div class="no-event">
+                <div class="no-event-icon">
+                    <i class="fa-regular fa-calendar"></i>
+                </div>
+                <h3>No events published yet</h3>
+                <p>New association activities will appear here soon.</p>
+                <a href="{{ url_for('home.home') }}" class="events-view-all-btn">
+                    <i class="fa-solid fa-house"></i>
+                    Return Home
+                </a>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}

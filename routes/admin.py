@@ -20,7 +20,7 @@ from sqlalchemy import or_, func
 from werkzeug.security import generate_password_hash
 
 from extensions import db
-from models import Information, Admin, Event
+from models import Information, Admin, Event, EventImage
 from utils.decorators import admin_required
 
 from services.member_service import (
@@ -34,6 +34,8 @@ from services.member_service import (
 from services.upload_service import (
     upload_photo,
     replace_photo,
+    upload_event_image,
+    delete_photo,
 )
 
 
@@ -53,6 +55,13 @@ admin_bp = Blueprint(
 # ============================================================
 
 DEFAULT_EVENT_IMAGE = "images/Event_1.1.jpeg"
+
+MAX_EVENT_IMAGES = 4
+
+EVENT_PLACEHOLDER_IMAGES = {
+    DEFAULT_EVENT_IMAGE,
+    "images/ju_campus.jpeg",
+}
 
 
 # ============================================================
@@ -107,6 +116,93 @@ def _normalize_event_image_path(image_path):
         )
 
     return f"uploads/{image_path}"
+
+
+def _selected_event_image_files():
+
+    """Return non-empty multi-image uploads, including legacy form input."""
+
+    files = [
+        image
+        for image in request.files.getlist("images")
+        if image and image.filename
+    ]
+
+    legacy_image = request.files.get("image")
+
+    if (
+        legacy_image
+        and legacy_image.filename
+        and legacy_image not in files
+    ):
+
+        files.append(legacy_image)
+
+    return files
+
+
+def _upload_event_images(files):
+
+    """Upload a validated collection and clean up if any item fails."""
+
+    uploaded_paths = []
+
+    try:
+
+        for image in files:
+
+            uploaded_path = upload_event_image(image)
+
+            if not uploaded_path:
+
+                raise ValueError(
+                    "Please upload valid JPG, JPEG, PNG, GIF or WebP images under 10 MB each."
+                )
+
+            uploaded_paths.append(
+                _normalize_event_image_path(uploaded_path)
+            )
+
+    except Exception:
+
+        for uploaded_path in uploaded_paths:
+
+            delete_photo(uploaded_path)
+
+        raise
+
+    return uploaded_paths
+
+
+def _set_event_image_paths(event, image_paths):
+
+    """Set the primary image and rebuild the ordered gallery."""
+
+    image_paths = [
+        _normalize_event_image_path(path)
+        for path in image_paths
+        if path
+    ][:MAX_EVENT_IMAGES]
+
+    event.image = (
+        image_paths[0]
+        if image_paths
+        else DEFAULT_EVENT_IMAGE
+    )
+
+    event.gallery_images.clear()
+
+    for position, image_path in enumerate(
+        image_paths[1:],
+        start=1,
+    ):
+
+        event.gallery_images.append(
+            EventImage(
+                image_path=image_path,
+                position=position,
+            )
+        )
 
 
 # ============================================================
@@ -1343,60 +1439,43 @@ def create_event():
             )
         )
 
-    image = (
-        request.files.get(
-            "image"
+    image_files = (
+        _selected_event_image_files()
+    )
+
+    if len(image_files) > MAX_EVENT_IMAGES:
+
+        flash(
+            f"You can upload a maximum of {MAX_EVENT_IMAGES} images for one event.",
+            "danger",
         )
-    )
 
-    image_path = (
-        DEFAULT_EVENT_IMAGE
-    )
-
-    if (
-        image
-        and image.filename
-    ):
-
-        try:
-
-            uploaded_image = (
-                upload_photo(
-                    image
-                )
+        return redirect(
+            url_for(
+                "admin.create_event"
             )
+        )
 
-            if not uploaded_image:
+    try:
 
-                flash(
-                    "Invalid event image. Please upload a valid image under 5 MB.",
-                    "danger",
-                )
-
-                return redirect(
-                    url_for(
-                        "admin.create_event"
-                    )
-                )
-
-            image_path = (
-                _normalize_event_image_path(
-                    uploaded_image
-                )
+        uploaded_paths = (
+            _upload_event_images(
+                image_files
             )
+        )
 
-        except Exception as exc:
+    except Exception as exc:
 
-            flash(
-                f"Event image upload failed: {exc}",
-                "danger",
+        flash(
+            f"Event image upload failed: {exc}",
+            "danger",
+        )
+
+        return redirect(
+            url_for(
+                "admin.create_event"
             )
-
-            return redirect(
-                url_for(
-                    "admin.create_event"
-                )
-            )
+        )
 
     try:
 
@@ -1412,7 +1491,11 @@ def create_event():
                 location or None
             ),
 
-            image=image_path,
+            image=(
+                uploaded_paths[0]
+                if uploaded_paths
+                else DEFAULT_EVENT_IMAGE
+            ),
 
             event_link=(
                 event_link or None
@@ -1425,6 +1508,13 @@ def create_event():
 
         db.session.add(
             event
+        )
+
+        db.session.flush()
+
+        _set_event_image_paths(
+            event,
+            uploaded_paths,
         )
 
         db.session.commit()
@@ -1443,6 +1533,10 @@ def create_event():
     except Exception as exc:
 
         db.session.rollback()
+
+        for uploaded_path in uploaded_paths:
+
+            delete_photo(uploaded_path)
 
         flash(
             f"Event creation failed: {exc}",
@@ -1563,58 +1657,114 @@ def edit_event(id):
             )
         )
 
-    new_image = (
-        request.files.get(
-            "image"
-        )
+    image_files = (
+        _selected_event_image_files()
     )
 
-    updated_image = (
+    remove_primary = (
+        request.form.get(
+            "remove_primary_image"
+        )
+        == "on"
+    )
+
+    remove_gallery_ids = {
+        int(image_id)
+        for image_id in request.form.getlist(
+            "remove_gallery_images"
+        )
+        if str(image_id).isdigit()
+    }
+
+    primary_path = (
         _normalize_event_image_path(
             event.image
         )
     )
 
+    current_paths = [
+        primary_path,
+        *[
+            _normalize_event_image_path(
+                gallery_image.image_path
+            )
+            for gallery_image in event.gallery_images
+        ],
+    ]
+
+    remaining_paths = []
+
+    primary_is_placeholder = (
+        primary_path
+        in EVENT_PLACEHOLDER_IMAGES
+    )
+
     if (
-        new_image
-        and new_image.filename
+        not remove_primary
+        and not (
+            primary_is_placeholder
+            and image_files
+        )
     ):
 
-        try:
+        remaining_paths.append(
+            primary_path
+        )
 
-            updated_image = (
-                replace_photo(
-                    event.image,
-                    new_image,
-                )
-            )
+    for gallery_image in event.gallery_images:
 
-            if not updated_image:
+        if gallery_image.id not in remove_gallery_ids:
 
-                updated_image = (
-                    event.image
-                    or DEFAULT_EVENT_IMAGE
-                )
-
-            updated_image = (
+            remaining_paths.append(
                 _normalize_event_image_path(
-                    updated_image
+                    gallery_image.image_path
                 )
             )
 
-        except Exception as exc:
+    if (
+        len(remaining_paths)
+        + len(image_files)
+        > MAX_EVENT_IMAGES
+    ):
 
-            flash(
-                f"Event image update failed: {exc}",
-                "danger",
-            )
+        flash(
+            f"An event can have a maximum of {MAX_EVENT_IMAGES} images. Remove an existing image before adding another.",
+            "danger",
+        )
 
-            return redirect(
-                url_for(
-                    "admin.edit_event",
-                    id=event.id,
-                )
+        return redirect(
+            url_for(
+                "admin.edit_event",
+                id=event.id,
             )
+        )
+
+    try:
+
+        uploaded_paths = (
+            _upload_event_images(
+                image_files
+            )
+        )
+
+    except Exception as exc:
+
+        flash(
+            f"Event image update failed: {exc}",
+            "danger",
+        )
+
+        return redirect(
+            url_for(
+                "admin.edit_event",
+                id=event.id,
+            )
+        )
+
+    final_paths = (
+        remaining_paths
+        + uploaded_paths
+    )
 
     try:
 
@@ -1636,9 +1786,9 @@ def edit_event(id):
             event_link or None
         )
 
-        event.image = (
-            updated_image
-            or DEFAULT_EVENT_IMAGE
+        _set_event_image_paths(
+            event,
+            final_paths,
         )
 
         event.is_published = (
@@ -1646,6 +1796,12 @@ def edit_event(id):
         )
 
         db.session.commit()
+
+        for removed_path in set(
+            current_paths
+        ) - set(final_paths):
+
+            delete_photo(removed_path)
 
         flash(
             "Event updated successfully.",
@@ -1661,6 +1817,10 @@ def edit_event(id):
     except Exception as exc:
 
         db.session.rollback()
+
+        for uploaded_path in uploaded_paths:
+
+            delete_photo(uploaded_path)
 
         flash(
             f"Event update failed: {exc}",
@@ -1744,6 +1904,14 @@ def delete_event(id):
         .get_or_404(id)
     )
 
+    event_image_paths = [
+        event.image,
+        *[
+            gallery_image.image_path
+            for gallery_image in event.gallery_images
+        ],
+    ]
+
     try:
 
         db.session.delete(
@@ -1751,6 +1919,10 @@ def delete_event(id):
         )
 
         db.session.commit()
+
+        for image_path in event_image_paths:
+
+            delete_photo(image_path)
 
         flash(
             "Event deleted successfully.",

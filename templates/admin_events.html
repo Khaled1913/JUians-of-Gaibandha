@@ -521,6 +521,20 @@ Events | Admin | JUians of Gaibandha
 }
 
 
+.admin-event-photo-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 6px;
+    padding: 4px 7px;
+    border-radius: 999px;
+    background: rgba(0, 106, 78, 0.08);
+    color: #006a4e;
+    font-size: 0.59rem;
+    font-weight: 800;
+}
+
+
 /* ============================================================
    DATE
    ============================================================ */
@@ -1133,7 +1147,6 @@ Events | Admin | JUians of Gaibandha
                                                     </div>
 
                                                 {% endif %}
-
                                             </div>
 
 
@@ -1155,6 +1168,15 @@ Events | Admin | JUians of Gaibandha
                                                     </span>
 
                                                 {% endif %}
+
+
+                                                <span class="admin-event-photo-count">
+
+                                                    <i class="fa-regular fa-images"></i>
+
+                                                    {{ event.image_paths|length }} Photo{% if event.image_paths|length != 1 %}s{% endif %}
+
+                                                </span>
 
                                             </div>
 

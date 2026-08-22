@@ -683,6 +683,17 @@ class Event(db.Model):
         default="images/ju_campus.jpeg"
     )
 
+    # Additional gallery images are stored in a separate table so
+    # existing databases and the original primary image column remain
+    # fully compatible.
+    gallery_images = db.relationship(
+        "EventImage",
+        back_populates="event",
+        cascade="all, delete-orphan",
+        order_by="EventImage.position",
+        lazy="selectin",
+    )
+
     # =================================================
     # EVENT LINK
     # =================================================
@@ -734,3 +745,85 @@ class Event(db.Model):
     def __repr__(self):
 
         return f"<Event {self.title}>"
+
+    @property
+    def image_paths(self):
+
+        """Return the primary image and gallery images in display order."""
+
+        paths = []
+
+        for image_path in [
+            self.image,
+            *[
+                gallery_image.image_path
+                for gallery_image in self.gallery_images
+            ],
+        ]:
+
+            image_path = str(
+                image_path or ""
+            ).strip()
+
+            if (
+                image_path
+                and image_path not in paths
+            ):
+
+                paths.append(
+                    image_path
+                )
+
+        return paths[:4]
+
+
+# =====================================================
+# EVENT GALLERY IMAGE MODEL
+# =====================================================
+
+class EventImage(db.Model):
+
+    __tablename__ = "event_images"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
+
+    event_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            "events.id",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+        index=True,
+    )
+
+    image_path = db.Column(
+        db.String(255),
+        nullable=False,
+    )
+
+    position = db.Column(
+        db.Integer,
+        default=1,
+        nullable=False,
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+    )
+
+    event = db.relationship(
+        "Event",
+        back_populates="gallery_images",
+    )
+
+    def __repr__(self):
+
+        return (
+            f"<EventImage Event={self.event_id} "
+            f"Position={self.position}>"
+        )
