@@ -1315,7 +1315,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         <label class="current-event-image-item">
 
-                            {% if event.image.startswith('images/') or event.image.startswith('uploads/') %}
+                            {% if event.image.startswith('https://') or event.image.startswith('http://') %}
+                                <img
+                                    src="{{ event.image }}"
+                                    alt="{{ event.title }} main image"
+                                    loading="lazy"
+                                >
+                            {% elif event.image.startswith('images/') or event.image.startswith('uploads/') %}
                                 <img
                                     src="{{ url_for('static', filename=event.image) }}"
                                     alt="{{ event.title }} main image"
@@ -1342,7 +1348,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             <label class="current-event-image-item">
 
-                                {% if gallery_image.image_path.startswith('images/') or gallery_image.image_path.startswith('uploads/') %}
+                                {% if gallery_image.image_path.startswith('https://') or gallery_image.image_path.startswith('http://') %}
+                                    <img
+                                        src="{{ gallery_image.image_path }}"
+                                        alt="{{ event.title }} gallery image {{ loop.index }}"
+                                        loading="lazy"
+                                    >
+                                {% elif gallery_image.image_path.startswith('images/') or gallery_image.image_path.startswith('uploads/') %}
                                     <img
                                         src="{{ url_for('static', filename=gallery_image.image_path) }}"
                                         alt="{{ event.title }} gallery image {{ loop.index }}"

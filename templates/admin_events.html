@@ -1106,7 +1106,14 @@ Events | Admin | JUians of Gaibandha
 
                                                 {% if event.image %}
 
-                                                    {% if event.image.startswith('images/') %}
+                                                    {% if event.image.startswith('https://') or event.image.startswith('http://') %}
+
+                                                        <img
+                                                            src="{{ event.image }}"
+                                                            alt="{{ event.title }}"
+                                                        >
+
+                                                    {% elif event.image.startswith('images/') %}
 
                                                         <img
                                                             src="{{ url_for(

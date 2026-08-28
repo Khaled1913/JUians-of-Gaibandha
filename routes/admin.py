@@ -1,4 +1,4 @@
-# ============================================================
+
 # JUians of Gaibandha
 # Premium Admin Routes
 # ============================================================
@@ -90,6 +90,9 @@ def _normalize_event_image_path(image_path):
 
     if not image_path:
         return DEFAULT_EVENT_IMAGE
+
+    if image_path.startswith(("https://", "http://")):
+        return image_path
 
     image_path = image_path.lstrip("/")
 

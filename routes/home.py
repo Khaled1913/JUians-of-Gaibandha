@@ -78,6 +78,14 @@ def _normalize_event_image_path(
         )
 
 
+    if image_path.startswith((
+        "https://",
+        "http://"
+    )):
+
+        return image_path
+
+
     image_path = (
         image_path.lstrip("/")
     )
