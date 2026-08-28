@@ -14,7 +14,15 @@
 
                 <figure class="event-gallery-item">
 
-                    {% if image_path.startswith('images/') or image_path.startswith('uploads/') %}
+                    {% if image_path.startswith('https://') or image_path.startswith('http://') %}
+
+                        <img
+                            src="{{ image_path }}"
+                            alt="{{ event.title }}{% if image_count > 1 %} — image {{ loop.index }}{% endif %}"
+                            loading="lazy"
+                        >
+
+                    {% elif image_path.startswith('images/') or image_path.startswith('uploads/') %}
 
                         <img
                             src="{{ url_for('static', filename=image_path) }}"
