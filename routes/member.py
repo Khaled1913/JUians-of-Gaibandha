@@ -1465,6 +1465,21 @@ def member_photo(id):
     ).strip()
 
 
+    # -------------------------------------------------
+    # CLOUDINARY / REMOTE PHOTO
+    # -------------------------------------------------
+
+    if photo_name.startswith((
+        "https://",
+        "http://"
+    )):
+
+        return redirect(
+            photo_name,
+            code=302,
+        )
+
+
     photo_name = (
         photo_name.lstrip("/")
     )

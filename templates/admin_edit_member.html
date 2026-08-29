@@ -1692,13 +1692,14 @@ select.form-control {
 
                         {% if member.photo and member.photo != "default.png" %}
 
-                            <img
-                                src="{{ url_for(
-                                    'static',
-                                    filename='uploads/' + member.photo
-                                ) }}"
-                                alt="{{ member.full_name }}"
-                            >
+                            {% if member.photo.startswith('https://') or member.photo.startswith('http://') %}
+                                <img src="{{ member.photo }}" alt="{{ member.full_name }}">
+                            {% else %}
+                                <img
+                                    src="{{ url_for('static', filename='uploads/' + member.photo) }}"
+                                    alt="{{ member.full_name }}"
+                                >
+                            {% endif %}
 
                         {% else %}
 

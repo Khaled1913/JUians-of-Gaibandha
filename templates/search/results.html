@@ -250,7 +250,18 @@ Search Results | JUians of Gaibandha
                                     {% set photo_path = member.photo|string %}
 
 
-                                    {% if photo_path.startswith('static/uploads/') %}
+                                    {% if photo_path.startswith('https://') or photo_path.startswith('http://') %}
+
+
+                                        <img
+                                            src="{{ photo_path }}"
+                                            alt="{{ member.full_name }}"
+                                            loading="lazy"
+                                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                        >
+
+
+                                    {% elif photo_path.startswith('static/uploads/') %}
 
 
                                         <img

@@ -362,7 +362,8 @@ def normalize_image_path(filename):
 
 def upload_photo(photo):
     """
-    Upload and locally save a member image.
+    Upload a member image to Cloudinary when configured.
+    Local storage remains available only as a development fallback.
 
     Returns:
 
@@ -432,6 +433,35 @@ def upload_photo(photo):
 
     except Exception:
         return None
+
+    if _configure_cloudinary():
+
+        folder = os.environ.get(
+            "CLOUDINARY_FOLDER",
+            "juians_of_gaibandha",
+        ).strip("/")
+
+        try:
+            result = cloudinary.uploader.upload(
+                photo,
+                folder=f"{folder}/members",
+                resource_type="image",
+                unique_filename=True,
+                overwrite=False,
+                use_filename=False,
+            )
+
+        except Exception as exc:
+            print(
+                f"Cloudinary member upload error: {exc}"
+            )
+            return None
+
+        secure_url = result.get(
+            "secure_url"
+        )
+
+        return secure_url or None
 
     file_path = os.path.join(
         UPLOAD_FOLDER,
