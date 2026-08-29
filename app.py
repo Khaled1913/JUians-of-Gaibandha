@@ -68,6 +68,10 @@ def create_app():
         EventImage,
     )
 
+    # User login accounts are stored separately from the
+    # existing administrator and directory-member models.
+    from models_user import UserAccount
+
 
     # -------------------------------------------------
     # Register Blueprints
