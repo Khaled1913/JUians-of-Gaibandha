@@ -55,6 +55,11 @@ from utils.validators import (
 )
 
 
+from utils.user_decorators import (
+    get_logged_in_user
+)
+
+
 # =====================================================
 # BLUEPRINT
 # =====================================================
@@ -433,11 +438,33 @@ def submit():
         db.session.rollback()
 
 
+    # Logged-in users receive ownership of the new profile
+    # after a successful submission.
+    logged_in_user = get_logged_in_user()
+
+
     # =================================================
     # POST REQUEST
     # =================================================
 
     if request.method == "POST":
+
+
+        if (
+            logged_in_user
+            and logged_in_user.member_id
+        ):
+
+            flash(
+                "Your account already has a linked directory profile.",
+                "warning"
+            )
+
+            return redirect(
+                url_for(
+                    "user_dashboard.dashboard"
+                )
+            )
 
 
         # =================================================
@@ -999,9 +1026,25 @@ def submit():
 
         try:
 
-            create_member(
-                member
-            )
+            if logged_in_user:
+
+                db.session.add(
+                    member
+                )
+
+                db.session.flush()
+
+                logged_in_user.member_id = (
+                    member.id
+                )
+
+                db.session.commit()
+
+            else:
+
+                create_member(
+                    member
+                )
 
 
             flash(
@@ -1013,6 +1056,14 @@ def submit():
                 "success"
             )
 
+
+            if logged_in_user:
+
+                return redirect(
+                    url_for(
+                        "user_dashboard.dashboard"
+                    )
+                )
 
             return redirect(
                 url_for(

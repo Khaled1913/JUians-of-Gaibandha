@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Edit My Information | JUians of Gaibandha{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user_profile.css') }}">
+{% endblock %}
+
+{% macro value_for(field) -%}
+{{ form_values.get(field, member|attr(field) or '') }}
+{%- endmacro %}
+
+{% block content %}
+<main class="user-profile-edit-page">
+    <div class="user-profile-edit-container">
+        <header class="user-profile-edit-header">
+            <span><i class="fa-solid fa-user-pen"></i> Secure Profile Update</span>
+            <h1>Edit My Information</h1>
+            <p>Review every field carefully before submitting your changes.</p>
+        </header>
+
+        <div class="user-profile-review-note">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>
+                Your current approved profile will remain unchanged until an
+                Administrator reviews and approves this request.
+                {% if pending_request %}
+                    Your previous pending request will be updated.
+                {% endif %}
+            </div>
+        </div>
+
+        <form
+            method="POST"
+            action="{{ url_for('user_dashboard.edit_profile') }}"
+            enctype="multipart/form-data"
+            class="user-profile-form"
+        >
+            <section class="user-profile-section">
+                <h2><i class="fa-solid fa-user"></i> Personal Information</h2>
+                <div class="user-profile-grid">
+                    <div class="user-profile-field">
+                        <label for="full_name">Full Name *</label>
+                        <input type="text" id="full_name" name="full_name" value="{{ value_for('full_name')|trim }}" maxlength="100" required>
+                    </div>
+
+                    <div class="user-profile-field">
+                        <label for="category">Category *</label>
+                        {% set category_value = form_values.get('category', member.category or '') %}
+                        <select id="category" name="category" required>
+                            <option value="">Select Category</option>
+                            {% for option in ['Alumni', 'Running Student', 'Teacher', 'Employee'] %}
+                                <option value="{{ option }}" {% if category_value == option %}selected{% endif %}>{{ option }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="user-profile-field">
+                        <label for="gender">Gender</label>
+                        {% set gender_value = form_values.get('gender', member.gender or '') %}
+                        <select id="gender" name="gender">
+                            <option value="">Select Gender</option>
+                            {% for option in ['Male', 'Female', 'Other'] %}
+                                <option value="{{ option }}" {% if gender_value == option %}selected{% endif %}>{{ option }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="user-profile-field">
+                        <label for="date_of_birth">Date of Birth</label>
+                        <input type="date" id="date_of_birth" name="date_of_birth" value="{{ value_for('date_of_birth')|trim }}">
+                    </div>
+
+                    <div class="user-profile-field">
+                        <label for="blood_group">Blood Group</label>
+                        {% set blood_value = form_values.get('blood_group', member.blood_group or '') %}
+                        <select id="blood_group" name="blood_group">
+                            <option value="">Select Blood Group</option>
+                            {% for option in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                                <option value="{{ option }}" {% if blood_value == option %}selected{% endif %}>{{ option }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="user-profile-field">
+                        <label for="photo">New Profile Photo</label>
+                        <input type="file" id="photo" name="photo" accept="image/png,image/jpeg,image/gif,image/webp">
+                    </div>
+                </div>
+            </section>
+
+            <section class="user-profile-section">
+                <h2><i class="fa-solid fa-graduation-cap"></i> Academic Information</h2>
+                <div class="user-profile-grid">
+                    <div class="user-profile-field">
+                        <label for="department">Department *</label>
+                        <input type="text" id="department" name="department" value="{{ value_for('department')|trim }}" maxlength="150" required>
+                    </div>
+                    <div class="user-profile-field">
+                        <label for="batch">Batch</label>
+                        <input type="text" id="batch" name="batch" value="{{ value_for('batch')|trim }}" maxlength="50">
+                    </div>
+                    <div class="user-profile-field">
+                        <label for="session">Session</label>
+                        <input type="text" id="session" name="session" value="{{ value_for('session')|trim }}" maxlength="50">
+                    </div>
+                    <div class="user-profile-field">
+                        <label for="district">District</label>
+                        <input type="text" id="district" name="district" value="{{ value_for('district')|trim }}" maxlength="100">
+                    </div>
+                </div>
+            </section>
+
+            <section class="user-profile-section">
+                <h2><i class="fa-solid fa-address-book"></i> Contact Information</h2>
+                <div class="user-profile-grid">
+                    <div class="user-profile-field">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" value="{{ value_for('phone')|trim }}" maxlength="20" required>
+                    </div>
+                    <div class="user-profile-field">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" value="{{ value_for('email')|trim }}" maxlength="120">
+                    </div>
+                </div>
+            </section>
+
+            <section class="user-profile-section">
+                <h2><i class="fa-solid fa-location-dot"></i> Address Information</h2>
+                <div class="user-profile-grid">
+                    {% for field, label in [
+                        ('present_village', 'Present Village'),
+                        ('present_union', 'Present Union'),
+                        ('present_upazila', 'Present Upazila'),
+                        ('permanent_village', 'Permanent Village'),
+                        ('permanent_union', 'Permanent Union'),
+                        ('permanent_upazila', 'Permanent Upazila')
+                    ] %}
+                        <div class="user-profile-field">
+                            <label for="{{ field }}">{{ label }}</label>
+                            <input type="text" id="{{ field }}" name="{{ field }}" value="{{ value_for(field)|trim }}" maxlength="150">
+                        </div>
+                    {% endfor %}
+
+                    <div class="user-profile-field full-width">
+                        <label for="present_address">Present Address Details</label>
+                        <textarea id="present_address" name="present_address">{{ value_for('present_address')|trim }}</textarea>
+                    </div>
+                    <div class="user-profile-field full-width">
+                        <label for="permanent_address">Permanent Address Details</label>
+                        <textarea id="permanent_address" name="permanent_address">{{ value_for('permanent_address')|trim }}</textarea>
+                    </div>
+                </div>
+            </section>
+
+            <section class="user-profile-section">
+                <h2><i class="fa-solid fa-briefcase"></i> Professional & Social Information</h2>
+                <div class="user-profile-grid">
+                    {% for field, label in [
+                        ('occupation', 'Occupation'),
+                        ('company', 'Organization / Company'),
+                        ('designation', 'Designation'),
+                        ('facebook', 'Facebook URL'),
+                        ('linkedin', 'LinkedIn URL'),
+                        ('github', 'GitHub URL'),
+                        ('website', 'Website URL')
+                    ] %}
+                        <div class="user-profile-field {% if field == 'website' %}full-width{% endif %}">
+                            <label for="{{ field }}">{{ label }}</label>
+                            <input type="text" id="{{ field }}" name="{{ field }}" value="{{ value_for(field)|trim }}" maxlength="255">
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <div class="user-profile-actions">
+                <a href="{{ url_for('user_dashboard.dashboard') }}" class="user-profile-action cancel">
+                    <i class="fa-solid fa-xmark"></i> Cancel
+                </a>
+                <button type="submit" class="user-profile-action submit">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Changes for Review
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}
