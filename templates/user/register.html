@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account | JUians of Gaibandha{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user_auth.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="user-auth-page">
+    <div class="user-auth-shell">
+        <section class="user-auth-intro">
+            <div class="user-auth-brand">
+                <img
+                    src="{{ url_for('static', filename='images/association_logo.jpeg') }}"
+                    alt="JUians of Gaibandha Logo"
+                >
+
+                <span class="user-auth-eyebrow">
+                    <i class="fa-solid fa-user-shield"></i>
+                    Member Account
+                </span>
+
+                <h1>Stay connected with your JUians profile.</h1>
+
+                <p>
+                    Create a secure account to manage your submitted
+                    information and stay connected with the JUians of
+                    Gaibandha directory.
+                </p>
+
+                <ul class="user-auth-benefits">
+                    <li><i class="fa-solid fa-id-card"></i> Manage your own member profile</li>
+                    <li><i class="fa-solid fa-image"></i> Update your profile photo securely</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Track directory approval status</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="user-auth-form-panel">
+            <h2>Create Account</h2>
+            <p class="user-auth-subtitle">Use your own email and phone number.</p>
+
+            <form method="POST" action="{{ url_for('user_auth.register') }}" class="user-auth-form">
+                <div class="user-auth-field">
+                    <label for="full_name">Full Name</label>
+                    <div class="user-auth-input-wrap">
+                        <i class="fa-solid fa-user"></i>
+                        <input
+                            type="text"
+                            id="full_name"
+                            name="full_name"
+                            value="{{ request.form.get('full_name', '') }}"
+                            maxlength="100"
+                            autocomplete="name"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="user-auth-row">
+                    <div class="user-auth-field">
+                        <label for="email">Email Address</label>
+                        <div class="user-auth-input-wrap">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value="{{ request.form.get('email', '') }}"
+                                maxlength="120"
+                                autocomplete="email"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="user-auth-field">
+                        <label for="phone">Phone Number</label>
+                        <div class="user-auth-input-wrap">
+                            <i class="fa-solid fa-phone"></i>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                value="{{ request.form.get('phone', '') }}"
+                                maxlength="20"
+                                autocomplete="tel"
+                                required
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="user-auth-row">
+                    <div class="user-auth-field">
+                        <label for="password">Password</label>
+                        <div class="user-auth-input-wrap">
+                            <i class="fa-solid fa-lock"></i>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                minlength="8"
+                                autocomplete="new-password"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="user-auth-field">
+                        <label for="confirm_password">Confirm Password</label>
+                        <div class="user-auth-input-wrap">
+                            <i class="fa-solid fa-lock"></i>
+                            <input
+                                type="password"
+                                id="confirm_password"
+                                name="confirm_password"
+                                minlength="8"
+                                autocomplete="new-password"
+                                required
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <label class="user-auth-terms">
+                    <input type="checkbox" name="accepted_terms" value="yes" required>
+                    <span>
+                        I confirm that the submitted account information belongs to me
+                        and may be reviewed for security purposes.
+                    </span>
+                </label>
+
+                <button type="submit" class="user-auth-submit">
+                    <i class="fa-solid fa-user-plus"></i>
+                    Create My Account
+                </button>
+            </form>
+
+            <p class="user-auth-switch">
+                Already have an account?
+                <a href="{{ url_for('user_auth.login') }}">Login here</a>
+            </p>
+
+            <a href="{{ url_for('home.home') }}" class="user-auth-back">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Home
+            </a>
+        </section>
+    </div>
+</main>
+{% endblock %}

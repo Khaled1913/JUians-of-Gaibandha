@@ -88,7 +88,7 @@ def create_app():
     from routes.search import search_bp
 
     from routes.api import api_bp
-
+    from routes.user_auth import user_auth_bp
 
     app.register_blueprint(
         home_bp
@@ -113,7 +113,9 @@ def create_app():
     app.register_blueprint(
         api_bp
     )
-
+    app.register_blueprint(
+    user_auth_bp
+    )
 
     # -------------------------------------------------
     # Create Database Tables
