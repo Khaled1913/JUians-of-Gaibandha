@@ -3,6 +3,8 @@
 # Home Routes
 # ============================================================
 
+from datetime import datetime
+
 from flask import (
     Blueprint,
     render_template
@@ -37,6 +39,86 @@ home_bp = Blueprint(
 DEFAULT_EVENT_IMAGE = (
     "images/Event_1.1.jpeg"
 )
+
+
+# ============================================================
+# EVENT DATE SORTING
+# ============================================================
+
+_BANGLA_DIGITS = str.maketrans(
+    "০১২৩৪৫৬৭৮৯",
+    "0123456789",
+)
+
+_BANGLA_MONTHS = {
+    "জানুয়ারি": "January",
+    "জানুয়ারি": "January",
+    "ফেব্রুয়ারি": "February",
+    "ফেব্রুয়ারি": "February",
+    "মার্চ": "March",
+    "এপ্রিল": "April",
+    "মে": "May",
+    "জুন": "June",
+    "জুলাই": "July",
+    "আগস্ট": "August",
+    "সেপ্টেম্বর": "September",
+    "অক্টোবর": "October",
+    "নভেম্বর": "November",
+    "ডিসেম্বর": "December",
+}
+
+_EVENT_DATE_FORMATS = (
+    "%d %B %Y",
+    "%d %B, %Y",
+    "%d %b %Y",
+    "%d-%m-%Y",
+    "%d/%m/%Y",
+    "%Y-%m-%d",
+    "%B %d, %Y",
+    "%b %d, %Y",
+    "%d-%B-%Y",
+)
+
+
+def _event_sort_key(event):
+    """Return a sortable date key; newest valid event date comes first."""
+
+    value = str(
+        event.event_date or ""
+    ).strip().translate(
+        _BANGLA_DIGITS
+    )
+
+    value = " ".join(
+        value.split()
+    )
+
+    for bangla_month, english_month in _BANGLA_MONTHS.items():
+        value = value.replace(
+            bangla_month,
+            english_month,
+        )
+
+    for date_format in _EVENT_DATE_FORMATS:
+
+        try:
+            parsed_date = datetime.strptime(
+                value,
+                date_format,
+            )
+
+            return (
+                parsed_date,
+                event.created_at or datetime.min,
+            )
+
+        except ValueError:
+            continue
+
+    return (
+        datetime.min,
+        event.created_at or datetime.min,
+    )
 
 
 # ============================================================
@@ -285,23 +367,19 @@ def home():
     # Recent Events section remains clean.
     # ========================================================
 
-    recent_events = (
-
+    published_events = (
         Event.query
-
         .filter_by(
             is_published=True
         )
-
-        .order_by(
-            Event.created_at.desc()
-        )
-
-        .limit(5)
-
         .all()
-
     )
+
+    recent_events = sorted(
+        published_events,
+        key=_event_sort_key,
+        reverse=True,
+    )[:5]
     # ========================================================
     # NORMALIZE EVENT IMAGE PATHS
     # ========================================================
@@ -420,10 +498,13 @@ def all_events():
         .filter_by(
             is_published=True
         )
-        .order_by(
-            Event.created_at.desc()
-        )
         .all()
+    )
+
+    events = sorted(
+        events,
+        key=_event_sort_key,
+        reverse=True,
     )
 
     for event in events:
