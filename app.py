@@ -70,6 +70,7 @@ def create_app():
 
     # User login accounts are stored separately from the
     # existing administrator and directory-member models.
+
     from models_user import UserAccount
 
 
@@ -88,7 +89,11 @@ def create_app():
     from routes.search import search_bp
 
     from routes.api import api_bp
+
     from routes.user_auth import user_auth_bp
+
+    from routes.user_dashboard import user_dashboard_bp
+
 
     app.register_blueprint(
         home_bp
@@ -113,9 +118,15 @@ def create_app():
     app.register_blueprint(
         api_bp
     )
+
     app.register_blueprint(
-    user_auth_bp
+        user_auth_bp
     )
+
+    app.register_blueprint(
+        user_dashboard_bp
+    )
+
 
     # -------------------------------------------------
     # Create Database Tables
@@ -218,7 +229,6 @@ def create_app():
 # =====================================================
 
 app = create_app()
-
 
 
 # =====================================================

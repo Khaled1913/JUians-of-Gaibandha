@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}My Dashboard | JUians of Gaibandha{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user_dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="user-dashboard-page">
+    <div class="user-dashboard-container">
+        <section class="user-dashboard-hero">
+            <div class="user-dashboard-hero-content">
+                <span class="user-dashboard-eyebrow">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    Member Dashboard
+                </span>
+                <h1>Welcome, {{ user.full_name }}</h1>
+                <p>Manage your JUians account and directory information.</p>
+            </div>
+
+            <div class="user-dashboard-hero-actions">
+                <a href="{{ url_for('home.home') }}" class="user-dashboard-button">
+                    <i class="fa-solid fa-house"></i>
+                    Visit Website
+                </a>
+                <a href="{{ url_for('user_auth.logout') }}" class="user-dashboard-button">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+            </div>
+        </section>
+
+        <div class="user-dashboard-grid">
+            <section class="user-dashboard-card">
+                <div class="user-dashboard-card-header">
+                    <h2>Account Information</h2>
+                    <span class="user-dashboard-card-icon">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </span>
+                </div>
+
+                <div class="user-account-details">
+                    <div class="user-account-detail">
+                        <span>Full Name</span>
+                        <strong>{{ user.full_name }}</strong>
+                    </div>
+
+                    <div class="user-account-detail">
+                        <span>Email Address</span>
+                        <strong>{{ user.email or 'Not provided' }}</strong>
+                    </div>
+
+                    <div class="user-account-detail">
+                        <span>Phone Number</span>
+                        <strong>{{ user.phone or 'Not provided' }}</strong>
+                    </div>
+
+                    <div class="user-account-detail">
+                        <span>Account Status</span>
+                        <strong>
+                            <span class="user-status-pill active">
+                                <i class="fa-solid fa-circle"></i>
+                                Active
+                            </span>
+                        </strong>
+                    </div>
+                </div>
+
+                <div class="user-coming-soon">
+                    <i class="fa-solid fa-envelope-circle-check"></i>
+                    Email verification and password recovery will be activated
+                    in the final security stage.
+                </div>
+            </section>
+
+            <aside class="user-dashboard-card">
+                <div class="user-dashboard-card-header">
+                    <h2>Directory Profile</h2>
+                    <span class="user-dashboard-card-icon">
+                        <i class="fa-solid fa-address-card"></i>
+                    </span>
+                </div>
+
+                {% if member %}
+                    <div class="user-member-summary">
+                        <div class="user-member-line">
+                            <span>Name</span>
+                            <strong>{{ member.full_name }}</strong>
+                        </div>
+                        <div class="user-member-line">
+                            <span>Category</span>
+                            <strong>{{ member.category }}</strong>
+                        </div>
+                        <div class="user-member-line">
+                            <span>Department</span>
+                            <strong>{{ member.department }}</strong>
+                        </div>
+                        <div class="user-member-line">
+                            <span>Approval Status</span>
+                            <strong>
+                                <span class="user-status-pill {{ (member.status or 'pending')|lower }}">
+                                    <i class="fa-solid fa-circle"></i>
+                                    {{ member.status or 'Pending' }}
+                                </span>
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="user-coming-soon">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        Secure self-editing will be enabled in Part 4.
+                    </div>
+                {% else %}
+                    <div class="user-profile-state">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <h3>No profile linked yet</h3>
+                        <p>
+                            Submit your directory information or claim an existing
+                            profile. Account linking will be completed in Part 4.
+                        </p>
+                        <a href="{{ url_for('member.submit') }}" class="user-primary-action">
+                            <i class="fa-solid fa-file-pen"></i>
+                            Submit Information
+                        </a>
+                    </div>
+                {% endif %}
+            </aside>
+        </div>
+    </div>
+</main>
+{% endblock %}
