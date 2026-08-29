@@ -68,10 +68,12 @@ def create_app():
         EventImage,
     )
 
-    # User login accounts are stored separately from the
-    # existing administrator and directory-member models.
+    # User account and profile edit-request models.
 
-    from models_user import UserAccount
+    from models_user import (
+        UserAccount,
+        MemberEditRequest,
+    )
 
 
     # -------------------------------------------------
