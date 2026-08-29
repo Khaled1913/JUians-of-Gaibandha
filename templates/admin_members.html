@@ -1078,6 +1078,15 @@ All Members | JUians of Gaibandha
 }
 
 
+.admin-members-page .admin-action.edit:hover {
+    border-color: #e6cf82;
+
+    background: #fff8dc;
+
+    color: #9a7312;
+}
+
+
 .admin-members-page .admin-action.approve:hover {
     border-color: #b8dfcb;
 
@@ -2057,6 +2066,19 @@ All Members | JUians of Gaibandha
                                                     aria-label="View member details"
                                                 >
                                                     <i class="fa-solid fa-eye"></i>
+                                                </a>
+
+
+                                                <a
+                                                    href="{{ url_for(
+                                                        'admin.edit_member',
+                                                        id=member.id
+                                                    ) }}"
+                                                    class="admin-action edit"
+                                                    title="Edit Member"
+                                                    aria-label="Edit member information"
+                                                >
+                                                    <i class="fa-solid fa-pen-to-square"></i>
                                                 </a>
 
 
