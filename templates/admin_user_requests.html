@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}User Profile Requests | JUians of Gaibandha{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin_user_requests.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="admin-requests-page">
+    <div class="admin-requests-container">
+        <header class="admin-requests-hero">
+            <div>
+                <span class="admin-requests-eyebrow">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Secure Review Center
+                </span>
+                <h1>User Profile Requests</h1>
+                <p>Verify profile ownership and review proposed directory changes.</p>
+            </div>
+            <a href="{{ url_for('admin.dashboard') }}" class="admin-back-button">
+                <i class="fa-solid fa-arrow-left"></i>
+                Admin Dashboard
+            </a>
+        </header>
+
+        <section class="admin-request-section">
+            <div class="admin-request-heading">
+                <h2><i class="fa-solid fa-link"></i> Profile Claim Requests</h2>
+                <span class="admin-request-count">{{ claim_requests|length }} Total</span>
+            </div>
+
+            <div class="admin-request-list">
+                {% for claim in claim_requests %}
+                    {% set claim_status = (claim.status or 'Pending')|lower %}
+                    <article class="admin-request-card {{ claim_status }}">
+                        <div class="admin-request-top">
+                            <div>
+                                <h3>{{ claim.user.full_name if claim.user else 'Deleted account' }}</h3>
+                                <div class="admin-request-meta">
+                                    Request #{{ claim.id }} · {{ claim.created_at.strftime('%d %b %Y, %I:%M %p') if claim.created_at else '' }}
+                                </div>
+                            </div>
+                            <span class="admin-status {{ claim_status }}">{{ claim.status }}</span>
+                        </div>
+
+                        <div class="admin-request-grid">
+                            <div class="admin-request-field">
+                                <span>Account</span>
+                                <strong>{{ claim.user.email or claim.user.phone if claim.user else 'Unavailable' }}</strong>
+                            </div>
+                            <div class="admin-request-field">
+                                <span>Requested Profile</span>
+                                <strong>{{ claim.member.full_name if claim.member else 'Deleted profile' }}</strong>
+                            </div>
+                            <div class="admin-request-field">
+                                <span>Profile Contact</span>
+                                <strong>{{ (claim.member.email or claim.member.phone) if claim.member else 'Unavailable' }}</strong>
+                            </div>
+                            <div class="admin-request-field">
+                                <span>Claimant Note</span>
+                                <strong>{{ claim.claimant_note or 'No note provided' }}</strong>
+                            </div>
+                        </div>
+
+                        {% if claim_status == 'pending' %}
+                            <form class="admin-review-form" method="POST">
+                                <input name="admin_note" maxlength="2000" placeholder="Optional administrator note">
+                                <button class="admin-action approve" formaction="{{ url_for('admin.approve_profile_claim', request_id=claim.id) }}">
+                                    <i class="fa-solid fa-check"></i> Approve
+                                </button>
+                                <button class="admin-action reject" formaction="{{ url_for('admin.reject_profile_claim', request_id=claim.id) }}" onclick="return confirm('Reject this profile claim?');">
+                                    <i class="fa-solid fa-xmark"></i> Reject
+                                </button>
+                            </form>
+                        {% elif claim.admin_note %}
+                            <div class="admin-change-list"><strong>Admin note:</strong> {{ claim.admin_note }}</div>
+                        {% endif %}
+                    </article>
+                {% else %}
+                    <div class="admin-empty">No profile claim requests found.</div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="admin-request-section">
+            <div class="admin-request-heading">
+                <h2><i class="fa-solid fa-pen-to-square"></i> Member Edit Requests</h2>
+                <span class="admin-request-count">{{ edit_requests|length }} Total</span>
+            </div>
+
+            <div class="admin-request-list">
+                {% for edit in edit_requests %}
+                    {% set edit_status = (edit.status or 'Pending')|lower %}
+                    {% set changes = edit.get_proposed_data() %}
+                    <article class="admin-request-card {{ edit_status }}">
+                        <div class="admin-request-top">
+                            <div>
+                                <h3>{{ edit.member.full_name if edit.member else 'Deleted member' }}</h3>
+                                <div class="admin-request-meta">
+                                    Requested by {{ edit.user.full_name if edit.user else 'Deleted account' }} ·
+                                    {{ edit.created_at.strftime('%d %b %Y, %I:%M %p') if edit.created_at else '' }}
+                                </div>
+                            </div>
+                            <span class="admin-status {{ edit_status }}">{{ edit.status }}</span>
+                        </div>
+
+                        <div class="admin-change-list">
+                            {% for field_name, new_value in changes.items() %}
+                                {% set old_value = edit.member|attr(field_name) if edit.member else '' %}
+                                {% if (old_value or '')|string != (new_value or '')|string %}
+                                    <div class="admin-change-row">
+                                        <span>{{ field_name|replace('_', ' ')|title }}</span>
+                                        <div><del>{{ old_value or 'Empty' }}</del> → <strong>{{ new_value or 'Empty' }}</strong></div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            {% if edit.proposed_photo %}
+                                <div class="admin-change-row">
+                                    <span>Profile Photo</span>
+                                    <strong>New photo submitted</strong>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {% if edit_status == 'pending' %}
+                            <form class="admin-review-form" method="POST">
+                                <input name="admin_note" maxlength="2000" placeholder="Optional administrator note">
+                                <button class="admin-action approve" formaction="{{ url_for('admin.approve_member_edit_request', request_id=edit.id) }}">
+                                    <i class="fa-solid fa-check"></i> Approve
+                                </button>
+                                <button class="admin-action reject" formaction="{{ url_for('admin.reject_member_edit_request', request_id=edit.id) }}" onclick="return confirm('Reject this edit request?');">
+                                    <i class="fa-solid fa-xmark"></i> Reject
+                                </button>
+                            </form>
+                        {% elif edit.admin_note %}
+                            <div class="admin-change-list"><strong>Admin note:</strong> {{ edit.admin_note }}</div>
+                        {% endif %}
+                    </article>
+                {% else %}
+                    <div class="admin-empty">No member edit requests found.</div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock %}

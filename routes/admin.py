@@ -3,7 +3,7 @@
 # Premium Admin Routes
 # ============================================================
 
-from datetime import date
+from datetime import date, datetime
 
 from flask import (
     Blueprint,
@@ -21,6 +21,11 @@ from werkzeug.security import generate_password_hash
 
 from extensions import db
 from models import Information, Admin, Event, EventImage
+from models_user import (
+    MemberEditRequest,
+    ProfileClaimRequest,
+    UserAccount,
+)
 from utils.decorators import admin_required
 
 from services.member_service import (
@@ -225,6 +230,14 @@ def _current_admin():
         Admin,
         admin_id,
     )
+
+
+def _review_note():
+    """Return a safely limited administrator review note."""
+
+    return str(
+        request.form.get("admin_note", "") or ""
+    ).strip()[:2000] or None
 
 
 # ============================================================
@@ -3007,6 +3020,331 @@ def make_current_administrator(id):
                 "admin.administrators"
             )
         )
+
+
+# ============================================================
+# USER PROFILE REQUESTS
+# ============================================================
+
+@admin_bp.route("/user-requests")
+@admin_required
+def user_requests():
+
+    claim_requests = (
+        ProfileClaimRequest.query
+        .order_by(
+            ProfileClaimRequest.created_at.desc()
+        )
+        .all()
+    )
+
+    edit_requests = (
+        MemberEditRequest.query
+        .order_by(
+            MemberEditRequest.created_at.desc()
+        )
+        .all()
+    )
+
+    return render_template(
+        "admin_user_requests.html",
+        claim_requests=claim_requests,
+        edit_requests=edit_requests,
+    )
+
+
+def _mark_reviewed(review_request, status):
+    """Apply common review metadata to a user request."""
+
+    admin = _current_admin()
+
+    review_request.status = status
+    review_request.admin_note = _review_note()
+    review_request.reviewed_by_id = (
+        admin.id if admin else session.get("admin_id")
+    )
+    review_request.reviewed_at = datetime.utcnow()
+
+
+@admin_bp.route(
+    "/user-requests/claim/<int:request_id>/approve",
+    methods=["POST"],
+)
+@admin_required
+def approve_profile_claim(request_id):
+
+    claim = db.session.get(
+        ProfileClaimRequest,
+        request_id,
+    )
+
+    if claim is None:
+        flash("Profile claim request was not found.", "danger")
+        return redirect(url_for("admin.user_requests"))
+
+    if str(claim.status).lower() != "pending":
+        flash("This profile claim has already been reviewed.", "warning")
+        return redirect(url_for("admin.user_requests"))
+
+    user = db.session.get(UserAccount, claim.user_id)
+    member = db.session.get(Information, claim.member_id)
+
+    if user is None or member is None:
+        flash("The user account or member profile no longer exists.", "danger")
+        return redirect(url_for("admin.user_requests"))
+
+    if user.member_id and user.member_id != member.id:
+        flash("This user account is already linked to another profile.", "danger")
+        return redirect(url_for("admin.user_requests"))
+
+    existing_owner = UserAccount.query.filter(
+        UserAccount.member_id == member.id,
+        UserAccount.id != user.id,
+    ).first()
+
+    if existing_owner:
+        flash("This member profile is already linked to another account.", "danger")
+        return redirect(url_for("admin.user_requests"))
+
+    try:
+        user.member_id = member.id
+        _mark_reviewed(claim, "Approved")
+
+        other_claims = ProfileClaimRequest.query.filter(
+            ProfileClaimRequest.id != claim.id,
+            ProfileClaimRequest.status == "Pending",
+            or_(
+                ProfileClaimRequest.user_id == user.id,
+                ProfileClaimRequest.member_id == member.id,
+            ),
+        ).all()
+
+        admin = _current_admin()
+
+        for other_claim in other_claims:
+            other_claim.status = "Rejected"
+            other_claim.admin_note = (
+                "Automatically closed because the profile "
+                "was linked through another approved claim."
+            )
+            other_claim.reviewed_by_id = (
+                admin.id if admin else session.get("admin_id")
+            )
+            other_claim.reviewed_at = datetime.utcnow()
+
+        db.session.commit()
+
+        flash(
+            f"{user.full_name}'s account was linked to {member.full_name}.",
+            "success",
+        )
+
+    except Exception as exc:
+        db.session.rollback()
+        print(f"Profile claim approval failed: {exc}")
+        flash("The profile claim could not be approved.", "danger")
+
+    return redirect(url_for("admin.user_requests"))
+
+
+@admin_bp.route(
+    "/user-requests/claim/<int:request_id>/reject",
+    methods=["POST"],
+)
+@admin_required
+def reject_profile_claim(request_id):
+
+    claim = db.session.get(ProfileClaimRequest, request_id)
+
+    if claim is None:
+        flash("Profile claim request was not found.", "danger")
+        return redirect(url_for("admin.user_requests"))
+
+    if str(claim.status).lower() != "pending":
+        flash("This profile claim has already been reviewed.", "warning")
+        return redirect(url_for("admin.user_requests"))
+
+    try:
+        _mark_reviewed(claim, "Rejected")
+        db.session.commit()
+        flash("Profile claim rejected.", "success")
+
+    except Exception as exc:
+        db.session.rollback()
+        print(f"Profile claim rejection failed: {exc}")
+        flash("The profile claim could not be rejected.", "danger")
+
+    return redirect(url_for("admin.user_requests"))
+
+
+EDITABLE_MEMBER_FIELDS = {
+    "full_name",
+    "category",
+    "gender",
+    "date_of_birth",
+    "blood_group",
+    "phone",
+    "email",
+    "department",
+    "batch",
+    "session",
+    "district",
+    "present_village",
+    "present_union",
+    "present_upazila",
+    "present_address",
+    "permanent_village",
+    "permanent_union",
+    "permanent_upazila",
+    "permanent_address",
+    "occupation",
+    "company",
+    "designation",
+    "facebook",
+    "linkedin",
+    "github",
+    "website",
+}
+
+
+@admin_bp.route(
+    "/user-requests/edit/<int:request_id>/approve",
+    methods=["POST"],
+)
+@admin_required
+def approve_member_edit_request(request_id):
+
+    edit_request = db.session.get(MemberEditRequest, request_id)
+
+    if edit_request is None:
+        flash("Member edit request was not found.", "danger")
+        return redirect(url_for("admin.user_requests"))
+
+    if str(edit_request.status).lower() != "pending":
+        flash("This edit request has already been reviewed.", "warning")
+        return redirect(url_for("admin.user_requests"))
+
+    user = db.session.get(UserAccount, edit_request.user_id)
+    member = db.session.get(Information, edit_request.member_id)
+
+    if user is None or member is None or user.member_id != member.id:
+        flash("The account is no longer linked to this member profile.", "danger")
+        return redirect(url_for("admin.user_requests"))
+
+    proposed = edit_request.get_proposed_data()
+
+    full_name = str(proposed.get("full_name", "") or "").strip()
+    department = str(proposed.get("department", "") or "").strip()
+    phone = str(proposed.get("phone", "") or "").strip()
+    email = str(proposed.get("email", "") or "").strip().lower()
+    category = str(proposed.get("category", "") or "").strip()
+
+    if not full_name or not department or not phone:
+        flash("The request is missing required member information.", "danger")
+        return redirect(url_for("admin.user_requests"))
+
+    if category not in {
+        "Alumni", "Running Student", "Teacher", "Employee"
+    }:
+        flash("The request contains an invalid member category.", "danger")
+        return redirect(url_for("admin.user_requests"))
+
+    duplicate_phone = Information.query.filter(
+        Information.phone == phone,
+        Information.id != member.id,
+    ).first()
+
+    duplicate_email = None
+
+    if email:
+        duplicate_email = Information.query.filter(
+            func.lower(Information.email) == email,
+            Information.id != member.id,
+        ).first()
+
+    if duplicate_phone or duplicate_email:
+        flash(
+            "The requested phone number or email now belongs to another member.",
+            "danger",
+        )
+        return redirect(url_for("admin.user_requests"))
+
+    old_photo = member.photo
+    approved_photo = edit_request.proposed_photo
+
+    try:
+        for field_name in EDITABLE_MEMBER_FIELDS:
+            if field_name not in proposed:
+                continue
+
+            value = proposed[field_name]
+
+            if isinstance(value, str):
+                value = value.strip() or None
+
+            setattr(member, field_name, value)
+
+        # Preserve compatibility with older directory/search code.
+        member.upazila = (
+            member.permanent_upazila
+            or member.present_upazila
+        )
+
+        if approved_photo:
+            member.photo = approved_photo
+            edit_request.proposed_photo = None
+
+        _mark_reviewed(edit_request, "Approved")
+        db.session.commit()
+
+        if approved_photo and old_photo and old_photo != approved_photo:
+            delete_photo(old_photo)
+
+        flash(f"Changes for {member.full_name} were approved.", "success")
+
+    except Exception as exc:
+        db.session.rollback()
+        print(f"Member edit approval failed: {exc}")
+        flash("The edit request could not be approved.", "danger")
+
+    return redirect(url_for("admin.user_requests"))
+
+
+@admin_bp.route(
+    "/user-requests/edit/<int:request_id>/reject",
+    methods=["POST"],
+)
+@admin_required
+def reject_member_edit_request(request_id):
+
+    edit_request = db.session.get(MemberEditRequest, request_id)
+
+    if edit_request is None:
+        flash("Member edit request was not found.", "danger")
+        return redirect(url_for("admin.user_requests"))
+
+    if str(edit_request.status).lower() != "pending":
+        flash("This edit request has already been reviewed.", "warning")
+        return redirect(url_for("admin.user_requests"))
+
+    rejected_photo = edit_request.proposed_photo
+
+    try:
+        edit_request.proposed_photo = None
+        _mark_reviewed(edit_request, "Rejected")
+        db.session.commit()
+
+        if rejected_photo:
+            delete_photo(rejected_photo)
+
+        flash("Member edit request rejected.", "success")
+
+    except Exception as exc:
+        db.session.rollback()
+        print(f"Member edit rejection failed: {exc}")
+        flash("The edit request could not be rejected.", "danger")
+
+    return redirect(url_for("admin.user_requests"))
 
 
 # ============================================================
