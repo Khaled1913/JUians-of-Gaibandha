@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Claim Existing Profile | JUians of Gaibandha{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/user_claim.css') }}">{% endblock %}
+{% block content %}
+<main class="user-claim-page">
+  <div class="user-claim-container">
+    <header class="user-claim-header">
+      <span><i class="fa-solid fa-link"></i> Secure Profile Ownership</span>
+      <h1>Claim Existing Profile</h1>
+      <p>Only profiles matching your account email or phone number are shown. Administrator approval is required.</p>
+    </header>
+    <div class="user-claim-notice"><i class="fa-solid fa-shield-halved"></i> Claiming does not change public information. An Administrator verifies ownership before linking.</div>
+    <section class="user-claim-card">
+      <h2>Matching Directory Profiles</h2>
+      <p>Account: {{ user.email }} · {{ user.phone }}</p>
+      {% if pending_claim %}
+        <div class="user-claim-empty"><i class="fa-solid fa-hourglass-half"></i><h3>Claim request pending</h3><p>Your request for {{ pending_claim.member.full_name }} is waiting for Administrator approval.</p></div>
+      {% elif matches %}
+        <form method="POST" action="{{ url_for('user_dashboard.claim_profile') }}">
+          <div class="user-claim-list">
+            {% for member in matches %}
+              <label class="user-claim-option">
+                <input type="radio" name="member_id" value="{{ member.id }}" required>
+                <span class="user-claim-option-content">
+                  <span class="user-claim-avatar"><i class="fa-solid fa-user-graduate"></i></span>
+                  <span class="user-claim-info"><strong>{{ member.full_name }}</strong><span>{{ member.category }} · {{ member.department }}{% if member.batch %} · Batch {{ member.batch }}{% endif %}</span></span>
+                  <i class="fa-solid fa-circle-check user-claim-check"></i>
+                </span>
+              </label>
+            {% endfor %}
+          </div>
+          <div class="user-claim-field"><label for="claimant_note">Additional verification note (optional)</label><textarea id="claimant_note" name="claimant_note" maxlength="1000" placeholder="Add information that can help the Administrator verify ownership."></textarea></div>
+          <div class="user-claim-actions"><a href="{{ url_for('user_dashboard.dashboard') }}" class="user-claim-button secondary">Cancel</a><button type="submit" class="user-claim-button primary"><i class="fa-solid fa-paper-plane"></i> Submit Claim Request</button></div>
+        </form>
+      {% else %}
+        <div class="user-claim-empty"><i class="fa-solid fa-user-slash"></i><h3>No matching profile found</h3><p>Your account email or phone does not match an existing directory profile. Contact the Administrator or submit new information.</p></div>
+      {% endif %}
+    </section>
+  </div>
+</main>
+{% endblock %}
