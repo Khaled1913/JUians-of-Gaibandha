@@ -68,11 +68,15 @@ def create_app():
         EventImage,
     )
 
-    # User account and profile edit-request models.
+
+    # -------------------------------------------------
+    # Import User Account Models
+    # -------------------------------------------------
 
     from models_user import (
         UserAccount,
         MemberEditRequest,
+        ProfileClaimRequest,
     )
 
 
@@ -135,13 +139,13 @@ def create_app():
     # -------------------------------------------------
     #
     # Local:
-    # Creates tables inside SQLite if missing.
+    # Creates missing tables inside SQLite.
     #
     # Render:
-    # Creates tables inside PostgreSQL if DATABASE_URL
-    # is configured.
+    # Creates missing tables inside PostgreSQL when
+    # DATABASE_URL is configured.
     #
-    # Existing tables/data are not deleted.
+    # Existing tables and records are not deleted.
     # -------------------------------------------------
 
     with app.app_context():
