@@ -9,7 +9,14 @@ Version 6.0
 
 import os
 
-from flask import Flask
+from flask import (
+    Flask,
+    flash,
+    redirect,
+    request,
+    session,
+    url_for,
+)
 
 from config import Config
 from extensions import db
@@ -68,11 +75,8 @@ def create_app():
         EventImage,
     )
 
-
-    # -------------------------------------------------
-    # Import User Account Models
-    # -------------------------------------------------
-
+    # User login accounts are stored separately from the
+    # existing administrator and directory-member models.
     from models_user import (
         UserAccount,
         MemberEditRequest,
@@ -139,13 +143,13 @@ def create_app():
     # -------------------------------------------------
     #
     # Local:
-    # Creates missing tables inside SQLite.
+    # Creates tables inside SQLite if missing.
     #
     # Render:
-    # Creates missing tables inside PostgreSQL when
-    # DATABASE_URL is configured.
+    # Creates tables inside PostgreSQL if DATABASE_URL
+    # is configured.
     #
-    # Existing tables and records are not deleted.
+    # Existing tables/data are not deleted.
     # -------------------------------------------------
 
     with app.app_context():
@@ -169,6 +173,87 @@ def create_app():
             )
 
             raise
+
+
+    # -------------------------------------------------
+    # PRIVATE PORTAL ACCESS GUARD
+    # -------------------------------------------------
+    #
+    # Guests may view the public homepage and account/authentication
+    # pages. Directory pages, search, events, submissions and APIs
+    # require an active member account or administrator session.
+    # -------------------------------------------------
+
+    @app.before_request
+    def require_portal_login():
+
+        endpoint = request.endpoint or ""
+        blueprint = request.blueprint or ""
+
+        # Flask assets must always remain public so the homepage and
+        # login/register pages can load their CSS, JS and images.
+        if endpoint == "static" or blueprint == "static":
+            return None
+
+        # The main landing page is the only public content page.
+        if endpoint == "home.home":
+            return None
+
+        # Member registration/login/recovery and administrator
+        # authentication must remain reachable by logged-out visitors.
+        if blueprint in {
+            "user_auth",
+            "auth",
+        }:
+            return None
+
+        # Admin pages retain their existing role-aware decorators.
+        # Let those decorators redirect unauthenticated admins to the
+        # correct administrator login page.
+        if blueprint == "admin":
+            return None
+
+        # An authenticated administrator can also access the public
+        # directory while performing management work.
+        if session.get("admin_id"):
+            return None
+
+        user_id = session.get("user_account_id")
+
+        if user_id:
+            user = db.session.get(
+                UserAccount,
+                user_id,
+            )
+
+            if user and user.is_active:
+                return None
+
+            # Remove an expired/deactivated user session safely.
+            session.pop("user_account_id", None)
+            session.pop("user_logged_in", None)
+            session.pop("user_name", None)
+
+        next_url = request.full_path
+
+        if next_url.endswith("?"):
+            next_url = next_url[:-1]
+
+        # Avoid storing an unexpectedly large query string in the
+        # redirect URL.
+        next_url = next_url[:2000]
+
+        flash(
+            "Please create an account or log in to continue.",
+            "warning",
+        )
+
+        return redirect(
+            url_for(
+                "user_auth.login",
+                next=next_url,
+            )
+        )
 
 
     # -------------------------------------------------
@@ -235,6 +320,7 @@ def create_app():
 # =====================================================
 
 app = create_app()
+
 
 
 # =====================================================
