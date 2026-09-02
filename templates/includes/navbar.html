@@ -202,12 +202,44 @@
         id="nav-actions"
     >
 
+        {% if current_user_account %}
+
+            <a
+                href="{{ url_for('user_dashboard.dashboard') }}"
+                class="login-btn member-account-btn"
+            >
+
+                <i class="fa-solid fa-circle-user"></i>
+
+                <span>
+                    My Dashboard
+                </span>
+
+            </a>
+
+        {% else %}
+
+            <a
+                href="{{ url_for('user_auth.login') }}"
+                class="login-btn member-account-btn"
+            >
+
+                <i class="fa-solid fa-user"></i>
+
+                <span>
+                    Member Login
+                </span>
+
+            </a>
+
+        {% endif %}
+
         <a
             href="{{ url_for('auth.login') }}"
-            class="login-btn"
+            class="login-btn admin-login-btn"
         >
 
-            <i class="fa-solid fa-lock"></i>
+            <i class="fa-solid fa-user-shield"></i>
 
             <span>
                 Admin Login

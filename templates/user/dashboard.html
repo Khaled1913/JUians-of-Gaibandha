@@ -65,13 +65,44 @@
                             </span>
                         </strong>
                     </div>
+
+                    <div class="user-account-detail">
+                        <span>Email Verification</span>
+                        <strong>
+                            {% if user.is_verified %}
+                                <span class="user-status-pill approved">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    Verified
+                                </span>
+                            {% else %}
+                                <span class="user-status-pill pending">
+                                    <i class="fa-solid fa-clock"></i>
+                                    Not Verified
+                                </span>
+                            {% endif %}
+                        </strong>
+                    </div>
                 </div>
 
-                <div class="user-coming-soon">
-                    <i class="fa-solid fa-envelope-circle-check"></i>
-                    Email verification and password recovery will be activated
-                    in the final security stage.
-                </div>
+                {% if user.is_verified %}
+                    <div class="user-coming-soon">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                        Your email address has been securely verified.
+                    </div>
+                {% else %}
+                    <div class="user-coming-soon">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        Verify your email to secure account recovery.
+                    </div>
+
+                    <a
+                        href="{{ url_for('user_auth.send_verification') }}"
+                        class="user-primary-action"
+                    >
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Send Verification Email
+                    </a>
+                {% endif %}
             </section>
 
             <aside class="user-dashboard-card">

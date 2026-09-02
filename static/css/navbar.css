@@ -257,6 +257,32 @@
 }
 
 
+.member-account-btn{
+    border-color: var(--primary-color);
+
+    color: #fff;
+
+    background: var(--primary-color);
+
+    box-shadow: 0 9px 22px rgba(0,106,78,.18);
+}
+
+
+.member-account-btn:hover{
+    border-color: var(--primary-dark);
+
+    background: var(--primary-dark);
+
+    transform: translateY(-1px);
+}
+
+
+.admin-login-btn{
+    padding-left: 17px;
+    padding-right: 17px;
+}
+
+
 /* ==========================
       MOBILE TOGGLE
 ========================== */
@@ -464,6 +490,8 @@
         right: 0;
 
         display: none;
+
+        flex-direction: column;
 
         width: 100%;
 
