@@ -328,6 +328,64 @@
    LARGE TABLET / SMALL DESKTOP
 ===================================================== */
 
+@media (max-width: 1500px){
+
+    .nav-container{
+        gap: 10px;
+    }
+
+
+    .logo{
+        gap: 9px;
+    }
+
+
+    .logo img{
+        width: 48px;
+        height: 48px;
+    }
+
+
+    .logo-text h2{
+        font-size: 1.08rem;
+    }
+
+
+    .logo-text span{
+        font-size: .7rem;
+    }
+
+
+    .nav-menu{
+        gap: 1px;
+    }
+
+
+    .nav-menu a{
+        gap: 6px;
+
+        padding: 9px 10px;
+
+        font-size: .82rem;
+    }
+
+
+    .nav-actions{
+        gap: 7px;
+    }
+
+
+    .login-btn,
+    .admin-login-btn{
+        gap: 6px;
+
+        padding: 9px 12px;
+
+        font-size: .8rem;
+    }
+
+}
+
 @media (max-width: 1200px){
 
     .nav-container{
@@ -360,7 +418,7 @@
    TABLET / MOBILE NAVIGATION
 ===================================================== */
 
-@media (max-width: 992px){
+@media (max-width: 1180px){
 
     .navbar{
         overflow: visible;
@@ -491,7 +549,7 @@
 
         display: none;
 
-        flex-direction: column;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
 
         width: 100%;
 
@@ -514,7 +572,7 @@
 
 
     .nav-actions.active{
-        display: flex;
+        display: grid;
     }
 
 
@@ -528,6 +586,10 @@
         box-sizing: border-box;
 
         border-radius: 10px;
+
+        padding: 10px 8px;
+
+        font-size: .78rem;
     }
 
 }
@@ -574,6 +636,21 @@
         font-size: 1.1rem;
 
         border-radius: 9px;
+    }
+
+
+    .nav-actions{
+        gap: 7px;
+    }
+
+
+    .login-btn,
+    .admin-login-btn{
+        min-height: 42px;
+
+        padding: 8px 6px;
+
+        font-size: .72rem;
     }
 
 
